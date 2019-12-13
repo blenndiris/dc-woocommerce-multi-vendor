@@ -1943,6 +1943,7 @@ Class WCMp_Admin_Dashboard {
                         'children'           => 'grouped' === $product_type ? $grouped_products : null,
                         'regular_price'      => isset( $_POST['_regular_price'] ) ? wc_clean( $_POST['_regular_price'] ) : null,
                         'sale_price'         => isset( $_POST['_sale_price'] ) ? wc_clean( $_POST['_sale_price'] ) : null,
+                        'wholesale_customer_wholesale_price'         => isset( $_POST['wholesale_customer_wholesale_price'] ) ? wc_clean( $_POST['wholesale_customer_wholesale_price'] ) : null,
                         'date_on_sale_from'  => isset( $_POST['_sale_price_dates_from'] ) ? wc_clean( $_POST['_sale_price_dates_from'] ) : null,
                         'date_on_sale_to'    => isset( $_POST['_sale_price_dates_to'] ) ? wc_clean( $_POST['_sale_price_dates_to'] ) : null,
                         'download_limit'     => empty( $_POST['_download_limit'] ) ? '' : absint( $_POST['_download_limit'] ),
@@ -2246,17 +2247,17 @@ Class WCMp_Admin_Dashboard {
                 'handler' => '',
             ),
             'store_setup' => array(
-                'name' => __('Store setup', 'dc-woocommerce-multi-vendor'),
-                'view' => array($this, 'vendor_store_setup'),
+                'name'    => get_field('s4_tab_title', 'option'),
+                'view'    => array($this, 'vendor_store_setup'),
                 'handler' => array( $this, 'wcmp_setup_store_setup_save' ),
             ),
             'payment'     => array(
-                'name'    => __( 'Payment', 'woocommerce' ),
+                'name'    => get_field('s5_tab_title', 'option'),
                 'view'    => array( $this, 'vendor_payment_setup' ),
                 'handler' => array( $this, 'wcmp_setup_payment_save' ),
             ),
             'next_steps'  => array(
-                'name'    => __( 'Ready!', 'woocommerce' ),
+                'name'    => get_field('s6_tab_title', 'option'),
                 'view'    => array( $this, 'wcmp_store_setup_ready' ),
                 'handler' => '',
             ),
@@ -2269,41 +2270,14 @@ Class WCMp_Admin_Dashboard {
      */
     public function setup_wizard_header() {
         global $WCMp;
+        get_header();
         ?>
-        <!DOCTYPE html>
-        <html <?php language_attributes(); ?>>
-            <head>
-                <meta name="viewport" content="width=device-width" />
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title>
-                    <?php 
-                    printf(
-                        __( '%s &rsaquo; Store Setup Wizard', 'dc-woocommerce-multi-vendor' ),
-                        wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES )
-                    );
-                    ?>
-                </title>
                 <?php wp_print_scripts('wc-setup'); ?>
                 <?php wp_print_scripts('wcmp-setup'); ?>
                 <?php do_action('admin_print_styles'); ?>
                 <?php do_action('wcmp_vendor_head'); ?>
-                <style type="text/css">
-                    .wc-setup-steps {
-                        justify-content: center;
-                    }
-                </style>
-            </head>
-            <body class="wcmp-vendor-wizard wc-setup wp-core-ui">
-                <h1 id="wc-logo">
-                    <a href="<?php echo apply_filters( 'wcmp_vendor_setup_wizard_site_logo_link', site_url(), get_current_user_id() ); ?>">
-                        <?php $site_logo = get_wcmp_vendor_settings('wcmp_dashboard_site_logo', 'vendor', 'dashboard') ? get_wcmp_vendor_settings('wcmp_dashboard_site_logo', 'vendor', 'dashboard') : '';
-                        if ($site_logo) { ?>
-                        <img src="<?php echo get_url_from_upload_field_value($site_logo); ?>" alt="<?php echo bloginfo(); ?>">
-                        <?php } else {
-                            echo bloginfo();
-                        } ?>
-                    </a>
-                </h1>
+                
+                <main id="main" class="site-main" role="main">
         <?php
     }
 
@@ -2314,17 +2288,22 @@ Class WCMp_Admin_Dashboard {
         $ouput_steps = $this->steps;
         array_shift($ouput_steps);
         ?>
-        <ol class="wc-setup-steps">
-            <?php foreach ($ouput_steps as $step_key => $step) : ?>
-                <li class="<?php
-                if ($step_key === $this->step) {
-                    echo 'active';
-                } elseif (array_search($this->step, array_keys($this->steps)) > array_search($step_key, array_keys($this->steps))) {
-                    echo 'done';
-                }
-                ?>"><?php echo esc_html($step['name']); ?></li>
-        <?php endforeach; ?>
-        </ol>
+        <section class="step-wizard">
+            <div class="container-fluid container-fluid--max step-wizard__container">
+                <ul class="step-wizard__list">
+                <?php foreach ($ouput_steps as $step_key => $step) : ?>
+                    <li class="step-wizard__list-item <?php
+                    if ($step_key === $this->step) {
+                        echo 'step-wizard__list-item--active';
+                    } elseif (array_search($this->step, array_keys($this->steps)) > array_search($step_key, array_keys($this->steps))) {
+                        echo 'step-wizard__list-item--completed';
+                    }
+                    ?>"><?php echo esc_html($step['name']); ?></li>
+                <?php endforeach; ?>
+                </ul>
+            </div>
+        </section>
+
         <?php
     }
 
@@ -2332,9 +2311,14 @@ Class WCMp_Admin_Dashboard {
      * Output the content for the current step.
      */
     public function setup_wizard_content() {
-        echo '<div class="wc-setup-content">';
-        call_user_func($this->steps[$this->step]['view'], $this);
-        echo '</div>';
+
+        ?>
+        	<section class="section">
+		        <div class="container-fluid container-fluid--max">
+                    <?php call_user_func($this->steps[$this->step]['view'], $this); ?>
+                </div>
+            </section>
+        <?php
     }
     
     /**
@@ -2343,33 +2327,44 @@ Class WCMp_Admin_Dashboard {
     public function setup_wizard_footer() {
         do_action( 'wcmp_vendor_setup_wizard_footer', $this->step, $this->vendor );
         ?>
-        </body>
-    </html>
-    <?php
+        </main>
+        
+        <?php
+        get_footer();
     }
 
     /**
      * Introduction step.
      */
-    public function vendor_setup_introduction() {
-        $setup_wizard_introduction = get_wcmp_vendor_settings('setup_wizard_introduction');
-        if($setup_wizard_introduction){
-            echo htmlspecialchars_decode( wpautop( $setup_wizard_introduction ), ENT_QUOTES );
-        }else{
-        ?>
-        <h1><?php 
-        printf(
-            __( 'Welcome to the %s family!', 'dc-woocommerce-multi-vendor' ),
-            wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES )
-        );
-        ?></h1>
-        <p><?php _e('Thank you for being the part of us. This quick setup wizard will help you configure the basic store settings and you will have your marketplace ready in no time. <strong>It’s completely optional and shouldn’t take longer than five minutes.</strong>', 'dc-woocommerce-multi-vendor'); ?></p>
-        <p><?php esc_html_e("If you don't want to go through the wizard right now, you can skip and return to the dashboard. Come back anytime if you change your mind!", 'dc-woocommerce-multi-vendor'); ?></p>
-        <?php } ?>
-        <p class="wc-setup-actions step">
-            <a href="<?php echo esc_url($this->get_next_step_link()); ?>" class="button-primary button button-large button-next"><?php esc_html_e("Let's go!", 'dc-woocommerce-multi-vendor'); ?></a>
-            <a href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( 'dashboard' ) . '?page=vendor-store-setup&skip_setup=1'; ?>" class="button button-large"><?php esc_html_e('Not right now', 'dc-woocommerce-multi-vendor'); ?></a>
-        </p>
+    public function vendor_setup_introduction() { ?>
+        <div class="container-fluid container-fluid--max mb-5">
+            <div class="row">
+                <div class="col">
+                    <div class="mt-3 mb-5 text-center">
+                        <h1 class="mb-2"><?php echo get_field('wm_header', 'option') ?></h1>
+                        <h4><?php echo get_field('wm_sub_header', 'option') ?></h4>
+                        <?php if (get_field('wm_copy', 'option')): ?>
+                            <div class="my-4">
+                                <?php echo get_field('wm_copy', 'option'); ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (get_wcmp_vendor_settings('setup_wizard_introduction')): ?>
+                            <div class="my-4">
+                                <?php echo get_wcmp_vendor_settings('setup_wizard_introduction'); ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="mt-5 mb-3">
+                            <a href="<?php echo esc_url($this->get_next_step_link()); ?>" class="btn btn-primary"><?php esc_html_e("Let's go!", 'dc-woocommerce-multi-vendor'); ?></a>
+                        </div>
+                        <div class="mb-5"> 
+                            <a href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( 'dashboard' ) . '?page=vendor-store-setup&skip_setup=1'; ?>"><?php esc_html_e('Not right now', 'dc-woocommerce-multi-vendor'); ?></a>
+                        <div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php
     }
     
@@ -2411,68 +2406,84 @@ Class WCMp_Admin_Dashboard {
             }
         }
         ?>
-        <!--h1><?php esc_html_e('Store Setup', 'dc-woocommerce-multi-vendor'); ?></h1-->
-        <form method="post" class="store-address-info">
-            <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
-            <p class="store-setup"><?php esc_html_e( 'The following wizard will help you configure your store and get you started quickly.', 'woocommerce' ); ?></p>
-            
-            <div class="store-address-container">
-                
-                <label class="location-prompt" for="store_name"><?php esc_html_e('Store Name', 'dc-woocommerce-multi-vendor'); ?></label>
-                <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="<?php _e('Enter your Store Name here', 'dc-woocommerce-multi-vendor'); ?>" />
-                
-                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Where is your store based?', 'woocommerce' ); ?></label>
-                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Choose a country&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
-                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
-                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-                <?php endforeach; ?>
-                </select>
 
-                <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?></label>
-                <input type="text" id="store_address_1" class="location-input" name="store_address_1" value="<?php echo esc_attr( $address ); ?>" />
+        <div class="container-fluid container-fluid--max mb-5">
+            <div class="row">
+                <div class="col">
+                    <div class="mt-3 mb-5 text-center">
+                        <h1 class="mb-2"><?php echo get_field('s4_header', 'option') ?></h1>
+                        <h4><?php echo get_field('s4_sub_header', 'option') ?></h4>
 
-                <label class="location-prompt" for="store_address_2"><?php esc_html_e( 'Address line 2', 'woocommerce' ); ?></label>
-                <input type="text" id="store_address_2" class="location-input" name="store_address_2" value="<?php echo esc_attr( $address_2 ); ?>" />
+                        <form method="post" class="store-address-info text-left mt-5">
+                            <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
+                            
+                            <div class="store-address-container">
+                                
+                                <label class="location-prompt" for="store_name"><?php esc_html_e('Store Name', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="<?php _e('Enter your Store Name here', 'dc-woocommerce-multi-vendor'); ?>" />
+                                
+                                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Where is your store based?', 'woocommerce' ); ?></label>
+                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Choose a country&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
+                                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+                                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+                                <?php endforeach; ?>
+                                </select>
 
-                <div class="city-and-postcode">
-                    <div>
-                        <label class="location-prompt" for="store_city"><?php esc_html_e( 'City', 'woocommerce' ); ?></label>
-                        <input type="text" id="store_city" class="location-input" name="store_city" value="<?php echo esc_attr( $city ); ?>" />
-                    </div>
-                    <div class="store-state-container hidden">
-                        <label for="store_state" class="location-prompt">
-                                <?php esc_html_e( 'State', 'woocommerce' ); ?>
-                        </label>
-                        <select id="store_state" name="store_state" data-placeholder="<?php esc_attr_e( 'Choose a state&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'State', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown"></select>
-                    </div>
-                    <div>
-                        <label class="location-prompt" for="store_postcode"><?php esc_html_e( 'Postcode / ZIP', 'woocommerce' ); ?></label>
-                        <input type="text" id="store_postcode" class="location-input" name="store_postcode" value="<?php echo esc_attr( $postcode ); ?>" />
-                    </div>
-                </div>
-                <div class="city-and-postcode">
-                    <div>
-                        <label class="location-prompt" for="store_phone"><?php esc_html_e( 'Phone', 'dc-woocommerce-multi-vendor' ); ?></label>
-                        <input type="text" id="store_phone" class="location-input" name="store_phone" value="<?php echo esc_attr( $store_phone ); ?>" />
-                    </div>
-                    <div>
-                        <label class="location-prompt" for="timezone_string"><?php esc_html_e( 'Timezone', 'dc-woocommerce-multi-vendor' ); ?></label>
-                        <select id="timezone_string" name="timezone_string" class="location-input wc-enhanced-select dropdown" aria-describedby="timezone-description">
-                            <?php echo wp_timezone_choice($tzstring, get_user_locale()); ?>
-                        </select>
+                                <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?></label>
+                                <input type="text" id="store_address_1" class="location-input" name="store_address_1" value="<?php echo esc_attr( $address ); ?>" />
+
+                                <label class="location-prompt" for="store_address_2"><?php esc_html_e( 'Address line 2', 'woocommerce' ); ?></label>
+                                <input type="text" id="store_address_2" class="location-input" name="store_address_2" value="<?php echo esc_attr( $address_2 ); ?>" />
+
+                                <div class="city-and-postcode">
+                                    <div>
+                                        <label class="location-prompt" for="store_city"><?php esc_html_e( 'City', 'woocommerce' ); ?></label>
+                                        <input type="text" id="store_city" class="location-input" name="store_city" value="<?php echo esc_attr( $city ); ?>" />
+                                    </div>
+                                    <div class="store-state-container hidden">
+                                        <label for="store_state" class="location-prompt">
+                                                <?php esc_html_e( 'State', 'woocommerce' ); ?>
+                                        </label>
+                                        <select id="store_state" name="store_state" data-placeholder="<?php esc_attr_e( 'Choose a state&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'State', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown"></select>
+                                    </div>
+                                    <div>
+                                        <label class="location-prompt" for="store_postcode"><?php esc_html_e( 'Postcode / ZIP', 'woocommerce' ); ?></label>
+                                        <input type="text" id="store_postcode" class="location-input" name="store_postcode" value="<?php echo esc_attr( $postcode ); ?>" />
+                                    </div>
+                                </div>
+                                <div class="city-and-postcode">
+                                    <div>
+                                        <label class="location-prompt" for="store_phone"><?php esc_html_e( 'Phone', 'dc-woocommerce-multi-vendor' ); ?></label>
+                                        <input type="text" id="store_phone" class="location-input" name="store_phone" value="<?php echo esc_attr( $store_phone ); ?>" />
+                                    </div>
+                                    <div>
+                                        <label class="location-prompt" for="timezone_string"><?php esc_html_e( 'Timezone', 'dc-woocommerce-multi-vendor' ); ?></label>
+                                        <select id="timezone_string" name="timezone_string" class="location-input wc-enhanced-select dropdown" aria-describedby="timezone-description">
+                                            <?php echo wp_timezone_choice($tzstring, get_user_locale()); ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                var wc_setup_currencies = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $currency_by_country ) ); ?>' ) );
+                                var wc_base_state       = "<?php echo esc_js( $state ); ?>";
+                            </script>
+                            
+
+                            <div class="text-center mt-5 mb-3">
+                                <input type="submit" class="btn-primary" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
+                            </div>
+                            <div class="text-center mb-5"> 
+                                <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
+                            <div>
+                        </form>
+
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                var wc_setup_currencies = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $currency_by_country ) ); ?>' ) );
-                var wc_base_state       = "<?php echo esc_js( $state ); ?>";
-            </script>
-            
-            <p class="wc-setup-actions step">
-                <input type="submit" class="button-primary button button-large button-next" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
-                <a href="<?php echo esc_url($this->get_next_step_link()); ?>" class="button button-large button-next"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
-            </p>
-        </form>
+        </div>
+
+
         <?php
     }
     
@@ -2541,35 +2552,41 @@ Class WCMp_Admin_Dashboard {
         $vendor_payment_mode = ( $this->vendor->payment_mode ) ? $this->vendor->payment_mode : '';
         $available_gateways   = apply_filters( 'wcmp_vendor_setup_wizard_available_payment_gateways', get_wcmp_available_payment_gateways(), $this->vendor );
         ?>
-        <h1><?php esc_html_e( 'Payment Method', 'dc-woocommerce-multi-vendor' ); ?></h1>
-        <form method="post" class="wc-wizard-payment-gateway-form">
-            <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
-            <p>
-                <?php
-                printf(
-                    __( '%s offers follows payments for you.', 'dc-woocommerce-multi-vendor' ),
-                    wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES )
-                );
-                ?>
-            </p>
-         
-            <div class="product-type-container">
-                <label class="location-prompt" for="product_type">
-                        <?php esc_html_e( 'Choose Payment Method', 'dc-woocommerce-multi-vendor' ); ?>
-                </label>
-                <select id="vendor_payment_mode" name="vendor_payment_mode" class="location-input wc-enhanced-select dropdown">
-                <?php
-                foreach ( $available_gateways as $gateway_id => $gateway ) { ?>
-                    <option <?php selected( $gateway_id, $vendor_payment_mode ); ?> value="<?php echo esc_attr( $gateway_id ); ?>"><?php echo esc_html( $gateway ); ?></option>
-                <?php }
-                ?>
-                </select>
+        <div class="container-fluid container-fluid--max mb-5">
+            <div class="row">
+                <div class="col">
+                    <div class="mt-3 mb-5 text-center">
+                        <h1 class="mb-2"><?php echo get_field('s5_header', 'option') ?></h1>
+                        <h4><?php echo get_field('s5_sub_header', 'option') ?></h4>
+
+                        <form method="post" class="wc-wizard-payment-gateway-form mt-5">
+                            <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
+
+                            <div class="product-type-container">
+                                <label class="location-prompt" for="product_type">
+                                        <?php esc_html_e( 'Choose Payment Method', 'dc-woocommerce-multi-vendor' ); ?>
+                                </label>
+                                <select id="vendor_payment_mode" name="vendor_payment_mode" class="location-input wc-enhanced-select dropdown">
+                                <?php
+                                foreach ( $available_gateways as $gateway_id => $gateway ) { ?>
+                                    <option <?php selected( $gateway_id, $vendor_payment_mode ); ?> value="<?php echo esc_attr( $gateway_id ); ?>"><?php echo esc_html( $gateway ); ?></option>
+                                <?php }
+                                ?>
+                                </select>
+                            </div>
+
+                            <div class="mt-5 mb-3">
+                                <input type="submit" class="btn btn-primary" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
+                            </div>
+                            <div class="mb-5"> 
+                                <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
+                            <div>
+
+                        </form>
+                    </div>
+                </div>
             </div>
-            <p class="wc-setup-actions step">
-                <input type="submit" class="button-primary button button-large button-next" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
-                <a href="<?php echo esc_url($this->get_next_step_link()); ?>" class="button button-large button-next"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
-            </p>
-        </form>
+        </div>
         <?php
     }
     
@@ -2590,42 +2607,22 @@ Class WCMp_Admin_Dashboard {
      */
     public function wcmp_store_setup_ready() { 
         ?>
-        <h1><?php esc_html_e( "You're ready to start selling!", 'woocommerce' ); ?></h1>
+        <div class="container-fluid container-fluid--max mb-5">
+            <div class="row">
+                <div class="col">
+                    <div class="mt-3 mb-5 text-center">
+                        <h1 class="mb-2"><?php echo get_field('s6_header', 'option') ?></h1>
+                        <h4><?php echo get_field('s6_sub_header', 'option') ?></h4>
 
-        <ul class="wc-wizard-next-steps">
-            <li class="wc-wizard-next-step-item">
-                <div class="wc-wizard-next-step-description">
-                    <p class="next-step-heading"><?php esc_html_e( 'Next step', 'woocommerce' ); ?></p>
-                    <h3 class="next-step-description"><?php esc_html_e( 'Create some products', 'woocommerce' ); ?></h3>
-                    <p class="next-step-extra-info"><?php esc_html_e( "You're ready to add products to your store.", 'woocommerce' ); ?></p>
+                        <?php if (get_field('s6_copy', 'option')): ?>
+                            <div class="my-4 text-left">
+                                <?php echo get_field('s6_copy', 'option'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="wc-wizard-next-step-action">
-                    <p class="wc-setup-actions step">
-                        <a class="button button-primary button-large" href="<?php echo apply_filters( 'wcmp_vendor_setup_wizard_ready_add_product_url', wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_add_product_endpoint', 'vendor', 'general', 'add-product' ) ) ); ?>">
-                            <?php esc_html_e( 'Create a product', 'woocommerce' ); ?>
-                        </a>
-                    </p>
-                </div>
-            </li>
-            <li class="wc-wizard-additional-steps">
-                <div class="wc-wizard-next-step-description">
-                    <p class="next-step-heading"><?php esc_html_e( 'You can also:', 'woocommerce' ); ?></p>
-                </div>
-                <div class="wc-wizard-next-step-action">
-                    <p class="wc-setup-actions step">
-                        <a class="button button-large" href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( 'dashboard' ); ?>">
-                            <?php esc_html_e( 'Visit Dashboard', 'woocommerce' ); ?>
-                        </a>
-                        <a class="button button-large" href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_billing_endpoint', 'vendor', 'general', 'vendor-billing' ) ); ?>">
-                            <?php esc_html_e( 'Payment Configure', 'dc-woocommerce-multi-vendor' ); ?>
-                        </a>
-                        <a class="button button-large" href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_store_settings_endpoint', 'vendor', 'general', 'storefront' ) ); ?>">
-                            <?php esc_html_e( 'Store Customize', 'dc-woocommerce-multi-vendor' ); ?>
-                        </a>
-                    </p>
-                </div>
-            </li>
-        </ul>
+            </div>
+        </div>
         <?php
     }
 

@@ -391,6 +391,9 @@ class WCMp_Frontend {
             $this->wcmp_dequeue_global_style();
         }
 
+        // Custom Leafz theme styles to get added to the Vendor Dashboard
+        wp_enqueue_style('vendor-dashboard', get_stylesheet_directory_uri().'/dist/css/vendor-dashboard.css' );
+
         wp_register_style('frontend_css', $frontend_style_path . 'frontend' . $suffix . '.css', array(), $WCMp->version);
         wp_register_style('product_css', $frontend_style_path . 'product' . $suffix . '.css', array(), $WCMp->version);
         wp_register_style('vendor_order_by_product_css', $frontend_style_path . 'vendor_order_by_product' . $suffix . '.css', array(), $WCMp->version);

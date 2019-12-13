@@ -31,6 +31,7 @@ class WCMp_Vendor_Hooks {
         add_action( 'wcmp_vendor_dashboard_vendor-withdrawal_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_withdrawal_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_transaction-details_endpoint', array( &$this, 'wcmp_vendor_dashboard_transaction_details_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_vendor-knowledgebase_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_knowledgebase_endpoint' ) );
+        add_action( 'wcmp_vendor_dashboard_vendor-inquiry_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_inquiry_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_vendor-tools_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_tools_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_products-qna_endpoint', array( &$this, 'wcmp_vendor_dashboard_products_qna_endpoint' ) );
 
@@ -238,7 +239,16 @@ class WCMp_Vendor_Hooks {
                 , 'submenu'     => array()
                 , 'link_target' => '_self'
                 , 'nav_icon'    => 'wcmp-font ico-tools-icon'
-            )
+            ),
+            'contact-leafz'            => array(
+                'label'       => __( 'Contact Leafz', 'dc-woocommerce-multi-vendor' )
+                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( 'vendor-inquiry' )
+                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_dashboard_capability', true )
+                , 'position'    => 90
+                , 'submenu'     => array()
+                , 'link_target' => '_self'
+                , 'nav_icon'    => 'wcmp-font'
+            ),
         );
         return apply_filters( 'wcmp_vendor_dashboard_nav', $vendor_nav );
     }
@@ -732,6 +742,15 @@ class WCMp_Vendor_Hooks {
         wp_enqueue_style( 'jquery-ui-style' );
         wp_enqueue_script( 'jquery-ui-accordion' );
         $WCMp->template->get_template( 'vendor-dashboard/vendor-university.php' );
+    }
+
+    /**
+     * Display Vendor inquiry content
+     * @global object $WCMp
+     */
+    public function wcmp_vendor_dashboard_vendor_inquiry_endpoint() {
+        global $WCMp;
+        $WCMp->template->get_template( 'vendor-dashboard/vendor-inquiry.php' );
     }
 
     /**

@@ -3405,6 +3405,13 @@ if (!function_exists('wcmp_list_categories')) {
                 if(!empty($r['selected']) && $cat->term_id == $r['selected'] ) $list_class .= ' active';
                 $list_class = apply_filters('wcmp_list_categories_list_style_classes', $list_class, $cat);
                 $link = apply_filters('wcmp_list_categories_get_term_link', ($r['cat_link']) ? $r['cat_link'] : get_term_link($cat->term_id, $taxonomy), $cat, $r);
+
+                // do not allow vendors to set uncategorized products
+                //
+                if ($cat->name == 'Uncategorized') {
+                    continue;
+                } 
+
                 if ('list' == $r['style']) {
                     //<li><a href="#"><span>Grocery & Gourmet Foods</span></a></li>
                     $output .= "<li class='$list_class' data-term-id='$cat->term_id' data-taxonomy='$taxonomy'><a href='$link'><span>" . apply_filters('wcmp_list_categories_term_name', $cat->name, $cat) . "</span></a>$inner_html</li>";

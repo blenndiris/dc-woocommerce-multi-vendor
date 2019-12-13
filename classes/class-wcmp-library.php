@@ -99,7 +99,7 @@ class WCMp_Library {
         wp_enqueue_style( 'imgareaselect' );
         wp_enqueue_script('frontend_dash_upload_js', $this->jquery_lib_url . 'upload/frontend-media-upload.js', array('jquery', 'imgareaselect'), $WCMp->version, true);
         $enableCrop = false;
-        if(wp_image_editor_supports()) $enableCrop = true;
+        // if(wp_image_editor_supports()) $enableCrop = true;
         $image_script_params = array('enableCrop' => $enableCrop, 'default_logo_ratio' => array(100, 100), 'cover_ratio' => array(1200, 390), 'canSkipCrop' => false);
         wp_localize_script( 'frontend_dash_upload_js', 'frontend_dash_upload_script_params', apply_filters( 'wcmp_frontend_dash_upload_script_params', $image_script_params) );
     }
