@@ -66,16 +66,22 @@ function wcmp_get_order($id){
  * Checking order is vendor order or not.
  *
  * @since 3.4.0
+ * @param $order integer/object
+ * @param $current_vendor boolean. Default false
  * @return boolean
  */
-function is_wcmp_vendor_order($order) {
+function is_wcmp_vendor_order( $order, $current_vendor = false ) {
     $order_id = 0;
-    if(is_object($order)){
+    if( is_object( $order ) ){
         $order_id = $order->get_id();
     }else{
-        $order_id = absint($order);
+        $order_id = absint( $order );
     }
-    return (wcmp_get_order($order_id)) ? true : false;
+    $vendor_order = wcmp_get_order( $order_id );
+    if( $current_vendor ){
+        return ( $vendor_order && $vendor_order->vendor_id === get_current_user_id() ) ? true : false;
+    }
+    return ( $vendor_order ) ? true : false;
 }
 
 /**
@@ -166,6 +172,24 @@ function get_wcmp_order_by_commission( $commission_id ) {
     if( $order_id ){
         $vendor_order = wcmp_get_order( $order_id );
         return $vendor_order;
+    }
+    return false;
+}
+
+/**
+ * Get Parent shipping item id
+ *
+ * @param int $commission_id.
+ * @return object WCMp vendor order class object.
+ */
+function get_vendor_parent_shipping_item_id( $order_id, $vendor_id ) {
+    if( $order_id ){
+        $order = wc_get_order( $order_id );
+        $line_items_shipping = $order->get_items( 'shipping' );
+        foreach ( $line_items_shipping as $item_id => $item ){
+            $shipping_vendor_id = $item->get_meta('vendor_id', true);
+            if( $shipping_vendor_id == $vendor_id ) return $item_id;
+        }
     }
     return false;
 }

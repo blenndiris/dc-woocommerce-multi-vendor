@@ -363,8 +363,10 @@ class WCMp_Order {
         self::create_wcmp_order_line_items($vendor_order, $args);
         if( $data_migration ){
             self::create_wcmp_order_shipping_lines($vendor_order, array(), array(), $args, $data_migration);
+            self::create_wcmp_order_coupon_lines( $vendor_order, array(), $args );
         }else{
             self::create_wcmp_order_shipping_lines($vendor_order, WC()->session->get('chosen_shipping_methods'), WC()->shipping->get_packages(), $args, $data_migration);
+            self::create_wcmp_order_coupon_lines( $vendor_order, WC()->cart, $args );
         }
         
         //self::create_wcmp_order_tax_lines( $vendor_order, $args );
@@ -535,7 +537,10 @@ class WCMp_Order {
                     $item->add_meta_data('vendor_id', $package_key, true);
                     $package_qty = array_sum(wp_list_pluck($package['contents'], 'quantity'));
                     $item->add_meta_data('package_qty', $package_qty, true);
-
+                    // add parent item_id in meta
+                    $parent_shipping_item_id = get_vendor_parent_shipping_item_id( $parent_order_id, $vendor_id );
+                    if( $parent_shipping_item_id ) $item->add_meta_data('_vendor_order_shipping_item_id', $parent_shipping_item_id );
+                    
                     /**
                      * Action hook to adjust item before save.
                      *
@@ -574,12 +579,49 @@ class WCMp_Order {
                         $shipping->add_meta_data('vendor_id', $vendor_id, true);
                         $package_qty = $item->get_meta('package_qty', true);
                         $shipping->add_meta_data('package_qty', $package_qty, true);
-
+                        // add parent item_id in meta
+                        $item->add_meta_data('_vendor_order_shipping_item_id', $item_id );
                         $order->add_item($shipping);
                     }
                 }
             }
         }
+    }
+    
+    /**
+     * Add coupon lines to the order.
+     *
+     * @param WC_Order $order Order Instance.
+     * @param WC_Cart  $cart  Cart instance.
+     * @param WCMp Order $args  Arguments.
+     */
+    public static function create_wcmp_order_coupon_lines( $order, $cart, $args ) {
+        if( $cart && $cart->get_coupons() ) :
+            foreach ( $cart->get_coupons() as $code => $coupon ) {
+                if( !in_array( $coupon->get_discount_type(), apply_filters( 'wcmp_order_available_coupon_types', array( 'fixed_product', 'percent' ), $order, $cart ) ) ) continue;
+                if( absint( $args['vendor_id'] ) !== absint( get_post_field( 'post_author', $coupon->get_id() ) ) ) continue;
+                $item = new WC_Order_Item_Coupon();
+                $item->set_props(
+                    array(
+                        'code'         => $code,
+                        'discount'     => $cart->get_coupon_discount_amount( $code ),
+                        'discount_tax' => $cart->get_coupon_discount_tax_amount( $code ),
+                    )
+                );
+                // Avoid storing used_by - it's not needed and can get large.
+                $coupon_data = $coupon->get_data();
+                unset( $coupon_data['used_by'] );
+                $item->add_meta_data( 'coupon_data', $coupon_data );
+                /**
+                 * Action hook to adjust item before save.
+                 *
+                 * @since 3.4.3
+                 */
+                do_action( 'wcmp_checkout_create_order_coupon_item', $item, $code, $coupon, $order, $args );
+                // Add item to order and save.
+                $order->add_item( $item );
+            }
+        endif;
     }
 
     /**
@@ -631,7 +673,7 @@ class WCMp_Order {
             $new_status = $order->get_status('edit');
         }
         
-        $status_to_sync = apply_filters('wcmp_parent_order_to_vendor_order_statuses_to_sync',array('on-hold', 'pending', 'processing', 'cancelled'));
+        $status_to_sync = apply_filters('wcmp_parent_order_to_vendor_order_statuses_to_sync',array('on-hold', 'pending', 'processing', 'cancelled', 'failed'));
         if( in_array($new_status, $status_to_sync) ) :
             if (wp_get_post_parent_id( $order_id ) || get_post_meta($order_id, 'wcmp_vendor_order_status_synchronized', true))
                 return false;
@@ -717,7 +759,7 @@ class WCMp_Order {
         // Resume the unpaid order if its pending
         if ($order_id > 0) {
             $order = wc_get_order($order_id);
-            if ($order->has_status(array('pending', 'failed'))) {
+            if ($order && $order->has_status(array('pending', 'failed'))) {
                 $wcmp_suborders = get_wcmp_suborders($order_id);
                 if ($wcmp_suborders) {
                     foreach ($wcmp_suborders as $suborder) {
@@ -765,7 +807,7 @@ class WCMp_Order {
             }
             
             foreach ($wcmp_suborders as $suborder) {
-                $suborder_items_ids = array_keys($suborder->get_items());
+                $suborder_items_ids = array_keys($suborder->get_items( array( 'line_item', 'fee', 'shipping' ) ));
                 $suborder_total = wc_format_decimal($suborder->get_total());
                 $max_refund = wc_format_decimal($suborder_total - $suborder->get_total_refunded());
                 $child_line_item_refund = 0;

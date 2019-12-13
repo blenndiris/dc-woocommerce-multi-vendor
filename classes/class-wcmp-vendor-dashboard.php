@@ -39,6 +39,7 @@ Class WCMp_Admin_Dashboard {
         }
         
         add_filter( 'wcmp_vendor_dashboard_add_product_url', array( &$this, 'wcmp_vendor_dashboard_add_product_url' ), 10 );
+        add_filter( 'wcmp_vendor_submit_product', array( &$this, 'wcmp_vendor_dashboard_add_product_url' ), 10 );
 
         // Init export functions
         $this->export_csv();
@@ -188,7 +189,7 @@ Class WCMp_Admin_Dashboard {
                             $order_datas[] = array(
                                 'date' => get_the_date('Y-m-d', $transaction_id),
                                 'trans_id' => '#' . $transaction_id,
-                                'order_ids' => '#' . implode(', #', $commission_details),
+                                'commission_ids' => '#' . implode(', #', $commission_details),
                                 'mode' => $transaction_mode,
                                 'commission' => $transaction_commission,
                                 'fee' => $transfer_charge,
@@ -1764,7 +1765,7 @@ Class WCMp_Admin_Dashboard {
      */
     public function save_product() {
         global $WCMp;
-        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+        if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) { 
             $current_endpoint_key = $WCMp->endpoints->get_current_endpoint();
             // retrive the actual endpoint name in case admn changes that from settings
             $current_endpoint = get_wcmp_vendor_settings( 'wcmp_' . str_replace( '-', '_', $current_endpoint_key ) . '_endpoint', 'vendor', 'general', $current_endpoint_key );
@@ -2155,7 +2156,11 @@ Class WCMp_Admin_Dashboard {
     
     public function vendor_setup_wizard(){
         global $WCMp;
+        
         if (filter_input(INPUT_GET, 'page') != 'vendor-store-setup' || !apply_filters('wcmp_vendor_store_setup_wizard_enabled', true)) {
+            return;
+        }
+        if ( !is_user_wcmp_vendor( get_current_user_id() ) ) {
             return;
         }
      

@@ -18,7 +18,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $WCMp;
+global $WCMp, $product;
+$single_pro = $product;
 if(isset($more_product_array) && is_array($more_product_array) && count($more_product_array) > 0) {
 	if(isset($sorting) && !empty($sorting)) {	
 		/*function wcmp_sort_by_price($a, $b) {
@@ -60,9 +61,14 @@ if(isset($more_product_array) && is_array($more_product_array) && count($more_pr
                 <?php echo $_product->get_price_html(); ?>
 			</div>
 			<div class="rowsub">
-				<?php if($more_product['product_type'] == 'simple') {?>
-					<a href="<?php echo '?add-to-cart='.$more_product['product_id']; ?>" class="buttongap button" ><?php echo apply_filters('add_to_cart_text', __('Add to Cart','dc-woocommerce-multi-vendor')); ?></a>
-				<?php } ?>
+				<?php 
+                                // reset global $product variable
+                                global $product;
+                                $product = $_product;
+                                woocommerce_template_loop_add_to_cart( array(
+                                    'quantity' => 1,
+                                ) );
+                                ?>
 				<a href="<?php echo get_permalink($more_product['product_id']); ?>" class="buttongap button" ><?php echo __('Details','dc-woocommerce-multi-vendor'); ?></a>
 			</div>
 			<div style="clear:both;"></div>							
@@ -71,5 +77,8 @@ if(isset($more_product_array) && is_array($more_product_array) && count($more_pr
 		
 	<?php
 	}
+        // reset again with global product
+        global $product;
+        $product = $single_pro;
 }
 ?>
