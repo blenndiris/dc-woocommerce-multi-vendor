@@ -1110,7 +1110,7 @@ class WCMp_Product {
         if ($product) {
             $vendor = get_wcmp_product_vendors($product->get_id());
             if ($vendor) {
-                $title = __('Vendor', 'dc-woocommerce-multi-vendor');
+                $title = __('Seller Information', 'dc-woocommerce-multi-vendor');
                 $tabs['vendor'] = array(
                     'title' => $title,
                     'priority' => 20,
@@ -1396,7 +1396,7 @@ class WCMp_Product {
             $vendor = get_wcmp_product_vendors($product->get_id());
             if ($vendor && apply_filters('wcmp_customer_questions_and_answers_enabled', true, $product->get_id())) {
                 $tabs['wcmp_customer_qna'] = array(
-                    'title' => __('Questions and Answers', 'dc-woocommerce-multi-vendor'),
+                    'title' => __('Questions & Answers', 'dc-woocommerce-multi-vendor'),
                     'priority' => 40,
                     'callback' => array($this, 'wcmp_customer_questions_and_answers_content')
                 );
