@@ -417,6 +417,8 @@ class WCMp_Settings_WCMp_Vendors extends WP_List_Table {
 					echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
                                         $user_id = null;
 				} else {
+                                        $email = WC()->mailer()->emails['WC_Email_Vendor_New_Account'];
+                                        $email->trigger( $user_id, $userdata['user_pass'], false);
 					if(isset($_POST['vendor_profile_image']) && $_POST['vendor_profile_image'] != '') update_user_meta($user_id, "_vendor_profile_image", $_POST['vendor_profile_image']);
 					echo '<div class="notice notice-success"><p>' . __( 'Vendor successfully created!', 'dc-woocommerce-multi-vendor' ) . '</p></div>';
 				}
@@ -427,6 +429,7 @@ class WCMp_Settings_WCMp_Vendors extends WP_List_Table {
 		
 		$is_approved_vendor = false;
 		$is_new_vendor_form = false;
+		$vendor_obj = null;
 		$display_name_option = array();
 				
         if( 'edit' === $this->current_action() || 'add_new' === $this->current_action() ) {
@@ -456,9 +459,7 @@ class WCMp_Settings_WCMp_Vendors extends WP_List_Table {
 							"user_id" => array('label' => '', 'type' => 'hidden', 'id' => 'user_id', 'label_for' => 'user_id', 'name' => 'user_id', 'value' => isset($user->ID)? $user->ID : ''),
 						);
 				$store_tab_options = array();
-				
-				$vendor_obj = null;
-				
+								
 				if( is_user_wcmp_vendor($_GET['ID']) ) {
 					$is_approved_vendor = true;
 					$vendor_obj = get_wcmp_vendor($_GET['ID']);

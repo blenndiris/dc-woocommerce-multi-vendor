@@ -644,6 +644,7 @@ class WCMp_Commission {
         $commissions = new WP_Query( $args );
         if( $commissions->get_posts() ) :
             $commission_amount = $shipping_amount = $tax_amount = $total = 0;
+            $commission_posts = apply_filters( 'wcmp_before_get_commissions_total_data_commission_posts', $commissions->get_posts(), $vendor_id, $args );
             foreach ( $commissions->get_posts() as $commission_id ) {
                 $commission_amount += self::commission_amount_totals( $commission_id, 'edit' );
                 $shipping_amount += self::commission_shipping_totals( $commission_id, 'edit' );
@@ -1662,7 +1663,7 @@ class WCMp_Commission {
             $commission = $this->get_commission($post_id);
             $vendor = $commission->vendor;
             $commission_status = get_post_meta($post_id, '_paid_status', true);
-            if ($commission_status == 'unpaid') {
+            if (in_array($commission_status, array( 'unpaid', 'partial_refunded' ))) {
                 $commission_to_pay[$vendor->term_id][] = $post_id;
             }
         }

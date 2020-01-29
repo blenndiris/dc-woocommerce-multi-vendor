@@ -218,14 +218,46 @@ class WCMp_Ajax {
             )
         );
         $vendor_all_orders = apply_filters('wcmp_datatable_get_vendor_all_orders', wcmp_get_orders($args), $requestData, $_POST);
-
-        if (isset($requestData['order_status']) && $requestData['order_status'] != 'all' && $requestData['order_status'] != '') {
-            foreach ($vendor_all_orders as $key => $id) { 
-                if (get_post_status( $id ) != $requestData['order_status']) { 
-                    unset($vendor_all_orders[$key]);
+        
+        $filterActionData = array();
+        parse_str($requestData['orders_filter_action'], $filterActionData);
+        do_action('before_wcmp_orders_list_query_bind', $filterActionData, $requestData, $vendor_all_orders);
+        $notices = array();
+        
+        // Do bulk handle
+        $ids = apply_filters( 'wcmp_vendor_orders_bulk_action_ids', isset($filterActionData['selected_orders']) ? $filterActionData['selected_orders'] : array(), $filterActionData, $requestData );
+        if (isset($requestData['bulk_action']) && $requestData['bulk_action'] != '' && isset($filterActionData['selected_orders']) && is_array($filterActionData['selected_orders'])) {
+            if ( false !== strpos( $requestData['bulk_action'], 'mark_' ) ) {
+                $order_statuses = wc_get_order_statuses();
+                $new_status     = substr( $requestData['bulk_action'], 5 ); // Get the status name from action.
+                $report_action  = 'marked_' . $new_status;
+                // Sanity check: bail out if this is actually not a status, or is not a registered status.
+                if ( isset( $order_statuses[ 'wc-' . $new_status ] ) ) { 
+                    foreach ( $ids as $id ) {
+                        $order = wc_get_order( $id );
+                        $order->update_status( $new_status, __( 'Order status changed by vendor bulk edit:', 'dc-woocommerce-multi-vendor' ), true );
+                        do_action( 'wcmp_vendor_order_edit_status', $id, $new_status );
+                    }
+                }
+                $notices[] = array(
+                    'message' => ((count($filterActionData['selected_orders']) > 1) ? sprintf(__('%s orders', 'dc-woocommerce-multi-vendor'), count($filterActionData['selected_orders'])) : sprintf(__('%s order', 'dc-woocommerce-multi-vendor'), count($filterActionData['selected_orders']))) . ' ' . __('status changed to.', 'dc-woocommerce-multi-vendor') . $new_status,
+                    'type' => 'success'
+                );
+               
+            } else {
+                do_action('wcmp_orders_list_do_handle_bulk_actions', $requestData['bulk_action'], $ids, $requestData, $vendor_all_orders );
+            }
+        }else{
+            if (isset($filterActionData['order_status']) && $filterActionData['order_status'] != 'all') {
+                foreach ($vendor_all_orders as $key => $id) { 
+                    if (get_post_status( $id ) != $filterActionData['order_status']) { 
+                        unset($vendor_all_orders[$key]);
+                    }
                 }
             }
+            do_action('wcmp_orders_list_do_handle_filter_actions', $filterActionData, $ids, $requestData, $vendor_all_orders );
         }
+        
         $vendor_orders = array_slice($vendor_all_orders, $requestData['start'], $requestData['length']);
         $data = array();
 
@@ -289,7 +321,8 @@ class WCMp_Ajax {
             "draw" => intval($requestData['draw']), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
             "recordsTotal" => intval(count($vendor_all_orders)), // total number of records
             "recordsFiltered" => intval(count($vendor_all_orders)), // total number of records after searching, if there is no searching then totalFiltered = totalData
-            "data" => $data   // total data array
+            "data" => $data,   // total data array
+            "notices" => $notices ,  // set messages or notices
         );
         wp_send_json($json_data);
     }
@@ -2006,7 +2039,7 @@ class WCMp_Ajax {
                 )
             );
             $vendor_unpaid_total_orders = $vendor->get_unpaid_orders(false, false, $meta_query);
-
+            $vendor_unpaid_total_orders = apply_filters( 'wcmp_before_unpaid_order_vendor_withdrawal_list_data', $vendor_unpaid_total_orders, $vendor, $requestData );
             $data = array();
             $commission_threshold_time = isset($WCMp->vendor_caps->payment_cap['commission_threshold_time']) && !empty($WCMp->vendor_caps->payment_cap['commission_threshold_time']) ? $WCMp->vendor_caps->payment_cap['commission_threshold_time'] : 0;
             if ($vendor_unpaid_total_orders) {
@@ -3686,7 +3719,7 @@ class WCMp_Ajax {
 //		if ( ! current_user_can( 'edit_shop_orders' ) ) {
 //			wp_die( -1 );
 //		}
-
+        
         $order_id = absint($_POST['order_id']);
         $refund_amount = wc_format_decimal(sanitize_text_field(wp_unslash($_POST['refund_amount'])), wc_get_price_decimals());
         $refunded_amount = wc_format_decimal(sanitize_text_field(wp_unslash($_POST['refunded_amount'])), wc_get_price_decimals());
@@ -3744,10 +3777,12 @@ class WCMp_Ajax {
                         'restock_items' => $restock_refunded_items,
                     )
             );
-
+            
             if (is_wp_error($refund)) {
                 throw new Exception($refund->get_error_message());
             }
+            
+            do_action( 'wcmp_order_refunded', $order_id, $refund->get_id() );
 
             if (did_action('woocommerce_order_fully_refunded')) {
                 $response_data['status'] = 'fully_refunded';
@@ -3959,6 +3994,8 @@ class WCMp_Ajax {
                         $status = '<i class="'. $ledger->ref_status .' wcmp-font ico-processing-status-icon" title="'. ucfirst($ledger->ref_status).'"></i>';
                     }elseif( $ledger->ref_status == 'completed' ){
                         $status = '<i class="'. $ledger->ref_status.' wcmp-font ico-completed-status-icon" title="'. ucfirst($ledger->ref_status).'"></i>';
+                    }elseif( $ledger->ref_status == 'cancelled' ){
+                        $status = '<i class="'. $ledger->ref_status .' wcmp-font ico-processing-status-icon" title="'. ucfirst($ledger->ref_status).'"></i>';
                     }
                     $row = array();
                     $row ['status'] = $status;
