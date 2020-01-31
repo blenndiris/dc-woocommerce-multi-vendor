@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import "https://fonts.googleapis.com/css?family=Open+Sans:400,600";
+@import "leafz/vendor_dashboard.scss";
 @font-face {
 	font-family: 'wcmp';
 	src: url("../fonts/wcmp-font.eot?lyp4c7");
@@ -1720,16 +1721,16 @@ table.table-bordered.no-th-border {
 		}
 	}
 }
-@-moz-document {
-	url-prefix() {
-		table.table-bordered tbody { border-top: solid 2px #d3dbe2;
-	}
-}
-} {
-	table.table-outer-border {
-		border: 1px solid #ddd;
-	}
-}
+// @-moz-document {
+// 	url-prefix() {
+// 		table.table-bordered tbody { border-top: solid 2px #d3dbe2;
+// 	}
+// }
+// } {
+// 	table.table-outer-border {
+// 		border: 1px solid #ddd;
+// 	}
+// }
 table.table-outer-border {
 	.table-outer-border {
 		thead {
@@ -2535,7 +2536,7 @@ mark.mark-red {
 		left: 284px;
 		top: -64px;
 		margin: 0;
-		border-right: 1px solid #dbdedf;
+		// border-right: 1px solid #dbdedf;
 		border-radius: 0;
 		padding: 0 20px;
 		height: 64px;
@@ -3831,6 +3832,7 @@ body.admin-bar {
 		top: 110px;
 	}
 }
+
 .wcmp-color-scheme-outer_space_blue {
 	.navbar {
 		.topbar-left {
