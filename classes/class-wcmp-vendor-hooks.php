@@ -247,7 +247,7 @@ class WCMp_Vendor_Hooks {
                 , 'position'    => 90
                 , 'submenu'     => array()
                 , 'link_target' => '_self'
-                , 'nav_icon'    => 'wcmp-font'
+                , 'nav_icon'    => 'wcmp-font ico-contact-icon'
             ),
         );
         return apply_filters( 'wcmp_vendor_dashboard_nav', $vendor_nav );
@@ -494,7 +494,7 @@ class WCMp_Vendor_Hooks {
         wp_register_script( 'wcmp_product_classify', $WCMp->plugin_url . 'assets/frontend/js/product-classify.js', array( 'jquery', 'jquery-blockui' ), $WCMp->version, true );
         $script_param = array(
             'ajax_url' => $WCMp->ajax_url(),
-            'initial_graphic_url' => $WCMp->plugin_url.'assets/images/select-category-graphic.png',
+            'initial_graphic_url' => '',
             'i18n' => array(
                 'select_cat_list' => __( 'Select a category from the list', 'dc-woocommerce-multi-vendor' )
             )
