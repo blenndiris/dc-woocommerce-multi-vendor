@@ -247,7 +247,7 @@ class WCMp_Vendor_Hooks {
                 , 'position'    => 90
                 , 'submenu'     => array()
                 , 'link_target' => '_self'
-                , 'nav_icon'    => 'wcmp-font'
+                , 'nav_icon'    => 'wcmp-font ico-contact-icon'
             ),
         );
         return apply_filters( 'wcmp_vendor_dashboard_nav', $vendor_nav );

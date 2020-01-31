@@ -1,6 +1,13 @@
 @charset "UTF-8";
 @import "https://fonts.googleapis.com/css?family=Open+Sans:400,600";
 @import "leafz/vendor_dashboard.scss";
+
+$fa-font-path: "../../fontawesome/webfonts";
+
+@import "../../fontawesome/scss/fontawesome.scss";
+@import "../../fontawesome/scss/solid.scss";
+@import "../../fontawesome/scss/brands.scss";
+
 @font-face {
 	font-family: 'wcmp';
 	src: url("../fonts/wcmp-font.eot?lyp4c7");
@@ -12,474 +19,474 @@
 /*********************** Ledger Report *************************/
 /*# sourceMappingURL=vendor_dashboard.css.map */
 i.wcmp-font {
-	font-family: 'wcmp' !important;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	vertical-align: middle;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	@extend %fa-icon;
+	@extend .fas;
 }
 .ico-cancel-status-icon {
 	&:before {
-		content: "\e94f";
+		content: fa-content($fa-var-info-circle);
 	}
 }
 .ico-completed-status-icon {
 	&:before {
-		content: "\e950";
+		content: fa-content($fa-var-check-circle);
 	}
 }
 .ico-customer-details-icon {
 	&:before {
-		content: "\e951";
+		content: fa-content($fa-var-user);
 	}
 }
 .ico-download2-icon {
 	&:before {
-		content: "\e952";
+		content: fa-content($fa-var-download);
 	}
 }
 .ico-email-invoice-icon {
 	&:before {
-		content: "\e953";
+		content: fa-content($fa-var-receipt);
 	}
 }
 .ico-failed-status-icon {
 	&:before {
-		content: "\e954";
+		content: fa-content($fa-var-frown);
 	}
 }
 .ico-order-commission {
 	&:before {
-		content: "\e955";
+		content: fa-content($fa-var-piggy-bank);
 	}
 }
 .ico-order-detailsnew-icon {
 	&:before {
-		content: "\e956";
+		content: fa-content($fa-var-info-circle);
 	}
 }
 .ico-pendingpayment-status-icon {
 	&:before {
-		content: "\e957";
+		content: fa-content($fa-var-piggy-bank);
 	}
 }
 .ico-processing-status-icon {
 	&:before {
-		content: "\e958";
+		content: fa-content($fa-var-piggy-bank);
 	}
 }
 .ico-refunded-status-icon {
 	&:before {
-		content: "\e959";
+		content: fa-content($fa-var-piggy-bank);
 	}
 }
 .ico-resend-notification-icon {
 	&:before {
-		content: "\e95a";
+		content: fa-content($fa-var-bell);
 	}
 }
 .ico-shippingnew2-icon {
 	&:before {
-		content: "\e95b";
+		content: fa-content($fa-var-truck);
 	}
 }
 .ico-duplicate-icon {
 	&:before {
-		content: "\e94e";
+		content: fa-content($fa-var-copy);
 	}
 }
 .ico-back-arrow {
 	&:before {
-		content: "\e94d";
+		content: fa-content($fa-var-chevron-left);
 	}
 }
 .ico-search-icon {
 	&:before {
-		content: "\e94c";
+		content: fa-content($fa-var-search);
 	}
 }
 .ico-export {
 	&:before {
-		content: "\e91b";
+		content: fa-content($fa-var-file-export);
 	}
 }
 .ico-import {
 	&:before {
-		content: "\e921";
+		content: fa-content($fa-var-file-import);
 	}
 }
 .ico-message {
 	&:before {
-		content: "\e92b";
+		content: fa-content($fa-var-envelope);
 	}
 }
 .ico-notification {
 	&:before {
-		content: "\e930";
+		content: fa-content($fa-var-bell);
 	}
 }
 .ico-quote {
 	&:before {
-		content: "\e937";
+		content: fa-content($fa-var-quote-left);
 	}
 }
 .ico-rental-calender {
 	&:before {
-		content: "\e940";
+		content: fa-content($fa-var-calendar);
 	}
 }
 .ico-resources {
 	&:before {
-		content: "\e941";
+		content: fa-content($fa-var-file);
 	}
 }
 .ico-subscriptions {
 	&:before {
-		content: "\e94a";
+		content: fa-content($fa-var-repeat);
 	}
 }
 .ico-add-booking {
 	&:before {
-		content: "\e94b";
+		content: fa-content($fa-var-plus);
 	}
 }
 .ico-uncheckbox-icon {
 	&:before {
-		content: "\e915";
+		content: fa-content($fa-var-square);
 	}
 }
 .ico-check-box-icon {
 	&:before {
-		content: "\e90b";
+		content: fa-content($fa-var-check-square);
 	}
 }
 .ico-approve-icon {
 	&:before {
-		content: "\e943";
+		content: fa-content($fa-var-thumbs-up);
 	}
 }
 .ico-delete-icon {
 	&:before {
-		content: "\e944";
+		content: fa-content($fa-var-trash);
 	}
 }
 .ico-expire-icon {
 	&:before {
-		content: "\e945";
+		content: fa-content($fa-var-check);
 	}
 }
 .ico-reject-icon {
 	&:before {
-		content: "\e946";
+		content: fa-content($fa-var-vote-nay);
 	}
 }
 .ico-rental-icon {
 	&:before {
-		content: "\e947";
+		content: fa-content($fa-var-truck-moving);
 	}
 }
 .ico-reply-icon {
 	&:before {
-		content: "\e948";
+		content: fa-content($fa-var-reply);
 	}
 }
 .ico-rupee-icon {
 	&:before {
-		content: "\e949";
+		content: fa-content($fa-var-rupee-sign);
 	}
 }
 .ico-addcoupon-icon {
 	&:before {
-		content: "\e900";
+		content: fa-content($fa-var-tag);
 	}
 }
 .ico-add-icon {
 	&:before {
-		content: "\e901";
+		content: fa-content($fa-var-plus);
 	}
 }
 .ico-add-product-icon {
 	&:before {
-		content: "\e902";
+		content: fa-content($fa-var-plus-circle);
 	}
 }
 .ico-all-bookings-icon {
 	&:before {
-		content: "\e903";
+		content: fa-content($fa-var-clipboard-list);
 	}
 }
 .ico-announcement-icon {
 	&:before {
-		content: "\e904";
+		content: fa-content($fa-var-megaphone);
 	}
 }
 .ico-avarage-order-value-icon {
 	&:before {
-		content: "\e905";
+		content: fa-content($fa-var-money-check-edit-alt);
 	}
 }
 .ico-billing-icon {
 	&:before {
-		content: "\e906";
+		content: fa-content($fa-var-receipt);
 	}
 }
 .ico-booking-icon {
 	&:before {
-		content: "\e907";
+		content: fa-content($fa-var-calendar-check);
 	}
 }
 .ico-calendar-icon {
 	&:before {
-		content: "\e908";
+		content: fa-content($fa-var-calendar);
 	}
 }
 .ico-cart-icon {
 	&:before {
-		content: "\e909";
+		content: fa-content($fa-var-shopping-cart);
 	}
 }
 .ico-catalog-icon {
 	&:before {
-		content: "\e90a";
+		content: fa-content($fa-var-cubes);
 	}
 }
 .ico-coupons-icon {
 	&:before {
-		content: "\e90c";
+		content: fa-content($fa-var-percent);
 	}
 }
 .ico-dashboard-icon {
 	&:before {
-		content: "\e90d";
+		content: fa-content($fa-var-tachometer-fast);
 	}
 }
 .ico-downarrow-2-icon {
 	&:before {
-		content: "\e90e";
+		content: fa-content($fa-var-chevron-down);
 	}
 }
 .ico-down-arrow-icon {
 	&:before {
-		content: "\e90f";
+		content:  fa-content($fa-var-chevron-down);
 	}
 }
 .ico-download-icon {
 	&:before {
-		content: "\e910";
+		content: fa-content($fa-var-download);
 	}
 }
 .ico-earning-icon {
 	&:before {
-		content: "\e911";
+		content: fa-content($fa-var-coin);
 	}
 }
 .ico-edit-pencil-icon {
 	&:before {
-		content: "\e912";
+		content: fa-content($fa-var-pencil);
 	}
 }
 .ico-export-icon {
 	&:before {
-		content: "\e913";
+		content: fa-content($fa-var-file-export);
 	}
 }
 .ico-eye-icon {
 	&:before {
-		content: "\e914";
+		content: fa-content($fa-var-eye);
 	}
 }
 .ico-history-icon {
 	&:before {
-		content: "\e916";
+		content: fa-content($fa-var-history);
 	}
 }
 .ico-image-icon {
 	&:before {
-		content: "\e917";
+		content: fa-content($fa-var-image);
 	}
 }
 .ico-import-icon {
 	&:before {
-		content: "\e918";
+		content: fa-content($fa-var-file-import);
 	}
 }
 .ico-knowledgebase-icon {
 	&:before {
-		content: "\e919";
+		content: fa-content($fa-var-graduation-cap);
 	}
 }
 .ico-left-arrow-icon {
 	&:before {
-		content: "\e91a";
+		content: fa-content($fa-var-chevron-left);
 	}
 }
 .ico-logout-icon {
 	&:before {
-		content: "\e91c";
+		content:  fa-content($fa-var-sign-out);
 	}
 }
 .ico-minus-icon {
 	&:before {
-		content: "\e91d";
+		content:fa-content($fa-var-minus);
 	}
 }
 .ico-my-shop-icon {
 	&:before {
-		content: "\e91e";
+		content: fa-content($fa-var-store-alt);
 	}
 }
 .ico-order-details-icon {
 	&:before {
-		content: "\e91f";
+		content: fa-content($fa-var-info-square);
 	}
 }
 .ico-orders-icon {
 	&:before {
-		content: "\e920";
+		content: fa-content($fa-var-clipboard-list);
 	}
 }
 .ico-payments-icon {
 	&:before {
-		content: "\e922";
+		content: fa-content($fa-var-usd-circle);
 	}
 }
 .ico-pdf-icon {
 	&:before {
-		content: "\e923";
+		content: fa-content($fa-var-file-pdf);
 	}
 }
 .ico-plus-icon {
 	&:before {
-		content: "\e924";
+		content: fa-content($fa-var-plus-circle);
 	}
 }
 .ico-policies-icon {
 	&:before {
-		content: "\e925";
+		content: fa-content($fa-var-file-alt);
 	}
 }
 .ico-price2-icon {
 	&:before {
-		content: "\e926";
+		content: fa-content($fa-var-sack-dollar);
 	}
 }
 .ico-price-icon {
 	&:before {
-		content: "\e927";
+		content: fa-content($fa-var-usd-circle);
 	}
 }
 .ico-product-icon {
 	&:before {
-		content: "\e928";
+		content:  fa-content($fa-var-cube);
 	}
 }
 .ico-product-manager-icon {
 	&:before {
-		content: "\e929";
+		content: fa-content($fa-var-cubes);
 	}
 }
 .ico-questionmark-icon {
 	&:before {
-		content: "\e92a";
+		content: fa-content($fa-var-question);
 	}
 }
 .ico-report-icon {
 	&:before {
-		content: "\e92c";
+		content: fa-content($fa-var-analytics);
 	}
 }
 .ico-reports-icon {
 	&:before {
-		content: "\e92d";
+		content: fa-content($fa-var-analytics);
 	}
 }
 .ico-revenue-icon {
 	&:before {
-		content: "\e92e";
+		content: fa-content($fa-var-piggy-bank);
 	}
 }
 .ico-right-arrow-icon {
 	&:before {
-		content: "\e92f";
+		content: fa-content($fa-var-chevron-right);
 	}
 }
 .ico-shipping-action-icon {
 	&:before {
-		content: "\e931";
+		content: fa-content($fa-var-truck);
 	}
 }
 .ico-shipping-icon {
 	&:before {
-		content: "\e932";
+		content: fa-content($fa-var-truck);
 	}
 }
 .ico-shippingnew-icon {
 	&:before {
-		content: "\e933";
+		content: fa-content($fa-var-truck);
 	}
 }
 .ico-storefront-icon {
 	&:before {
-		content: "\e934";
+		content:  fa-content($fa-var-store-alt);
 	}
 }
 .ico-store-settings-icon {
 	&:before {
-		content: "\e935";
+		content: fa-content($fa-var-cog)
 	}
 }
 .ico-tools-icon {
 	&:before {
-		content: "\e936";
+		content: fa-content($fa-var-tools);
+	}
+}
+.ico-contact-icon {
+	&:before {
+		content: fa-content($fa-var-envelope);
 	}
 }
 .ico-uparrow-2-icon {
 	&:before {
-		content: "\e938";
+		content: fa-content($fa-var-chevron-up);
 	}
 }
 .ico-up-arrow-icon {
 	&:before {
-		content: "\e939";
+		content: fa-content($fa-var-chevron-up);
 	}
 }
 .ico-upload-image-icon {
 	&:before {
-		content: "\e93a";
+		content: fa-content($fa-var-image);
 	}
 }
 .ico-user-icon {
 	&:before {
-		content: "\e93b";
+		content:  fa-content($fa-var-user);
 	}
 }
 .ico-vendor-stuff-icon {
 	&:before {
-		content: "\e93c";
+		content: fa-content($fa-var-inventory);
 	}
 }
 .ico-verified-icon {
 	&:before {
-		content: "\e93d";
+		content: fa-content($fa-var-check-circle);
 	}
 }
 .ico-visit-icon {
 	&:before {
-		content: "\e93e";
+		content: fa-content($fa-var-rocket);
 	}
 }
 .ico-welcome-icon {
 	&:before {
-		content: "\e93f";
+		content: fa-content($fa-var-door-open);
 	}
 }
-.ico-wp-backend-icon {
+i.ico-wp-backend-icon {
+	@extend .fab;
+
 	&:before {
-		content: "\e942";
+		content:  fa-content($fa-var-wordpress);
 	}
 }
 body {
@@ -3205,8 +3212,9 @@ span.delete {
 	display: inline-block;
 	vertical-align: middle;
 	&:after {
-		content: '\e908';
-		font-family: 'wcmp' !important;
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-calendar-week);
 		font-size: 19px;
 		position: absolute;
 		right: 10px;
@@ -3408,10 +3416,12 @@ ul.nav {
 				}
 			}
 			i {
-				font-size: 22px;
+				font-size: 16px;
 				vertical-align: middle;
 				display: inline-block;
 				margin-right: 12px;
+				width: 20px;
+				text-align: center;
 				+ {
 					span {
 						vertical-align: middle;
@@ -3650,7 +3660,7 @@ ul.nav {
 	}
 	a {
 		color: inherit;
-		padding: 14px 55px 14px 35px;
+		padding: 14px 55px 14px 25px;
 		font-size: 15px;
 		line-height: 1;
 		position: relative;
@@ -3659,6 +3669,8 @@ ul.nav {
 		a {
 			i {
 				font-size: 22px;
+				width: 30px;
+				text-align: center;
 				vertical-align: middle;
 				margin-right: 9px;
 				color: inherit;
@@ -6588,16 +6600,9 @@ table.shipping_table {
 				position: relative;
 				border-radius: 4px;
 				&:before {
-					position: absolute;
-					content: '\e93e';
-					font-family: 'wcmp' !important;
-					font-style: normal;
-					font-weight: normal;
-					font-variant: normal;
-					text-transform: none;
-					line-height: 1;
-					-webkit-font-smoothing: antialiased;
-					-moz-osx-font-smoothing: grayscale;
+					@extend %fa-icon;
+					@extend .fas;
+					content: fa-content($fa-var-search);
 					font-size: 22px;
 					position: absolute;
 					left: 18px;
