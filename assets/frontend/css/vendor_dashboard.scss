@@ -6380,7 +6380,7 @@ table.shipping_table {
 	}
 	.select-cat-step-wrapper {
 		.wcmp-categories-level-panel {
-			background: #fff url("../../images/icon-bg.png") repeat top;
+			background: #fff;
 			border: 1px solid #d3dbe2;
 			padding: 20px;
 			overflow: hidden;
@@ -6726,8 +6726,7 @@ table.shipping_table {
 		border: 1px solid #d3dbe2;
 		.wcmp-breadcrumb {
 			margin: 0;
-			padding: 4px 5px 4px 40px;
-			background: url(../../images/cat-icon.png) no-repeat left top 13px;
+			padding: 4px 5px 4px 10px;
 			margin-top: -10px;
 			li {
 				margin-top: 12px;
@@ -6735,8 +6734,7 @@ table.shipping_table {
 		}
 		.multiple-cat-hierarchy {
 			margin: 0;
-			padding: 4px 0 4px 25px;
-			background: url(../../images/multiple-cat-icon.png) no-repeat left center;
+			padding: 4px 0 4px 10px;
 			.multi-cat-choose-dflt-btn {
 				font-weight: normal;
 				color: #797b7b;
