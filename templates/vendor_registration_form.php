@@ -93,7 +93,8 @@ if (!empty($wcmp_vendor_registration_form_data) && is_array($wcmp_vendor_registr
                                 <?php
                                 foreach ($value['options'] as $option_key => $option_value) {
                                     ?>
-                                    <p><input type="radio" <?php if($option_value['selected']){ echo 'checked="checked"'; } ?> name="wcmp_vendor_fields[<?php echo $key; ?>][value]" value="<?php echo $option_value['value']; ?>" <?php if($value['required']){ echo 'required="required"'; }?>> <?php echo $option_value['label']; ?></p>
+                                    <p>
+                                        <input type="radio" <?php // if($option_value['selected']){ echo 'checked="checked"'; } ?> name="wcmp_vendor_fields[<?php echo $key; ?>][value]" value="<?php echo $option_value['value']; ?>" <?php if($value['required']){ echo 'required="required"'; }?>> <?php echo $option_value['label']; ?></p>
                                     <?php
                                 }
                                 ?>
