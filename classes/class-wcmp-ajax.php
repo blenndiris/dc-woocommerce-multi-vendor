@@ -1953,11 +1953,13 @@ class WCMp_Ajax {
                             unset($actions_col['delete']);
                     }elseif(!current_vendor_can('edit_product') && in_array($product->get_status(), apply_filters('wcmp_enable_edit_product_options_for_statuses', array('draft', 'pending')))){ unset($actions_col['edit']);}
 
-                    $actions = apply_filters('wcmp_vendor_product_list_row_actions', $actions, $product);
+                    // TODO - WCMp has a bug that improperly sets the add product link as edit link
+                    //
+                    // $actions = apply_filters('wcmp_vendor_product_list_row_actions', $actions, $product);
+
                     $actions_col = apply_filters('wcmp_vendor_product_list_row_actions_column', $actions_col, $product);
                     $row_actions = array();
                     foreach ($actions as $action => $link) {
-                        $row_actions[] = '<span class="' . esc_attr($action) . '">' . $link . '</span>';
                     }
                     $row_actions_col = array();
                     foreach ($actions_col as $action => $link) {
