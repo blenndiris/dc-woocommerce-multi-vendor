@@ -33,7 +33,7 @@ global $WCMp;
             <div class="right-primary-info"> 
                 <div class="form-group-wrapper">
                     <div class="form-group product-short-description">
-                        <label class="control-label col-md-12 pt-0" for="product_short_description"><?php esc_html_e( 'Product short description', 'woocommerce' ); ?></label>
+                        <label class="control-label col-md-12 pt-0" for="product_short_description"><?php esc_html_e( 'Product description', 'woocommerce' ); ?></label>
                         <div class="col-md-12">
                             <?php
                             $settings = array(
@@ -55,7 +55,7 @@ global $WCMp;
                     </div>
                     
                     <div class="form-group product-description">
-                        <label class="control-label col-md-12" for="product_description"><?php esc_attr_e( 'Product description', 'woocommerce' ); ?></label>
+                        <label class="control-label col-md-12" for="product_description"><?php esc_attr_e( 'Product additional information', 'woocommerce' ); ?></label>
                         <div class="col-md-12">
                             <?php
                             $settings = array(
