@@ -17,7 +17,7 @@ if (!function_exists('wcmp_upload_product_coa')) {
         $new_file_mime = 'application/pdf';
 
         if ($new_file_mime == FALSE)  {
-            throw new Exception( 'Failed to detect mime type' 
+            throw new Exception( 'Failed to detect mime type' );
         }
         
         if( empty( $file ) )
