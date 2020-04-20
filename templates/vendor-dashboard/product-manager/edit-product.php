@@ -86,7 +86,7 @@ global $WCMp;
                                 <p><?php _e( 'Click to upload Image', 'dc-woocommerce-multi-vendor' );?></p>
                             </div>
                             <img src="<?php echo $featured_img ? esc_url( wp_get_attachment_image_src( $featured_img, 'medium' )[0] ) : esc_url( wc_placeholder_img_src() ); ?>" />
-                            <input type="hidden" name="featured_img" class="upload_image_id" value="<?php echo esc_attr( $featured_img ); ?>" />
+                            <input type="hidden" id="featured_img" name="featured_img" class="upload_image_id" value="<?php echo esc_attr( $featured_img ); ?>" />
                         </a>
                     </div>
                     <div id="product_images_container" class="custom-panel">
