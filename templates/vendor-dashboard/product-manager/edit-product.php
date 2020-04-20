@@ -22,7 +22,7 @@ global $WCMp;
 ?> 
 <div class="col-md-12 add-product-wrapper">
     <?php do_action( 'before_wcmp_add_product_form' ); ?>
-    <form id="wcmp-edit-product-form" class="woocommerce form-horizontal" method="post">
+    <form id="wcmp-edit-product-form" class="woocommerce form-horizontal" method="post" enctype="multipart/form-data">
         <?php do_action( 'wcmp_add_product_form_start' ); ?>
         <!-- Top product highlight -->
         <?php

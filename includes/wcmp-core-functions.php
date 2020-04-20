@@ -1,5 +1,66 @@
 <?php
 
+
+if (!function_exists('wcmp_upload_product_coa')) {
+    function wcmp_upload_product_coa($file) {
+        $wordpress_upload_dir = wp_upload_dir();
+        // $wordpress_upload_dir['path'] is the full server path to wp-content/uploads/2017/05, for multisite works good as well
+        // $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
+        $i = 1; // number of tries when the file with the same name is already exists
+        
+        $new_file_path = $wordpress_upload_dir['path'] . '/' . $file['name'];
+
+        // TODO - This fails and it should not... have to hard code application/pdf which
+        // will not scale if we want to allow other types of files.
+        //
+        // $new_file_mime = mime_content_type( $file['tmp_name'] );
+        $new_file_mime = 'application/pdf';
+
+        if ($new_file_mime == FALSE)  {
+            throw new Exception( 'Failed to detect mime type' 
+        }
+        
+        if( empty( $file ) )
+            throw new Exception( 'Certificate of Authenticity is required.' );
+        
+        if( $file['error'] )
+            throw new Exception( $file['error'] );
+        
+        if( $file['size'] > wp_max_upload_size() )
+            throw new Exception( 'The file uploaded is too large. Maximum size: ' .  wp_max_upload_size() );
+        
+        if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
+            throw new Exception( 'Certificate of Authenticity must be in PDF format.' );
+        
+        while( file_exists( $new_file_path ) ) {
+            $i++;
+            $new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $file['name'];
+        }
+        
+        // looks like everything is OK
+        if( move_uploaded_file( $file['tmp_name'], $new_file_path ) ) {
+        
+        
+            $upload_id = wp_insert_attachment( array(
+                'guid'           => $new_file_path, 
+                'post_mime_type' => $new_file_mime,
+                'post_title'     => preg_replace( '/\.[^.]+$/', '', $file['name'] ),
+                'post_content'   => '',
+                'post_status'    => 'inherit'
+            ), $new_file_path );
+        
+            // wp_generate_attachment_metadata() won't work if you do not include this file
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        
+            // Generate and save the attachment metas into the database
+            wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );    
+            
+            // Return the attachment id
+            return $upload_id;
+        }
+    }   
+}
+
 if (!function_exists('get_wcmp_vendor_settings')) {
 
     /**
