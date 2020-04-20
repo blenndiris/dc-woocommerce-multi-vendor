@@ -37,14 +37,16 @@ global $WCMp;
                         <div class="col-md-12">
                             <?php
                             $settings = array(
+                                'teeny'         => true,
                                 'textarea_name' => 'product_excerpt',
                                 'textarea_rows' => get_option('default_post_edit_rows', 10),
                                 'quicktags'     => array( 'buttons' => 'em,strong,link' ),
+                                'media_buttons' => false,
                                 'tinymce'       => array(
                                     'theme_advanced_buttons1' => 'bold,italic,strikethrough,separator,bullist,numlist,separator,blockquote,separator,justifyleft,justifycenter,justifyright,separator,link,unlink,separator,undo,redo,separator',
                                     'theme_advanced_buttons2' => '',
                                 ),
-                                'editor_css'    => '<style>#wp-product_excerpt-editor-container .wp-editor-area{height:100px; width:100%;}</style>',
+                                'editor_css'    => '<style>#wp-product_excerpt-editor-container .wp-editor-area{height:170px; width:100%;}</style>',
                             );
                             if( !apply_filters( 'wcmp_vendor_product_excerpt_richedit', true ) ) {
                                 $settings['tinymce'] = $settings['quicktags'] = $settings['media_buttons'] = false;
@@ -59,9 +61,11 @@ global $WCMp;
                         <div class="col-md-12">
                             <?php
                             $settings = array(
+                                'teeny'         => true,
                                 'textarea_name' => 'product_description',
                                 'textarea_rows' => get_option('default_post_edit_rows', 10),
                                 'quicktags'     => array( 'buttons' => 'em,strong,link' ),
+                                'media_buttons' => false,
                                 'tinymce'       => array(
                                     'theme_advanced_buttons1' => 'bold,italic,strikethrough,separator,bullist,numlist,separator,blockquote,separator,justifyleft,justifycenter,justifyright,separator,link,unlink,separator,undo,redo,separator',
                                     'theme_advanced_buttons2' => '',
