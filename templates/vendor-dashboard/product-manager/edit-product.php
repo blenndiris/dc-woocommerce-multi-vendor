@@ -22,7 +22,7 @@ global $WCMp;
 ?> 
 <div class="col-md-12 add-product-wrapper">
     <?php do_action( 'before_wcmp_add_product_form' ); ?>
-    <form id="wcmp-edit-product-form" class="woocommerce form-horizontal" method="post" enctype="multipart/form-data">
+    <form id="wcmp-edit-product-form" class="woocommerce form-horizontal" method="post">
         <?php do_action( 'wcmp_add_product_form_start' ); ?>
         <!-- Top product highlight -->
         <?php
@@ -33,20 +33,18 @@ global $WCMp;
             <div class="right-primary-info"> 
                 <div class="form-group-wrapper">
                     <div class="form-group product-short-description">
-                        <label class="control-label col-md-12 pt-0" for="product_short_description"><?php esc_html_e( 'Product description', 'woocommerce' ); ?></label>
+                        <label class="control-label col-md-12 pt-0" for="product_short_description"><?php esc_html_e( 'Product short description', 'woocommerce' ); ?></label>
                         <div class="col-md-12">
                             <?php
                             $settings = array(
-                                'teeny'         => true,
                                 'textarea_name' => 'product_excerpt',
                                 'textarea_rows' => get_option('default_post_edit_rows', 10),
                                 'quicktags'     => array( 'buttons' => 'em,strong,link' ),
-                                'media_buttons' => false,
                                 'tinymce'       => array(
                                     'theme_advanced_buttons1' => 'bold,italic,strikethrough,separator,bullist,numlist,separator,blockquote,separator,justifyleft,justifycenter,justifyright,separator,link,unlink,separator,undo,redo,separator',
                                     'theme_advanced_buttons2' => '',
                                 ),
-                                'editor_css'    => '<style>#wp-product_excerpt-editor-container .wp-editor-area{height:170px; width:100%;}</style>',
+                                'editor_css'    => '<style>#wp-product_excerpt-editor-container .wp-editor-area{height:100px; width:100%;}</style>',
                             );
                             if( !apply_filters( 'wcmp_vendor_product_excerpt_richedit', true ) ) {
                                 $settings['tinymce'] = $settings['quicktags'] = $settings['media_buttons'] = false;
@@ -57,15 +55,13 @@ global $WCMp;
                     </div>
                     
                     <div class="form-group product-description">
-                        <label class="control-label col-md-12" for="product_description"><?php esc_attr_e( 'Product additional information', 'woocommerce' ); ?></label>
+                        <label class="control-label col-md-12" for="product_description"><?php esc_attr_e( 'Product description', 'woocommerce' ); ?></label>
                         <div class="col-md-12">
                             <?php
                             $settings = array(
-                                'teeny'         => true,
                                 'textarea_name' => 'product_description',
                                 'textarea_rows' => get_option('default_post_edit_rows', 10),
                                 'quicktags'     => array( 'buttons' => 'em,strong,link' ),
-                                'media_buttons' => false,
                                 'tinymce'       => array(
                                     'theme_advanced_buttons1' => 'bold,italic,strikethrough,separator,bullist,numlist,separator,blockquote,separator,justifyleft,justifycenter,justifyright,separator,link,unlink,separator,undo,redo,separator',
                                     'theme_advanced_buttons2' => '',
@@ -90,7 +86,7 @@ global $WCMp;
                                 <p><?php _e( 'Click to upload Image', 'dc-woocommerce-multi-vendor' );?></p>
                             </div>
                             <img src="<?php echo $featured_img ? esc_url( wp_get_attachment_image_src( $featured_img, 'medium' )[0] ) : esc_url( wc_placeholder_img_src() ); ?>" />
-                            <input type="hidden" id="featured_img" name="featured_img" class="upload_image_id" value="<?php echo esc_attr( $featured_img ); ?>" />
+                            <input type="hidden" name="featured_img" class="upload_image_id" value="<?php echo esc_attr( $featured_img ); ?>" />
                         </a>
                     </div>
                     <div id="product_images_container" class="custom-panel">
