@@ -60,6 +60,7 @@ class WCMp_Product {
         add_action("save_post_product", array($this, 'set_coa'), 10, 3);
         add_action("save_post_product", array($this, 'set_cbd_content'), 10, 3);
         add_action("save_post_product", array($this, 'set_est_shipping_time'), 10, 3);
+        add_action("save_post_product", array($this, 'set_ingredients'), 10, 3);
 
         add_action('woocommerce_variation_options_dimensions', array($this, 'add_filter_for_shipping_class'), 10, 3);
         add_action('woocommerce_variation_options_tax', array($this, 'remove_filter_for_shipping_class'), 10, 3);
@@ -1370,6 +1371,12 @@ class WCMp_Product {
             if (!empty($upload_id)) {
                 update_field('coa', $upload_id, $post_ID);
             }
+        }
+    }
+
+    function set_ingredients($post_ID, $post, $update) {
+        if ($post_ID && !empty($_POST['product_ingredients'])) {
+            update_field('ingredients', $_POST['product_ingredients'], $post_ID);
         }
     }
 
