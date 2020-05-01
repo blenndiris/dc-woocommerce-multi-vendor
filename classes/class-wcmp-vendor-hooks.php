@@ -231,14 +231,23 @@ class WCMp_Vendor_Hooks {
                 , 'link_target' => '_self'
                 , 'nav_icon'    => 'wcmp-font ico-knowledgebase-icon'
             ),
-            'vendor-tools'         => array(
-                'label'       => __( 'Tools', 'dc-woocommerce-multi-vendor' )
-                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_tools_endpoint', 'vendor', 'general', 'vendor-tools' ) )
-                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_tools_capability', true )
+            // 'vendor-tools'         => array(
+            //     'label'       => __( 'Tools', 'dc-woocommerce-multi-vendor' )
+            //     , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_tools_endpoint', 'vendor', 'general', 'vendor-tools' ) )
+            //     , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_tools_capability', true )
+            //     , 'position'    => 80
+            //     , 'submenu'     => array()
+            //     , 'link_target' => '_self'
+            //     , 'nav_icon'    => 'wcmp-font ico-tools-icon'
+            // ),
+            'vendor-qna'         => array(
+                'label'       => __( 'Q&A', 'dc-woocommerce-multi-vendor' )
+                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_products_qnas_endpoint', 'vendor', 'general', 'products-qna' ) )
+                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_products_qnas_capability', true )
                 , 'position'    => 80
                 , 'submenu'     => array()
                 , 'link_target' => '_self'
-                , 'nav_icon'    => 'wcmp-font ico-tools-icon'
+                , 'nav_icon'    => 'wcmp-font ico-questionmark-icon'
             ),
             'contact-leafz'            => array(
                 'label'       => __( 'Contact Leafz', 'dc-woocommerce-multi-vendor' )
