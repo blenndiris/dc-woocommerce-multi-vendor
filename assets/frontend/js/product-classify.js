@@ -54,7 +54,9 @@
             this.$searched_products_name_gtin_panel.hide();
             this.$searched_categories_results.hide();
             this.$product_categories_wrap.append('<div class="wcmp-product-cat-level initial-graphic select-category-graphic">\n\
-                                    <h1>'+wcmp_product_classify_script_data.i18n.select_cat_list+'</h1></div>');
+                                    <h1>'+wcmp_product_classify_script_data.i18n.select_cat_list+'</h1>\n\
+                                    <span>'+wcmp_product_classify_script_data.i18n.select_cat_message+'</span>\n\
+                                    </div>');
         },
         
         show_products_searched_by_name_gtin: function() {
