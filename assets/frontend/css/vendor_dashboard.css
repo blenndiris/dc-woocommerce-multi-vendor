@@ -8048,32 +8048,31 @@ span.form-text {
   .change-status .wc-pending i {
     background: #f58020; }
     .change-status .wc-pending i:before {
-      content: '\e957';
-      margin: 0 0 0 3px; }
+      content: "\f141"; }
   .change-status .wc-processing i {
     background: #fec40d; }
     .change-status .wc-processing i:before {
-      content: '\e958'; }
+      content: "\f141"; }
   .change-status .wc-on-hold i {
     background: #ce9416; }
     .change-status .wc-on-hold i:before {
-      content: '\e954'; }
+      content: "\f04c"; }
   .change-status .wc-completed i {
     background: #37a972; }
     .change-status .wc-completed i:before {
-      content: '\e950'; }
+      content: "\f00c"; }
   .change-status .wc-cancelled i {
     background: #c84040; }
     .change-status .wc-cancelled i:before {
-      content: '\e94f'; }
+      content: "\f00d"; }
   .change-status .wc-refunded i {
     background: #349bd5; }
     .change-status .wc-refunded i:before {
-      content: '\e959'; }
+      content: "\f0e2"; }
   .change-status .wc-failed i {
     background: #f36f59; }
     .change-status .wc-failed i:before {
-      content: '\e954'; }
+      content: "\f00d"; }
   .change-status .change-status.loaderOverlay:after {
     left: -6px;
     top: -3px;
