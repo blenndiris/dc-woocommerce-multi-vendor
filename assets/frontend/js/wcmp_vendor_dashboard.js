@@ -204,5 +204,7 @@ jQuery(document).ready(function($){
     $('#wcmp-change-pass').on('click', function(){
         $(this).parents('.wcmp-do-change-pass').toggle();
         $('.vendor-edit-pass-field').toggle();
-    });
+	});
+	
+	$( '[data-toggle="tooltip"]' ).tooltip();
 });
