@@ -1497,8 +1497,7 @@ span.form-text {
 		i {
 			background: #f58020;
 			&:before {
-				content: '\e957';
-				margin: 0 0 0 3px;
+				content: fa-content($fa-var-ellipsis-h);
 			}
 		}
 	}
@@ -1506,7 +1505,7 @@ span.form-text {
 		i {
 			background: #fec40d;
 			&:before {
-				content: '\e958';
+				content: fa-content($fa-var-ellipsis-h);
 			}
 		}
 	}
@@ -1514,7 +1513,7 @@ span.form-text {
 		i {
 			background: #ce9416;
 			&:before {
-				content: '\e954';
+				content: fa-content($fa-var-pause);
 			}
 		}
 	}
@@ -1522,7 +1521,7 @@ span.form-text {
 		i {
 			background: #37a972;
 			&:before {
-				content: '\e950';
+				content: fa-content($fa-var-check);
 			}
 		}
 	}
@@ -1530,7 +1529,7 @@ span.form-text {
 		i {
 			background: #c84040;
 			&:before {
-				content: '\e94f';
+				content: fa-content($fa-var-times);
 			}
 		}
 	}
@@ -1538,7 +1537,7 @@ span.form-text {
 		i {
 			background: #349bd5;
 			&:before {
-				content: '\e959';
+				content: fa-content($fa-var-undo);
 			}
 		}
 	}
@@ -1546,7 +1545,7 @@ span.form-text {
 		i {
 			background: #f36f59;
 			&:before {
-				content: '\e954';
+				content: fa-content($fa-var-times);
 			}
 		}
 	}
