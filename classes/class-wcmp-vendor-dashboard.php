@@ -1356,15 +1356,6 @@ Class WCMp_Admin_Dashboard {
                 , 'link_target' => '_self'
                 , 'nav_icon' => 'wcmp-font ico-user-icon'
             ),
-            'wp-admin' => array(
-                'label' => __('WordPress backend', 'dc-woocommerce-multi-vendor')
-                , 'url' => esc_url(admin_url())
-                , 'class' => ''
-                , 'capability' => true
-                , 'position' => 30
-                , 'link_target' => '_self'
-                , 'nav_icon' => 'wcmp-font ico-wp-backend-icon'
-            ),
             'logout' => array(
                 'label' => __('Logout', 'dc-woocommerce-multi-vendor')
                 , 'url' => esc_url(wp_logout_url(get_permalink(wcmp_vendor_dashboard_page_id())))
@@ -1991,7 +1982,10 @@ Class WCMp_Admin_Dashboard {
                 switch ( $status ) {
                     case 'draft': $status_msg = __( 'Product is successfully drafted', 'dc-woocommerce-multi-vendor' );
                         break;
-                    case 'pending': $status_msg = __( 'Product is successfully submitted for review', 'dc-woocommerce-multi-vendor' );
+                    case 'pending': 
+                            $status_msg = '<span style="font-size: 20px; font-weight: bold">' . __( 'This product has been successfully submitted for review!', 'dc-woocommerce-multi-vendor' ) . '</span>';
+                            $status_msg .= '<br /><br />';
+                            $status_msg .= __( 'It will be reviewed by a Leafz admin prior to appearing on the website. You will be notified once the product is reviewed and approved to be displayed for sale on Leafz.', 'dc-woocommerce-multi-vendor' );
                         break;
                     case 'publish': $status_msg = sprintf( __( 'Product updated and live. <a href="%s" target="_blank">View Product</a>', 'dc-woocommerce-multi-vendor' ), esc_attr( get_permalink( $post_id ) ) );
                         break;

@@ -505,7 +505,8 @@ class WCMp_Vendor_Hooks {
             'ajax_url' => $WCMp->ajax_url(),
             'initial_graphic_url' => '',
             'i18n' => array(
-                'select_cat_list' => __( 'Select a category from the list', 'dc-woocommerce-multi-vendor' )
+                'select_cat_list' => __( 'Select a category from the list', 'dc-woocommerce-multi-vendor' ),
+                'select_cat_message' =>  __( '<p>Don\'t see the category you need?</p><p>Email <a href="mailto:admin@leafz.com">admin@leafz.com</a> to request a new product category.</p>', 'dc-woocommerce-multi-vendor' ),
             )
         );
         wp_enqueue_script( 'wcmp_product_classify' );
