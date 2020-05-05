@@ -1356,15 +1356,6 @@ Class WCMp_Admin_Dashboard {
                 , 'link_target' => '_self'
                 , 'nav_icon' => 'wcmp-font ico-user-icon'
             ),
-            'wp-admin' => array(
-                'label' => __('WordPress backend', 'dc-woocommerce-multi-vendor')
-                , 'url' => esc_url(admin_url())
-                , 'class' => ''
-                , 'capability' => true
-                , 'position' => 30
-                , 'link_target' => '_self'
-                , 'nav_icon' => 'wcmp-font ico-wp-backend-icon'
-            ),
             'logout' => array(
                 'label' => __('Logout', 'dc-woocommerce-multi-vendor')
                 , 'url' => esc_url(wp_logout_url(get_permalink(wcmp_vendor_dashboard_page_id())))
