@@ -267,7 +267,7 @@ module.exports = function (grunt) {
         'sass',
         'cssmin',
         'postcss',
-        'rtlcss',
+        // 'rtlcss',
     ]);
 
     // Only an alias to 'default' task.
@@ -276,7 +276,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('i18n', [
-        'checktextdomain',
-        'makepot'
+        // 'checktextdomain',
+        // 'makepot'
     ]);
 };
