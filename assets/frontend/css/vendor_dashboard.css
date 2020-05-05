@@ -10619,8 +10619,6 @@ td:focus {
     font-size: 12px; }
     #visitor_data_stats.table > tbody > tr > td:first-of-type {
       border: 0; }
-  #visitor_data_stats.table > tbody > tr > td.region {
-    color: #fff; }
   #visitor_data_stats.table > tbody > tr > td.no_data {
     text-align: center; }
 
