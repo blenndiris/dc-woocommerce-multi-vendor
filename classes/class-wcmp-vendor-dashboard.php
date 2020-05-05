@@ -1982,7 +1982,10 @@ Class WCMp_Admin_Dashboard {
                 switch ( $status ) {
                     case 'draft': $status_msg = __( 'Product is successfully drafted', 'dc-woocommerce-multi-vendor' );
                         break;
-                    case 'pending': $status_msg = __( 'Product is successfully submitted for review', 'dc-woocommerce-multi-vendor' );
+                    case 'pending': 
+                            $status_msg = '<span style="font-size: 20px; font-weight: bold">' . __( 'This product has been successfully submitted for review!', 'dc-woocommerce-multi-vendor' ) . '</span>';
+                            $status_msg .= '<br /><br />';
+                            $status_msg .= __( 'It will be reviewed by a Leafz admin prior to appearing on the website. You will be notified once the product is reviewed and approved to be displayed for sale on Leafz.', 'dc-woocommerce-multi-vendor' );
                         break;
                     case 'publish': $status_msg = sprintf( __( 'Product updated and live. <a href="%s" target="_blank">View Product</a>', 'dc-woocommerce-multi-vendor' ), esc_attr( get_permalink( $post_id ) ) );
                         break;
