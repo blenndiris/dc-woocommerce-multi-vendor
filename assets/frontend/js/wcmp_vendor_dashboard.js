@@ -1,7 +1,5 @@
 /*global wcmp_frontend_vdashboard_js_script_data */
 jQuery(document).ready(function($){
-	console.log('Leafz Vendor Dashboard');
-
 	$("body").on("click", ".wcmp_delate_announcements_dashboard", function(e) {
 			var post_id = $(this).attr("data-element");
 			var element_to_be_refrash = $(this).parent();	
@@ -207,6 +205,4 @@ jQuery(document).ready(function($){
         $(this).parents('.wcmp-do-change-pass').toggle();
         $('.vendor-edit-pass-field').toggle();
 	});
-	
-	$( '[data-toggle="tooltip"]' ).tooltip();
 });

@@ -1,4 +1,6 @@
 jQuery( document ).ready( function ( $ ) {
+    console.log('Leafz Vendor Dashboard');
+    
     //checkbox_custome_design();
     $( ".hasmenu > a" ).click( function ( e ) {
 
@@ -114,8 +116,7 @@ jQuery( document ).ready( function ( $ ) {
     // category scroller
     $(".wcmp-product-cat-level, .wcmpCustomScroller").mCustomScrollbar();
 
-
-
+	$('[data-toggle="tooltip"]').tooltip();
 } );
 
 
