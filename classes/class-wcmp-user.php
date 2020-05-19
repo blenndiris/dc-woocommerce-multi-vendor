@@ -567,7 +567,7 @@ class WCMp_User {
         $fields["vendor_bank_account_type"] = array(
             'label' => __('Bank Account Type', 'dc-woocommerce-multi-vendor'),
             'type' => 'select',
-            'options' => array('current' => __('Current', 'dc-woocommerce-multi-vendor'), 'savings' => __('Savings', 'dc-woocommerce-multi-vendor')),
+            'options' => array('current' => __('Checking', 'dc-woocommerce-multi-vendor'), 'savings' => __('Savings', 'dc-woocommerce-multi-vendor')),
             'value' => $vendor->bank_account_type,
             'class' => "user-profile-fields regular-text"
         ); // Text

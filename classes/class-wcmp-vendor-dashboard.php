@@ -2570,6 +2570,9 @@ Class WCMp_Admin_Dashboard {
     public function vendor_payment_setup() { 
         $vendor_payment_mode = ( $this->vendor->payment_mode ) ? $this->vendor->payment_mode : '';
         $available_gateways   = apply_filters( 'wcmp_vendor_setup_wizard_available_payment_gateways', get_wcmp_available_payment_gateways(), $this->vendor );
+
+        
+
         ?>
         <div class="container-fluid container-fluid--max mb-5">
             <div class="row">
@@ -2578,26 +2581,77 @@ Class WCMp_Admin_Dashboard {
                         <h1 class="mb-2"><?php echo get_field('s5_header', 'option') ?></h1>
                         <h4><?php echo get_field('s5_sub_header', 'option') ?></h4>
 
-                        <form method="post" class="wc-wizard-payment-gateway-form mt-5">
+                        <form method="post" class="wc-wizard-payment-gateway-form mt-5 text-left">
                             <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
 
-                            <div class="product-type-container">
-                                <label class="location-prompt" for="product_type">
-                                        <?php esc_html_e( 'Choose Payment Method', 'dc-woocommerce-multi-vendor' ); ?>
-                                </label>
-                                <select id="vendor_payment_mode" name="vendor_payment_mode" class="location-input wc-enhanced-select dropdown">
-                                <?php
-                                foreach ( $available_gateways as $gateway_id => $gateway ) { ?>
-                                    <option <?php selected( $gateway_id, $vendor_payment_mode ); ?> value="<?php echo esc_attr( $gateway_id ); ?>"><?php echo esc_html( $gateway ); ?></option>
-                                <?php }
-                                ?>
-                                </select>
-                            </div>
+                            <?php if (count($available_gateways) == 1 && isset($available_gateways['direct_bank'])): 
+                                // if the only gateay option is direct bank, display that form
+                                $vendor_bank_account_type_select = array(
+                                    'current' => __('Checking', 'dc-woocommerce-multi-vendor'),
+                                    'savings' => __('Savings', 'dc-woocommerce-multi-vendor'),
+                                );
+                                $bank_account_fields = array(
+                                    "vendor_bank_account_type" => array('label' => __('Account type', 'dc-woocommerce-multi-vendor'), 'type' => 'select', 'id' => 'vendor_bank_account_type', 'label_for' => 'vendor_bank_account_type', 'name' => 'vendor_bank_account_type', 'options' => $vendor_bank_account_type_select, 'value' => $vendor_obj->bank_account_type, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_bank_name" => array('label' => __('Bank Name', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_bank_name', 'label_for' => 'vendor_bank_name', 'name' => 'vendor_bank_name', 'value' => $vendor_obj->bank_name, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_aba_routing_number" => array('label' => __('ABA Routing Number', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_aba_routing_number', 'label_for' => 'vendor_aba_routing_number', 'name' => 'vendor_aba_routing_number', 'value' => $vendor_obj->aba_routing_number, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_destination_currency" => array('label' => __('Destination Currency', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_destination_currency', 'label_for' => 'vendor_destination_currency', 'name' => 'vendor_destination_currency', 'value' => $vendor_obj->destination_currency, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_bank_address" => array('label' => __('Bank Address', 'dc-woocommerce-multi-vendor'), 'type' => 'textarea', 'id' => 'vendor_bank_address', 'label_for' => 'vendor_bank_address', 'name' => 'vendor_bank_address', 'rows'=>'6', 'cols'=>'53', 'value' => $vendor_obj->bank_address, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_iban" => array('label' => __('IBAN', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_iban', 'label_for' => 'vendor_iban', 'name' => 'vendor_iban', 'value' => $vendor_obj->iban, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_account_holder_name" => array('label' => __('Account Holder Name', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_account_holder_name', 'label_for' => 'vendor_account_holder_name', 'name' => 'vendor_account_holder_name', 'value' => $vendor_obj->account_holder_name, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                    "vendor_bank_account_number" => array('label' => __('Account Number', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_bank_account_number', 'label_for' => 'vendor_bank_account_number', 'name' => 'vendor_bank_account_number', 'value' => $vendor_obj->bank_account_number, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
+                                )
+                            ?> 
+                                <input type="hidden" name="vendor_payment_mode" value="direct_bank" />
+                                <?php foreach ($bank_account_fields as $field): ?>
+                                    <?php
+                                        switch($field['type']) {
+                                            case 'select':
+                                                    ?>
+                                                        <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
+                                                        <select id="<?php echo $field['id']; ?>" name="<?php echo $field['name']; ?>" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
+                                                            <?php foreach ( $field['options'] as $code => $label ) : ?>
+                                                                <option value="<?php echo $code; ?>"><?php echo $label; ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    <?php
+                                                break;
+                                            case 'textarea':
+                                                    ?>
+                                                        <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
+                                                        <textarea id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value=""  placeholder=""></textarea>
+                                                    <?php 
+                                                break;
+                                            default:
+                                                    ?>
+                                                        <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
+                                                        <input type="text" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value=""  placeholder="" />
+                                                    <?php 
+                                                break;
+                                        }
+                                    ?>
 
-                            <div class="mt-5 mb-3">
+                                <?php endforeach; ?>
+                            <?php else: 
+                                // otherwise fallback to the default WCMp    
+                            ?>
+                                <div class="product-type-container">
+                                    <label class="location-prompt" for="product_type">
+                                            <?php esc_html_e( 'Choose Payment Method', 'dc-woocommerce-multi-vendor' ); ?>
+                                    </label>
+                                    <select id="vendor_payment_mode" name="vendor_payment_mode" class="location-input wc-enhanced-select dropdown">
+                                    <?php
+                                    foreach ( $available_gateways as $gateway_id => $gateway ) { ?>
+                                        <option <?php selected( $gateway_id, $vendor_payment_mode ); ?> value="<?php echo esc_attr( $gateway_id ); ?>"><?php echo esc_html( $gateway ); ?></option>
+                                    <?php }
+                                    ?>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="mt-5 mb-3 text-center">
                                 <input type="submit" class="btn btn-primary" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
                             </div>
-                            <div class="mb-5"> 
+                            <div class="mb-5 text-center"> 
                                 <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
                             <div>
 
@@ -2615,8 +2669,23 @@ Class WCMp_Admin_Dashboard {
     public function wcmp_setup_payment_save(){
         if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wcmp-vendor-setup' ) ) return;
 
-        $payment_mode      = isset( $_POST['vendor_payment_mode'] ) ? wc_clean( wp_unslash( $_POST['vendor_payment_mode'] ) ) : '';
-        if ( $payment_mode ) update_user_meta( $this->vendor->id, '_vendor_payment_mode', $payment_mode );
+        $fields = array(
+            'vendor_bank_account_type',
+            'vendor_payment_mode',
+            'vendor_bank_name',
+            'vendor_aba_routing_number',
+            'vendor_destination_currency',
+            'vendor_bank_address',
+            'vendor_iban',
+            'vendor_account_holder_name',
+            'vendor_bank_account_number'
+        );
+
+        foreach ($fields as $field) {
+            $value      = isset( $_POST[$field] ) ? wc_clean( wp_unslash( $_POST[$field] ) ) : '';
+            if ( $value ) update_user_meta( $this->vendor->id, '_' . $field, $value );
+        }
+
         wp_redirect( esc_url_raw( $this->get_next_step_link() ) );
         exit;
     }
