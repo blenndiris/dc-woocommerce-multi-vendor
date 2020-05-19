@@ -2453,6 +2453,15 @@ Class WCMp_Admin_Dashboard {
                                         </select>
                                     </div>
                                 </div>
+
+                                <label class="location-prompt" for="_vendor_shipping_policy"><?php esc_html_e('Shipping Policy', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <textarea id="_vendor_shipping_policy" class="location-input" name="_vendor_shipping_policy" value="" placeholder=""></textarea>
+
+                                <label class="location-prompt" for="_vendor_refund_policy"><?php esc_html_e('Refund Policy', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <textarea id="_vendor_refund_policy" class="location-input" name="_vendor_refund_policy" value="" placeholder=""></textarea>
+
+                                <label class="location-prompt" for="_vendor_cancellation_policy"><?php esc_html_e('Cancellation/Return/Exchange Policy', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <textarea id="_vendor_cancellation_policy" class="location-input" name="_vendor_cancellation_policy" value="" placeholder=""></textarea>
                             </div>
                             <script type="text/javascript">
                                 var wc_setup_currencies = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $currency_by_country ) ); ?>' ) );
@@ -2502,6 +2511,12 @@ Class WCMp_Admin_Dashboard {
 
         if ($vendor_description) {
             update_user_meta($this->vendor->id, '_vendor_description', $vendor_description);
+        }
+
+        if (apply_filters('wcmp_vendor_can_overwrite_policies', true)) {
+            update_user_meta( $this->vendor->id, '_vendor_shipping_policy', wc_clean( wp_unslash($_POST['_vendor_shipping_policy'])) );
+            update_user_meta( $this->vendor->id, '_vendor_refund_policy', wc_clean( wp_unslash($_POST['_vendor_refund_policy'])) );
+            update_user_meta( $this->vendor->id, '_vendor_cancellation_policy', wc_clean( wp_unslash($_POST['_vendor_cancellation_policy'])) );
         }
 
         if ( $address_1 ) update_user_meta( $this->vendor->id, '_vendor_address_1', $address_1 );
