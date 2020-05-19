@@ -2406,11 +2406,15 @@ Class WCMp_Admin_Dashboard {
                             <div class="store-address-container">
                                 
                                 <label class="location-prompt" for="store_name"><?php esc_html_e('Store Name', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="<?php _e('Enter your Store Name here', 'dc-woocommerce-multi-vendor'); ?>" />
+                                <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="" />
+
+                                <label class="location-prompt" for="vendor_description"><?php esc_html_e('Store Description', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <textarea id="vendor_description" class="location-input" name="vendor_description" value="" placeholder=""></textarea>
                                 
                                 <label for="store_country" class="location-prompt"><?php esc_html_e( 'Where is your store based?', 'woocommerce' ); ?></label>
-                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Choose a country&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
+                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
                                 <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+                                    <option selected></option>
                                     <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
                                 <?php endforeach; ?>
                                 </select>
@@ -2481,6 +2485,7 @@ Class WCMp_Admin_Dashboard {
         if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wcmp-vendor-setup' ) ) return;
 
         $storename      = isset( $_POST['store_name'] ) ? wc_clean( wp_unslash( $_POST['store_name'] ) ) : '';
+        $vendor_description      = isset( $_POST['vendor_description'] ) ? wc_clean( wp_unslash( $_POST['vendor_description'] ) ) : '';
         $address_1      = isset( $_POST['store_address_1'] ) ? wc_clean( wp_unslash( $_POST['store_address_1'] ) ) : '';
         $address_2      = isset( $_POST['store_address_2'] ) ? wc_clean( wp_unslash( $_POST['store_address_2'] ) ) : '';
         $city           = isset( $_POST['store_city'] ) ? wc_clean( wp_unslash( $_POST['store_city'] ) ) : '';
@@ -2494,6 +2499,11 @@ Class WCMp_Admin_Dashboard {
             wp_update_term( $this->vendor->term_id, $WCMp->taxonomy->taxonomy_name, array('name' => $storename) );
             update_user_meta( $this->vendor->id, '_vendor_page_title', $storename );
         }
+
+        if ($vendor_description) {
+            update_user_meta($this->vendor->id, '_vendor_description', $vendor_description);
+        }
+
         if ( $address_1 ) update_user_meta( $this->vendor->id, '_vendor_address_1', $address_1 );
         if ( $address_2 ) update_user_meta( $this->vendor->id, '_vendor_address_2', $address_2 );
         if ( $city ) update_user_meta( $this->vendor->id, '_vendor_city', $city );
