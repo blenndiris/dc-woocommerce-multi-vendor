@@ -2391,6 +2391,14 @@ Class WCMp_Admin_Dashboard {
                 $tzstring = 'UTC+' . $current_offset;
             }
         }
+
+        $_wp_editor_settings = array(
+            'tinymce' => true,
+            'media_buttons' => false,
+            'editor_class' => 'location-input',
+        );
+        $_wp_editor_settings = apply_filters('wcmp_vendor_policies_wp_editor_settings', $_wp_editor_settings);
+        $_wp_editor_settings['textarea_rows'] = 4;
         ?>
 
         <div class="container-fluid container-fluid--max mb-5">
@@ -2409,8 +2417,8 @@ Class WCMp_Admin_Dashboard {
                                 <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="" />
 
                                 <label class="location-prompt" for="vendor_description"><?php esc_html_e('Store Description', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <textarea id="vendor_description" class="location-input" name="vendor_description" value="" placeholder=""></textarea>
-                                
+                                <?php wp_editor( '', 'vendor_description', $_wp_editor_settings); ?>
+
                                 <label for="store_country" class="location-prompt"><?php esc_html_e( 'Where is your store based?', 'woocommerce' ); ?></label>
                                 <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
                                 <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
@@ -2455,13 +2463,13 @@ Class WCMp_Admin_Dashboard {
                                 </div>
 
                                 <label class="location-prompt" for="_vendor_shipping_policy"><?php esc_html_e('Shipping Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <textarea id="_vendor_shipping_policy" class="location-input" name="_vendor_shipping_policy" value="" placeholder=""></textarea>
+                                <?php wp_editor( '', '_vendor_shipping_policy', $_wp_editor_settings); ?>
 
                                 <label class="location-prompt" for="_vendor_refund_policy"><?php esc_html_e('Refund Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <textarea id="_vendor_refund_policy" class="location-input" name="_vendor_refund_policy" value="" placeholder=""></textarea>
+                                <?php wp_editor( '', '_vendor_refund_policy', $_wp_editor_settings); ?>
 
                                 <label class="location-prompt" for="_vendor_cancellation_policy"><?php esc_html_e('Cancellation/Return/Exchange Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <textarea id="_vendor_cancellation_policy" class="location-input" name="_vendor_cancellation_policy" value="" placeholder=""></textarea>
+                                <?php wp_editor( '', '_vendor_cancellation_policy', $_wp_editor_settings); ?>
                             </div>
                             <script type="text/javascript">
                                 var wc_setup_currencies = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $currency_by_country ) ); ?>' ) );
