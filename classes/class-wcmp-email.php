@@ -34,13 +34,20 @@ class WCMp_Email {
         include( 'emails/class-wcmp-email-vendor-new-order.php' );
         include( 'emails/class-wcmp-email-vendor-notify-shipped.php' );
         include( 'emails/class-wcmp-email-vendor-new-product-added.php' );
+        include( 'emails/class-wcmp-email-vendor-new-question.php' );
+        include( 'emails/class-wcmp-email-admin-new-question.php' );
+        include( 'emails/class-wcmp-email-customer-answer.php' );
         include( 'emails/class-wcmp-email-admin-added-new-product-to-vendor.php' );
         include( 'emails/class-wcmp-email-vendor-new-commission-transaction.php' );
         include( 'emails/class-wcmp-email-vendor-direct-bank.php' );
         include( 'emails/class-wcmp-email-admin-withdrawal-request.php' );
         include( 'emails/class-wcmp-email-vendor-orders-stats-report.php' );
         include( 'emails/class-wcmp-email-vendor-contact-widget.php' );
-        include( 'emails/class-wcmp-email-send-report-abuse.php' );
+		include( 'emails/class-wcmp-email-send-report-abuse.php' );
+		include( 'emails/class-wcmp-email-vendor-new-announcement.php' );
+		include( 'emails/class-wcmp-email-customer-order-refund-request.php' );
+		include( 'emails/class-wcmp-email-vendor-product-rejected.php' );
+		include( 'emails/class-wcmp-email-suspend-vendor-account.php' );
         
         $wcmp_email = array();
         $wcmp_email['WC_Email_Vendor_New_Account'] = new WC_Email_Vendor_New_Account();
@@ -50,13 +57,20 @@ class WCMp_Email {
         $wcmp_email['WC_Email_Vendor_New_Order'] = new WC_Email_Vendor_New_Order();
         $wcmp_email['WC_Email_Notify_Shipped'] = new WC_Email_Notify_Shipped();
         $wcmp_email['WC_Email_Vendor_New_Product_Added'] = new WC_Email_Vendor_New_Product_Added();
+        $wcmp_email['WC_Email_Vendor_New_Question'] = new WC_Email_Vendor_New_Question();
+        $wcmp_email['WC_Email_Admin_New_Question'] = new WC_Email_Admin_New_Question();
+        $wcmp_email['WC_Email_Customer_Answer'] = new WC_Email_Customer_Answer();
         $wcmp_email['WC_Email_Admin_Added_New_Product_to_Vendor'] = new WC_Email_Admin_Added_New_Product_to_Vendor();
         $wcmp_email['WC_Email_Vendor_Commission_Transactions'] = new WC_Email_Vendor_Commission_Transactions();
         $wcmp_email['WC_Email_Vendor_Direct_Bank'] = new WC_Email_Vendor_Direct_Bank();
         $wcmp_email['WC_Email_Admin_Widthdrawal_Request'] = new WC_Email_Admin_Widthdrawal_Request();
         $wcmp_email['WC_Email_Vendor_Orders_Stats_Report'] = new WC_Email_Vendor_Orders_Stats_Report();
         $wcmp_email['WC_Email_Vendor_Contact_Widget'] = new WC_Email_Vendor_Contact_Widget();
-        $wcmp_email['WC_Email_Send_Report_Abuse'] = new WC_Email_Send_Report_Abuse();
+		$wcmp_email['WC_Email_Send_Report_Abuse'] = new WC_Email_Send_Report_Abuse();
+		$wcmp_email['WC_Email_Vendor_New_Announcement'] = new WC_Email_Vendor_New_Announcement();
+		$wcmp_email['WC_Email_Customer_Refund_Request'] = new WC_Email_Customer_Refund_Request();
+		$wcmp_email['WC_Email_Vendor_Product_Rejected'] = new WC_Email_Vendor_Product_Rejected();
+		$wcmp_email['WC_Email_Suspend_Vendor_Account'] = new WC_Email_Suspend_Vendor_Account();
 
         return array_merge( $emails, apply_filters( 'wcmp_email_classes', $wcmp_email ) );
     }

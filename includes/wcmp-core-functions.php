@@ -1014,41 +1014,63 @@ if (!function_exists('wcmp_get_vendor_review_info')) {
      * Get vendor review information
      * @global type $wpdb
      * @param type $vendor_term_id
+     * @param type $type values vendor-rating/product-rating
      * @return type
      */
-    function wcmp_get_vendor_review_info($vendor_term_id) {
+    function wcmp_get_vendor_review_info($vendor_term_id, $type = 'vendor-rating' ) {
         global $wpdb;
+        $default_rating = apply_filters( 'wcmp_vendor_review_rating_info_default_type', $type, $vendor_term_id );
         $rating_result_array = array(
             'total_rating' => 0,
-            'avg_rating' => 0
+            'avg_rating' => 0,
+            'rating_type' => $default_rating,
         );
-        $args_default = array(
-            'status' => 'approve',
-            'type' => 'wcmp_vendor_rating',
-            'meta_key' => 'vendor_rating_id',
-            'meta_value' => get_wcmp_vendor_by_term($vendor_term_id)->id,
-            'meta_query' => array(
-                'relation' => 'AND',
-                array(
-                    'key' => 'vendor_rating_id',
-                    'value' => get_wcmp_vendor_by_term($vendor_term_id)->id
-                ),
-                array(
-                    'key' => 'vendor_rating',
-                    'value' => '',
-                    'compare' => '!='
-                )
-            )
-        );
-        $args = apply_filters('wcmp_vendor_review_rating_args_to_fetch', $args_default);
-        $retting = 0;
-        $comments = get_comments($args);
-        if ($comments && count($comments) > 0) {
-            foreach ($comments as $comment) {
-                $retting += floatval(get_comment_meta($comment->comment_ID, 'vendor_rating', true));
+
+        if ( $default_rating === 'product-rating' ) {
+            $vendor = get_wcmp_vendor_by_term( $vendor_term_id );
+            $vendor_products = wp_list_pluck( $vendor->get_products_ids(), 'ID' );
+            $rating = $rating_pro_count = 0;
+            if( $vendor_products ) {
+                foreach( $vendor_products as $product_id ) {
+                    if( get_post_meta( $product_id, '_wc_average_rating', true ) ) {
+                        $rating += get_post_meta( $product_id, '_wc_average_rating', true );
+                        $rating_pro_count++;
+                    };
+                }
             }
-            $rating_result_array['total_rating'] = count($comments);
-            $rating_result_array['avg_rating'] = $retting / count($comments);
+            if( $rating_pro_count ) {
+                $rating_result_array['total_rating'] = $rating_pro_count;
+                $rating_result_array['avg_rating'] = $rating / $rating_pro_count;
+            }
+        } else {
+            $args_default = array(
+                'status' => 'approve',
+                'type' => 'wcmp_vendor_rating',
+                'meta_key' => 'vendor_rating_id',
+                'meta_value' => get_wcmp_vendor_by_term($vendor_term_id)->id,
+                'meta_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'key' => 'vendor_rating_id',
+                        'value' => get_wcmp_vendor_by_term($vendor_term_id)->id
+                    ),
+                    array(
+                        'key' => 'vendor_rating',
+                        'value' => '',
+                        'compare' => '!='
+                    )
+                )
+            );
+            $args = apply_filters('wcmp_vendor_review_rating_args_to_fetch', $args_default);
+            $rating = 0;
+            $comments = get_comments($args);
+            if ($comments && count($comments) > 0) {
+                foreach ($comments as $comment) {
+                    $rating += floatval(get_comment_meta($comment->comment_ID, 'vendor_rating', true));
+                }
+                $rating_result_array['total_rating'] = count($comments);
+                $rating_result_array['avg_rating'] = $rating / count($comments);
+            }
         }
 
         return $rating_result_array;
@@ -1621,6 +1643,11 @@ if (!function_exists('do_wcmp_data_migrate')) {
                     wp_schedule_event( time(), 'hourly', 'wcmp_orders_migration' );
                 }
             }
+            if (version_compare($previous_plugin_version, '3.5.0', '<=')) {
+                if (!$wpdb->get_var("SHOW COLUMNS FROM `{$wpdb->prefix}wcmp_cust_questions` LIKE 'status';")) {
+                    $wpdb->query("ALTER TABLE {$wpdb->prefix}wcmp_cust_questions ADD `status` text NOT NULL;");
+                }
+            }
             /* Migrate commission data into table */
             do_wcmp_commission_data_migrate();
         }
@@ -1838,6 +1865,54 @@ if (!function_exists('wcmp_count_commission')) {
             }
         }
         return $commission_count;
+    }
+
+}
+
+if (!function_exists('wcmp_count_to_do_list')) {
+
+    function wcmp_count_to_do_list() {
+        global $WCMp;
+        $to_do_list_count = 0;
+
+        // pending vendors
+        $get_pending_vendors = get_users('role=dc_pending_vendor');
+        $to_do_list_count += count( $get_pending_vendors );
+
+        $vendor_ids = get_wcmp_vendors(array(), 'ids');
+
+        // pending coupons
+        $args = array(
+            'posts_per_page' => -1,
+            'author__in' => $vendor_ids,
+            'post_type' => 'shop_coupon',
+            'post_status' => 'pending',
+        );
+        $get_pending_coupons = new WP_Query($args);
+        $to_do_list_count += count($get_pending_coupons->get_posts());
+
+        // pending products
+        $args = array(
+            'posts_per_page' => -1,
+            'author__in' => $vendor_ids,
+            'post_type' => 'product',
+            'post_status' => 'pending',
+        );
+        $get_pending_products = new WP_Query($args);
+        $to_do_list_count += count($get_pending_products->get_posts());
+
+        // pending bank transfer
+        $args = array(
+            'post_type' => 'wcmp_transaction',
+            'post_status' => 'wcmp_processing',
+            'meta_key' => 'transaction_mode',
+            'meta_value' => 'direct_bank',
+            'posts_per_page' => -1
+        );
+        $transactions = get_posts($args);
+        $to_do_list_count += count($transactions);
+
+        return $to_do_list_count; 
     }
 
 }
@@ -3845,7 +3920,8 @@ if ( ! function_exists( 'generate_hierarchical_taxonomy_html' ) ) {
 
     function generate_hierarchical_taxonomy_html( $taxonomy, $terms, $post_terms, $add_cap, $level = 0, $max_depth = 2 ) {
         $max_depth = apply_filters( 'wcmp_generate_hierarchical_taxonomy_html_max_depth', 5, $taxonomy, $terms, $post_terms, $level );
-        $tax_html = '<ul class="taxonomy-widget ' . $taxonomy . ' level-' . $level . '">';
+        $tax_html_class = ($level == 0) ? 'taxonomy-widget ' . $taxonomy . ' level-' . $level : '';
+        $tax_html = '<ul class="'.$tax_html_class.'">';
         foreach ( $terms as $term_id => $term_name ) {
             $child_html = '';
             if ( $max_depth > $level ) {

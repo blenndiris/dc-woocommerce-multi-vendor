@@ -1,11 +1,11 @@
 === WC Marketplace ===
-Contributors: Dualcube, greyparrots, purnendu, itzmekhokan
+Contributors: Dualcube, greyparrots, purnendu, itzmekhokan, rajsekharchatterjee11, sumitsingh89612
 Tags: multi vendor marketplace, woocommerce multivendor marketplace, multi seller store, product vendors, best marketplace plugin, multi seller, one product multi seller, woocommerce vendors, ebay, etsy, amazon, commission rate
 Donate link: https://wc-marketplace.com/donate
 Requires at least: 4.4
-Tested up to: 5.4
+Tested up to: 5.4.2
 Requires PHP: 5.6
-Stable tag: 3.4.11
+Stable tag: 3.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,57 @@ Ans. Obviously, you can! Join in on our [GitHub repository](https://github.com/d
 
 
 == Changelog ==
+
+= 3.5.3 - 2020-07-03 =
+* Added - Suspended Vendor Notification #357
+* Added - Confirm deletion option for vendors #376
+* Enhancement - Refund module enhancement #366
+* Fix - Multi layer capability issue resolved
+* Fix - Sub order missing for admin created order from backend #377
+* Fix - Product note display under product reviews section #374
+* Fix - All order status displays for orders table on dashboard
+* Fix - Error at the time of withdrawal #310
+* Fix - Error at admin report
+* Updated - Language file.
+
+= 3.5.2 - 2020-06-16 =
+* Added - Additional hook in WCMp report #357
+* Added - Hook to save global verifiy setting #352
+* Fix - Manual Refund from vendor not working #351
+* Fix - Vendorlist page minify issue.
+* Fix - Vendor store description image issue for template 2 and 3.
+* Fix - Key Performance exclude data #354
+* Fix - variable and function checking error #350
+* Updated - Language file.
+
+= 3.5.1 - 2020-05-31 =
+* Added - Product management flow #294.
+* Tweak - Backend WCMp report functionalities.
+* Fix - Product category hierarchy scroll issue #328
+* Fix - Announcement Email issue #332
+* Fix - Hide suborders in Rest API #306
+* Fix - Variable product coupon #309
+* Fix - Suborder creation via rest api #338
+* Fix - Backend report view for multiple admin user #337
+* Fix - BuddyPress member avatar issue
+* Fix - Resolve minor codes fixes for php 7.2+
+* Fix - Duplicate downloadable product option in my-account page #264
+* Updated - Language file.
+
+= 3.5.0 - 2020-05-19 =
+* Added - BuddyPress compatibilities.
+* Added - Announcement email to vendor.
+* Added - Product Q&As emails for vendor and customer.
+* Added - Product approval management.
+* Added - Customer refund request process for vendor orders.
+* Added - Vendor Review API endpoint. #235
+* Added - Backend WCMp core reports enhancement.
+* Tweak - Vendor endpoint with image and banner fields. #234
+* Tweak - Vendor reviews based on product reviews. #276
+* Fix - Regenerate commission issue. #285
+* Fix - Suborder refund sync with parent order
+* Updated - Language file.
+
 = 3.4.11 - 2020-04-14 =
 * Fix - Subscription suborders issue. #67
 * Fix - Vendor per product shipping issues. #253
@@ -823,5 +874,5 @@ Ans. Obviously, you can! Join in on our [GitHub repository](https://github.com/d
 
 == Upgrade Notice ==
 
-= 3.4.1 =
-WC Marketplace 3.4+ is a significantly major update and hence please make a full site backup or follow some standard steps(staging to live) before upgrading your marketplace to avoid any undesirable situations.
+= 3.5.0 =
+3.5+ is a major update. Make a full site backup and [review latest release](https://wc-marketplace.com/latest-release/) before upgrading your marketplace to avoid any undesirable situations.

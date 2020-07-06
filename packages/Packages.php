@@ -20,6 +20,7 @@ class Packages {
 	 * @var array Key is the package directory, value is the main package class which handles init.
 	 */
 	protected static $packages = array(
+		'wcmp-buddypress/wcmp-buddypress.php'   => 'WCMp_BuddyPress',
 		//'wcmp-blocks/wcmp-blocks.php'   => 'WCMp_Blocks',
 	);
 
@@ -67,9 +68,9 @@ class Packages {
 					self::missing_package( $package_dir );
 					continue;
 				}
-				if( apply_filters( 'wcmp_load_package_' . $package_dir, false, $package_class ) ) {
+				
+				if( apply_filters( 'wcmp_load_package_' . $package_dir, true, $package_class ) ) {
 					self::load_package( $package_dir );
-					call_user_func( array( $package_class, 'init' ) );
 				}
 			}
 		endif;

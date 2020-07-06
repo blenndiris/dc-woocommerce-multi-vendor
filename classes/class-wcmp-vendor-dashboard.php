@@ -444,7 +444,7 @@ Class WCMp_Admin_Dashboard {
                 $order = wc_get_order($_POST['order_id']);
                 $comment = esc_textarea($_POST['comment_text']);
                 $note_type = isset($_POST['note_type']) ? $_POST['note_type'] : '';
-		$is_customer_note = ( 'customer' === $note_type ) ? 1 : 0;
+		        $is_customer_note = ( 'customer' === $note_type ) ? 1 : 0;
                 $comment_id = $order->add_order_note($comment, $is_customer_note, true);
                 if( $is_customer_note ){
                     $email_note = WC()->mailer()->emails['WC_Email_Customer_Note'];
@@ -458,6 +458,29 @@ Class WCMp_Admin_Dashboard {
                 add_comment_meta($comment_id, '_vendor_id', $vendor->id);
                 wc_add_notice(__('Order note added', 'dc-woocommerce-multi-vendor'), 'success');
                 wp_redirect(esc_url(wcmp_get_vendor_dashboard_endpoint_url(get_wcmp_vendor_settings('wcmp_vendor_orders_endpoint', 'vendor', 'general', 'vendor-orders'), $order->get_id())));
+                die();
+            }
+
+            if (!empty($_POST['wcmp_submit_product_comment'])) {
+                // verify nonce
+                if ($_POST['vendor_add_product_nonce'] && !wp_verify_nonce($_POST['vendor_add_product_nonce'], 'dc-vendor-add-product-comment'))
+                    return false;
+                $user_id = $_POST['current_user_id'];
+                // Don't submit empty comments
+                if (empty($_POST['product_comment_text']))
+                    return false;
+                // Only submit if the order has the product belonging to this vendor
+                $product = wc_get_product($_POST['product_id']);
+                $comment = esc_textarea($_POST['product_comment_text']);
+                $comment_id = WCMp_Product::add_product_note($product->get_id(), $comment, $user_id);
+                // update comment author & email
+                add_comment_meta($comment_id, '_author_id', $user_id);
+                if(is_user_wcmp_vendor($user_id)) {
+                    wc_add_notice(__('Product note added', 'dc-woocommerce-multi-vendor'), 'success');
+                    wp_redirect(esc_url(wcmp_get_vendor_dashboard_endpoint_url(get_wcmp_vendor_settings('wcmp_vendor_orders_endpoint', 'vendor', 'general', 'edit-product'), $product->get_id())));
+                } else {
+                    wp_safe_redirect(admin_url('post.php?post='.$product->get_id().'&action=edit'));
+                }
                 die();
             }
         }
@@ -1825,6 +1848,10 @@ Class WCMp_Admin_Dashboard {
 
                 update_post_meta( $post_id, '_product_image_gallery', implode( ',', $attachment_ids ) );
 
+                //remove dismiss meta if exists
+                if( get_post_meta($post_id, '_dismiss_to_do_list', true) ) 
+                    delete_post_meta($post_id, '_dismiss_to_do_list');
+
                 // Policy tab data save
                 if ( get_wcmp_vendor_settings( 'is_policy_on', 'general' ) == 'Enable' && apply_filters( 'wcmp_vendor_can_overwrite_policies', true ) ) {
                     if ( apply_filters( 'can_vendor_edit_shipping_policy_field', true ) && isset( $_POST['_wcmp_shipping_policy'] ) ) {
@@ -2712,6 +2739,48 @@ Class WCMp_Admin_Dashboard {
             </div>
         </div>
         <?php
+    }
+
+    public function save_handler_vendor_orders( $postdata ) {
+        global $wp;
+        if( $postdata ) {
+            $vendor_order_id = $wp->query_vars[get_wcmp_vendor_settings( 'wcmp_vendor_orders_endpoint', 'vendor', 'general', 'vendor-orders' )];
+            if( isset( $postdata['update_cust_refund_status'] ) && $vendor_order_id ) {
+                if( isset( $postdata['refund_order_customer'] ) && $postdata['refund_order_customer'] ) {
+                    update_post_meta( $vendor_order_id, '_customer_refund_order', $postdata['refund_order_customer'] );
+                    // trigger customer email
+                    if( in_array( $postdata['refund_order_customer'], array( 'refund_reject', 'refund_accept' ) ) ) {
+
+                        $refund_details = array(
+                            'admin_reason' => isset( $postdata['refund_admin_reason_text'] ) ? $postdata['refund_admin_reason_text'] : '',
+                            );
+
+                        $order_status = '';
+                        if( $_POST['refund_order_customer'] == 'refund_accept' ) {
+                            $order_status = __( 'accepted', 'dc-woocommerce-multi-vendor' );
+                        }elseif( $_POST['refund_order_customer'] == 'refund_reject') {
+                            $order_status = __( 'rejected', 'dc-woocommerce-multi-vendor' );
+                        }
+                        // Comment note for suborder
+                        $order = wc_get_order( $vendor_order_id );
+                        $comment_id = $order->add_order_note( __('Vendor '.$order_status.' refund request for order #'.$vendor_order_id.' .', 'dc-woocommerce-multi-vendor') );
+                        // user info
+                        $user_info = get_userdata(get_current_user_id());
+                        wp_update_comment(array('comment_ID' => $comment_id, 'comment_author' => $user_info->user_name, 'comment_author_email' => $user_info->user_email));
+
+                        // Comment note for parent order
+                        $parent_order_id = wp_get_post_parent_id($vendor_order_id);
+                        $parent_order = wc_get_order( $parent_order_id );
+                        $comment_id_parent = $parent_order->add_order_note( __('Vendor '.$order_status.' refund request for order #'.$vendor_order_id.'.', 'dc-woocommerce-multi-vendor') );
+                        wp_update_comment(array('comment_ID' => $comment_id_parent, 'comment_author' => $user_info->user_name, 'comment_author_email' => $user_info->user_email));
+
+                        $mail = WC()->mailer()->emails['WC_Email_Customer_Refund_Request'];
+                        $billing_email = get_post_meta( $vendor_order_id, '_billing_email', true );
+                        $mail->trigger( $billing_email, $vendor_order_id, $refund_details, 'customer' );
+                    }
+                }
+            }
+        }
     }
 
 }

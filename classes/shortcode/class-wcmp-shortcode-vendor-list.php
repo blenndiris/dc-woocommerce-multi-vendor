@@ -53,7 +53,7 @@ if (!class_exists('WCMp_Shortcode_Vendor_List')) {
             } else {
                 $vendor_args = wp_parse_args($args, $default);
             }
-            $query_paged = ( is_front_page() && get_query_var('page') ) ? get_query_var('page') : ( get_query_var('paged') ) ? get_query_var('paged') : false;
+            $query_paged =  ( ( is_front_page() && get_query_var('page') ) ? get_query_var('page') : ( get_query_var('paged') ) ) ? get_query_var('paged') : false;
             if( $query_paged ) :
                 $current_page = max( 1, $query_paged );
                 $offset = ($current_page - 1) * $vendor_args['number'];
@@ -83,8 +83,8 @@ if (!class_exists('WCMp_Shortcode_Vendor_List')) {
             $frontend_assets_path = str_replace(array('http:', 'https:'), '', $frontend_assets_path);
             $suffix = defined('WCMP_SCRIPT_DEBUG') && WCMP_SCRIPT_DEBUG ? '' : '.min';
             $WCMp->library->load_gmap_api();
-            wp_register_style('wcmp_vendor_list', $frontend_assets_path . 'css/vendor-list.css', array(), $WCMp->version);
-            wp_register_script('wcmp_vendor_list', $frontend_assets_path . 'js/vendor-list.js', array('jquery','wcmp-gmaps-api'), $WCMp->version, true);
+            wp_register_style('wcmp_vendor_list', $frontend_assets_path . 'css/vendor-list' . $suffix . '.css', array(), $WCMp->version);
+            wp_register_script('wcmp_vendor_list', $frontend_assets_path . 'js/vendor-list' . $suffix . '.js', array('jquery','wcmp-gmaps-api'), $WCMp->version, true);
             
             wp_enqueue_script('frontend_js');
             wp_enqueue_script('wcmp_vendor_list');

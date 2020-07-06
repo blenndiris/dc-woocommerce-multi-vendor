@@ -57,13 +57,8 @@ class WCMp_Settings_To_Do_List {
             </table>
             <?php
         }
-        $vendor_ids = array();
-        $vendors = get_wcmp_vendors();
-        if (!empty($vendors) && is_array($vendors)) {
-            foreach ($vendors as $vendor) {
-                $vendor_ids[] = $vendor->id;
-            }
-        }
+
+        $vendor_ids = get_wcmp_vendors(array(), 'ids');
         //coupon
         $args = array(
             'posts_per_page' => -1,
@@ -197,12 +192,32 @@ class WCMp_Settings_To_Do_List {
                                 <?php break;
                             case 'dismiss':
                                 ?>
-                                            <td class="dismiss"><input class="vendor_dismiss_button" data-type="product" data-id="<?php echo $get_pending_product->ID; ?>"  type="button" id="dismiss_request" name="dismiss_request" value="Dismiss"></td>
-                                <?php
-                                break;
-                            default:
-                                do_action('wcmp_todo_pending_product_approval_table_row_data', $key, $get_pending_product);
-                                break;
+                                <td>
+                                    <a data-toggle="modal" data-target="#wcmp-product-dismiss-modal-<?php echo $get_pending_product->ID; ?>" data-ques="<?php echo $get_pending_product->ID; ?>" class="question-details"><input class="vendor_dismiss_button" type="button" value="Dismiss"></a>
+                                    <div class="modal fade" id="wcmp-product-dismiss-modal-<?php echo $get_pending_product->ID; ?>" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title"><?php echo __('Reason for dismissal', 'dc-woocommerce-multi-vendor'); ?></h4>
+
+                                                </div>
+                                                <div class="wcmp-product-dismiss-modal modal-body">
+                                                    <textarea class="form-control" rows="5" id="dismiss-reason-<?php echo $get_pending_product->ID; ?>" placeholder="<?php echo __('Add your note for seller', 'dc-woocommerce-multi-vendor'); ?>"></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" data-type="product" data-id="<?php echo $get_pending_product->ID; ?>" id="dismiss_request" name="dismiss_request" class="button action vendor_dismiss_submit"><?php echo __('Add', 'dc-woocommerce-multi-vendor'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                </td>
+                                    <?php
+                                    break;
+                                default:
+                                    do_action('wcmp_todo_pending_product_approval_table_row_data', $key, $get_pending_product);
+                                    break;
                         }
                     }
                 endif;
@@ -324,6 +339,50 @@ class WCMp_Settings_To_Do_List {
                 </tbody>
             </table>
             <?php
+        }
+
+         $args = array(
+            'posts_per_page' => -1,
+            'author__in' => $vendor_ids,
+            'post_type' => 'product',
+            'post_status' => 'publish',
+        );
+        $get_vendor_products = new WP_Query($args);
+        $get_vendor_products = $get_vendor_products->get_posts();
+        if (!empty($get_vendor_products) && apply_filters('admin_can_approve_qna_answer', true)) {
+            foreach ($get_vendor_products as $get_vendor_product) {
+                $get_pending_questions = $WCMp->product_qna->get_Pending_Questions($get_vendor_product->ID);
+                if (!empty($get_pending_questions)) {
+                    ?>
+                    <h3><?php echo apply_filters('to_do_pending_question_text', __('Pending Question Approval', 'dc-woocommerce-multi-vendor')); ?></h3>
+                    <table class="form-table" id="to_do_list">
+                        <tbody>
+                            <tr>
+                                <th><?php _e('Question by', 'dc-woocommerce-multi-vendor'); ?></th>
+                                <th><?php _e('Product Name', 'dc-woocommerce-multi-vendor'); ?></th>
+                                <th><?php _e('Question details', 'dc-woocommerce-multi-vendor'); ?></th>   
+                                <th><?php _e('Approve', 'dc-woocommerce-multi-vendor'); ?></th> 
+                                <th><?php _e('Reject', 'dc-woocommerce-multi-vendor'); ?></th> 
+                            </tr>
+                            <?php
+                            foreach ($get_pending_questions as $pending_question) {
+                                $question_by = get_userdata($pending_question->ques_by);
+                                ?>
+                                <tr>
+                                    <td class="wcmp_verification column-username" style="width:30%">    <img alt="" src="<?php echo $WCMp->plugin_url . 'assets/images/wp-avatar-frau.jpg'; ?>" class="avatar avatar-32 photo" height="32" width="32"><?php echo $question_by->data->display_name; ?>
+                                    </td>
+                                    <td class="edit"><?php echo get_the_title($pending_question->product_ID); ?>
+                                    </td>
+                                    <td><?php echo $pending_question->ques_details; ?></td>
+                                     <td><input class="activate_vendor question_verify_admin" id="question_response" type="button" data-verification="activate_vendor" data-action="verified" data-user_id="<?php echo $pending_question->ques_ID; ?>" data-product="<?php echo $pending_question->product_ID; ?>" value="accept"></td>
+                                     <td><input class="reject_vendor question_verify_admin" id="question_response" type="button" data-verification="reject_vendor" data-action="rejected" data-user_id="<?php echo $pending_question->ques_ID; ?>" data-product="<?php echo $pending_question->product_ID; ?>" value="Reject"></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    <?php
+                }
+            }
         }
         do_action('after_wcmp_to_do_list');
     }

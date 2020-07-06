@@ -378,9 +378,12 @@ class WCMp_Vendor {
             LEFT JOIN {$wpdb->prefix}term_relationships ON(
                     {$wpdb->prefix}posts.ID = {$wpdb->prefix}term_relationships.object_id
                 )
+            LEFT JOIN {$wpdb->prefix}term_taxonomy ON(
+                {$wpdb->prefix}term_relationships.term_taxonomy_id = {$wpdb->prefix}term_taxonomy.term_taxonomy_id
+            )
             WHERE
                 1 = 1 AND(
-                    {$wpdb->prefix}term_relationships.term_taxonomy_id IN( $this->term_id )
+                    {$wpdb->prefix}term_taxonomy.term_id IN( $this->term_id )
                 ) AND {$wpdb->prefix}posts.post_author IN( $this->id ) AND {$wpdb->prefix}posts.post_type = 'product' $where
             GROUP BY
                 $groupby
@@ -529,33 +532,25 @@ class WCMp_Vendor {
     public function get_vendor_orders_by_product($vendor_term_id, $product_id) {
         $order_dtl = array();
         if ($product_id && $vendor_term_id) {
-            $commissions = false;
+            $vendor_id = get_term_meta( $vendor_term_id, '_vendor_user_id', true );
             $args = array(
-                'post_type' => 'dc_commission',
-                'post_status' => array('publish', 'private'),
-                'posts_per_page' => -1,
-                'order' => 'asc',
-                'meta_query' => array(
-                    array(
-                        'key' => '_commission_vendor',
-                        'value' => absint($vendor_term_id),
-                        'compare' => '='
-                    ),
-                    array(
-                        'key' => '_commission_product',
-                        'value' => absint($product_id),
-                        'compare' => 'LIKE'
-                    ),
-                ),
+                'author' => $vendor_id,
+                'post_status' => array( 'wc-processing', 'wc-completed' )
             );
-            $commissions = get_posts($args);
-            if (!empty($commissions)) {
-                foreach ($commissions as $commission) {
-                    $order_dtl[] = get_post_meta($commission->ID, '_commission_order_id', true);
+            $orders = wcmp_get_orders( $args, 'object' );
+            
+            if( $orders ) {
+                foreach( $orders as $order ) {
+                    foreach( $order->get_items() as $item ) {
+                        $item_id = ( $item->get_variation_id() ) ? $item->get_variation_id() : $item->get_product_id();
+                        if( $product_id === $item_id ) {
+                            $order_dtl[] = $order->get_id();
+                        }
+                    }
                 }
             }
         }
-        return $order_dtl;
+        return apply_filters( 'wcmp_get_vendor_orders_by_product', $order_dtl, $vendor_term_id, $product_id );
     }
 
     /**

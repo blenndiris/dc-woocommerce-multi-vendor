@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 global $woocommerce, $WCMp;
 $vendor = get_current_vendor();
 $order = wc_get_order($order_id);
-if (!$order || !is_wcmp_vendor_order($order, true)) {
+if (!$order || !is_wcmp_vendor_order($order, apply_filters( 'wcmp_current_vendor_order_capability' ,true ))) {
     ?>
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -81,7 +81,13 @@ $subtotal = 0;
             <!-- Downloadable product permissions -->
             <?php
             $WCMp->template->get_template( 'vendor-dashboard/vendor-orders/views/html-order-downloadable-permissions.php', array( 'order' => $order, 'vendor_order' => $vendor_order, 'vendor' => $vendor ) );
-            ?>    
+            ?>
+            <!-- Customer refund request -->
+            <?php
+            if( apply_filters( 'wcmp_vendor_refund_capability' ,true ) ){
+                $WCMp->template->get_template( 'vendor-dashboard/vendor-orders/views/html-order-refund-customer.php', array( 'order' => $order, 'vendor_order' => $vendor_order, 'vendor' => $vendor ) );
+            }
+            ?>
         </div>
         
         <div class="col-md-4">
