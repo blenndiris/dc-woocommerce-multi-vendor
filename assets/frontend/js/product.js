@@ -1886,11 +1886,90 @@ var wcmpAfmProductEditor = ( function ( $ ) {
             }
         },
         saveProduct: function ( e ) { 
+            $( '#additional-errors' ).remove();
             $( 'form#wcmp-edit-product-form' ).trigger( 'before_product_save' );
             var status = ( e.target.id === 'wcmp_afm_product_submit' ) ? 'publish' : ( e.target.id === 'wcmp_afm_product_draft' ) ? 'draft' : '';
+
+            var requiredFields = {
+                'post_title': {
+                    get: function() {
+                        return $('#post_title').val();
+                    },
+                    error_message: 'Product title is required',
+                },
+                'short_description': {
+                    get: function() {
+                        return this.getTinymceContent( 'product_excerpt' );
+                    }.bind(this),
+                    error_message: 'Short description is required',
+                },
+                'coa': {
+                    get: function() {
+                        return $('[data-coa-id]').length > 0 || $('#product_coa').val();
+                    },
+                    error_message: 'Certificate of Authenticity is required'
+                },
+                'image': {
+                    get: function() {
+                        return $('#featured_img').val();
+                    },
+                    error_message: 'Product image is required'
+                },
+                'price': {
+                    get: function() {
+                        return $('#_regular_price').val();
+                    },
+                    error_message: 'Price is required'
+                },
+                'weight': {
+                    get: function() {
+                        return $('#_weight').val();
+                    },
+                    error_message: 'Weight is required'
+                },
+                'est_shipping_time': {
+                    get: function() {
+                        return $('#est_shipping_time').val();
+                    },
+                    error_message: 'Estimated shipping time is required'
+                },
+                'cbd_content': {
+                    get: function() {
+                        return $('#cbd_content').val();
+                    },
+                    error_message: 'CBD content is required'
+                },
+            }
+
+            var errors = [];
+
+            if (status === 'publish') {
+                var errors = Object.keys(requiredFields)
+                .map(function(f) {
+                    var field = requiredFields[f];
+                    var value = field.get();
+                    if (!value) {
+                        return field.error_message;
+                    }
+                    
+                    return false;
+                })
+                .filter(function(f) { 
+                    return f
+                });
+            }
+
             $( 'input:hidden[name="status"]' ).val( status );
             $( 'textarea#product_description' ).val( this.getTinymceContent( 'product_description' ) );
             $( 'textarea#product_excerpt' ).val( this.getTinymceContent( 'product_excerpt' ) );
+
+            if (errors.length) {
+                var errorList = '<ul class="woocommerce-error" role="alert" id="additional-errors">' + errors.map(function(e) { return '<li>' + e + '</li>' }).join('') + '</ul>';
+                $('.notice-wrapper').append(errorList);
+                $('.notice-wrapper').get(0).scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                return false;
+            }
+
             return true;
         },
         taxInputChanged: function( e ) { 

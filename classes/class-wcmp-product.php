@@ -57,6 +57,11 @@ class WCMp_Product {
         add_filter('parse_query', array($this, 'product_vendor_filters_query'));
         add_action('save_post', array(&$this, 'check_sku_is_unique'));
         add_action("save_post_product", array($this, 'set_vendor_added_product_flag'), 10, 3);
+        add_action("save_post_product", array($this, 'set_wholesale_price'), 10, 3);
+        add_action("save_post_product", array($this, 'set_coa'), 10, 3);
+        add_action("save_post_product", array($this, 'set_cbd_content'), 10, 3);
+        add_action("save_post_product", array($this, 'set_est_shipping_time'), 10, 3);
+        add_action("save_post_product", array($this, 'set_ingredients'), 10, 3);
 
         add_action('woocommerce_variation_options_dimensions', array($this, 'add_filter_for_shipping_class'), 10, 3);
         add_action('woocommerce_variation_options_tax', array($this, 'remove_filter_for_shipping_class'), 10, 3);
@@ -1216,7 +1221,7 @@ class WCMp_Product {
         if ($product) {
             $vendor = get_wcmp_product_vendors($product->get_id());
             if ($vendor) {
-                $title = __('Vendor', 'dc-woocommerce-multi-vendor');
+                $title = __('Seller Information', 'dc-woocommerce-multi-vendor');
                 $tabs['vendor'] = array(
                     'title' => $title,
                     'priority' => 20,
@@ -1458,6 +1463,42 @@ class WCMp_Product {
         }
     }
 
+    function set_wholesale_price($post_ID, $post, $update) {
+        if ($post_ID && !empty($_POST['wholesale_customer_wholesale_price'])) {
+            update_post_meta( $post_ID, 'wholesale_customer_wholesale_price', absint( $_POST['wholesale_customer_wholesale_price'] ) );
+        }
+    }
+
+    function set_coa($post_ID, $post, $update) {
+        $file = $_FILES['product_coa'];
+
+        if ($post_ID && $file && $file['name']) {
+            $upload_id = wcmp_upload_product_coa($file);
+
+            if (!empty($upload_id)) {
+                update_field('coa', $upload_id, $post_ID);
+            }
+        }
+    }
+
+    function set_ingredients($post_ID, $post, $update) {
+        if ($post_ID && !empty($_POST['product_ingredients'])) {
+            update_field('ingredients', $_POST['product_ingredients'], $post_ID);
+        }
+    }
+
+    function set_cbd_content($post_ID, $post, $update) {
+        if ($post_ID && !empty($_POST['cbd_content'])) {
+            update_field('cbd_content', $_POST['cbd_content'], $post_ID);
+        }
+    }
+
+    function set_est_shipping_time($post_ID, $post, $update) {
+        if ($post_ID && !empty($_POST['est_shipping_time'])) {
+            update_field('est_shipping_time', $_POST['est_shipping_time'], $post_ID);
+        }
+    }
+
     function wcmp_delete_product_action() {
         $products_url = wcmp_get_vendor_dashboard_endpoint_url(get_wcmp_vendor_settings('wcmp_products_endpoint', 'vendor', 'general', 'products'));
         $delete_product_redirect_url = apply_filters('wcmp_vendor_redirect_after_delete_product_action', $products_url);
@@ -1498,7 +1539,7 @@ class WCMp_Product {
             $vendor = get_wcmp_product_vendors($product->get_id());
             if ($vendor && apply_filters('wcmp_customer_questions_and_answers_enabled', true, $product->get_id())) {
                 $tabs['wcmp_customer_qna'] = array(
-                    'title' => __('Questions and Answers', 'dc-woocommerce-multi-vendor'),
+                    'title' => __('Questions & Answers', 'dc-woocommerce-multi-vendor'),
                     'priority' => 40,
                     'callback' => array($this, 'wcmp_customer_questions_and_answers_content')
                 );

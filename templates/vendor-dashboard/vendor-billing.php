@@ -59,7 +59,7 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
                         <label for="vendor_bank_account_type" class="control-label col-sm-3 col-md-3"><?php _e('Account type', 'dc-woocommerce-multi-vendor'); ?></label>
                         <div class="col-md-6 col-sm-9">
                             <select id="vendor_bank_account_type" name="vendor_bank_account_type" class="form-control">
-                                <option <?php if ($vendor_bank_account_type['value'] == 'current') echo 'selected' ?> value="current"><?php _e('Current', 'dc-woocommerce-multi-vendor'); ?></option>
+                                <option <?php if ($vendor_bank_account_type['value'] == 'current') echo 'selected' ?> value="current"><?php _e('Checking', 'dc-woocommerce-multi-vendor'); ?></option>
                                 <option <?php if ($vendor_bank_account_type['value'] == 'savings') echo 'selected' ?>  value="savings"><?php _e('Savings', 'dc-woocommerce-multi-vendor'); ?></option>
                             </select>
                         </div>

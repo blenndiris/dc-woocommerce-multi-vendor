@@ -7,7 +7,6 @@
         <div class="wcmp_regi_form_box">
             <?php if(!is_user_logged_in()) : 
                 $wcmp_vendor_general_settings_name = get_option('wcmp_vendor_general_settings_name');?>
-            <h3 class="reg_header2"><?php echo apply_filters('woocommerce_section_label', __('Account Details', 'dc-woocommerce-multi-vendor')); ?></h3>
             <?php if ('no' === get_option('woocommerce_registration_generate_username')) : ?>
                 <div class="wcmp-regi-12">
                     <label for="reg_username"><?php _e('Username', 'dc-woocommerce-multi-vendor'); ?> <span class="required">*</span></label>

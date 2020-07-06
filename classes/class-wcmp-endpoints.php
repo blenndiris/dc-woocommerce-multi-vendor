@@ -86,6 +86,10 @@ class WCMp_Endpoints {
                 'label' => __('Coupons', 'dc-woocommerce-multi-vendor'),
                 'endpoint' => get_wcmp_vendor_settings('wcmp_coupons_endpoint', 'vendor', 'general', 'coupons')
             )
+            , 'vendor-inquiry' => array(
+                'label' => __('Contact Leafz', 'dc-woocommerce-multi-vendor'),
+                'endpoint' => get_wcmp_vendor_settings('wcmp_vendor_orders_endpoint', 'vendor', 'general', 'vendor-inquiry')
+            )
             , 'vendor-orders' => array(
                 'label' => __('Vendor Orders', 'dc-woocommerce-multi-vendor'),
                 'endpoint' => get_wcmp_vendor_settings('wcmp_vendor_orders_endpoint', 'vendor', 'general', 'vendor-orders')

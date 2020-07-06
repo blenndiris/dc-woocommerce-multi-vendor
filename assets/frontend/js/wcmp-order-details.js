@@ -7,6 +7,7 @@ jQuery(function ($) {
         init: function () {
             $('#wcmp-order-details')
                     .on('click', 'button.refund-items', this.refund_items)
+                    .on('click', 'button.cancel-order', this.cancel_order)
                     .on('click', '.cancel-action', this.cancel)
                     // Refunds
                     .on('click', 'button.do-api-refund, button.do-manual-refund', this.refunds.do_refund)
@@ -137,6 +138,28 @@ jQuery(function ($) {
             $('#wcmp-order-details').find('div.refund').show();
             //$( '.wc-order-edit-line-item .wc-order-edit-line-item-actions' ).hide();
             return false;
+        },
+        cancel_order: function () {
+            var status_cnf = window.confirm(wcmp_order_details_js_script_data.i18n_do_cancel);
+            if(!status_cnf) return false;
+
+            order_id = $('#order_ID').val();
+            var data = {
+                action: 'wcmp_order_status_changed',
+                order_id: order_id,
+                selected_status: 'wc-cancelled'
+            };
+
+            $.post(wcmp_order_details_js_script_data.ajax_url, data, function (response) {
+                if (response) {
+                    $('.order_status_lbl').html('');
+                    if( response.status_key == 'wc-cancelled' ){
+                        $('.dropdown-order-statuses').hide();
+                    }
+                    $('.order_status_lbl').html(response.status_name);
+                    $('#order_current_status').val(response.status_key);
+                }
+            });
         },
         cancel: function () {
             $('div.wcmp-order-data-row-toggle').not('div.wcmp-order-actions').slideUp();
