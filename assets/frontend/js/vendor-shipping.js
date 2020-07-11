@@ -187,6 +187,7 @@
             event.preventDefault();
 
             var appObj = this;
+            var settings = Qs.parse($('#wcmp-vendor-edit-shipping-form').serialize());
 
             var methodID = $('#wcmp_shipping_method_edit_container #method_id_selected').val(),
                     instanceId = $('#wcmp_shipping_method_edit_container #instance_id_selected').val(),
@@ -198,7 +199,7 @@
                             instance_id: instanceId,
                             zone_id: zoneId,
                             method_id: methodID,
-                            settings: $('#wcmp-vendor-edit-shipping-form').serializeArray()
+                            settings: settings,
                         }
                     };
 

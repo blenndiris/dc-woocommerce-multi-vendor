@@ -176,6 +176,11 @@ class WCMp_Library {
         }
     }
 
+    public function load_qs_script_lib() {
+        wp_register_script('wcmp-qs', 'https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.js', array(), '6.9.4');
+        wp_enqueue_script('wcmp-qs');
+    }
+
     /**
      * Google Map API
      */

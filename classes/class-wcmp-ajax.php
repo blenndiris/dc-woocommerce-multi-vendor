@@ -3292,9 +3292,7 @@ class WCMp_Ajax {
         $posted_data = isset($_POST['posted_data']) ? $_POST['posted_data'] : array();
         $form_fields = array();
         if(isset($args['settings'])){
-            foreach ($args['settings'] as $field) {
-                $form_fields[$field['name']] = $field['value'];
-            }
+            $form_fields = $args['settings'];
         }
         $args['settings'] = apply_filters('wcmp_before_update_shipping_method_settings', array_merge($form_fields + $posted_data), $_POST);
 
