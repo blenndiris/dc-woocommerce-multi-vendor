@@ -1499,7 +1499,7 @@ Class WCMp_Admin_Dashboard {
         $args = array_merge($default, $args);
         if (!empty($title)) {
             ?>
-            <div class="panel-heading">
+            <div class="panel-heading d-flex">
                 <h3 class="pull-left">
             <?php if (!empty($args['icon'])) : ?>
                         <span class="icon_stand dashicons-before <?php echo $args['icon']; ?>"></span>
@@ -2371,9 +2371,13 @@ Class WCMp_Admin_Dashboard {
                         <div class="mt-5 mb-3">
                             <a href="<?php echo esc_url($this->get_next_step_link()); ?>" class="btn btn-primary"><?php esc_html_e("Let's go!", 'dc-woocommerce-multi-vendor'); ?></a>
                         </div>
-                        <div class="mb-5"> 
-                            <a href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( 'dashboard' ) . '?page=vendor-store-setup&skip_setup=1'; ?>"><?php esc_html_e('Not right now', 'dc-woocommerce-multi-vendor'); ?></a>
-                        <div>
+
+                        <?php if (get_field('wm_allow_skip', 'option')): ?>
+                            <div class="mb-5"> 
+                                <a href="<?php echo wcmp_get_vendor_dashboard_endpoint_url( 'dashboard' ) . '?page=vendor-store-setup&skip_setup=1'; ?>"><?php esc_html_e('Not right now', 'dc-woocommerce-multi-vendor'); ?></a>
+                            <div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </div>
@@ -2507,9 +2511,12 @@ Class WCMp_Admin_Dashboard {
                             <div class="text-center mt-5 mb-3">
                                 <input type="submit" class="btn-primary" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
                             </div>
-                            <div class="text-center mb-5"> 
+
+                            <?php if (get_field('s4_allow_skip', 'option')): ?>
+                                <div class="mb-5 text-center"> 
                                 <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
-                            <div>
+                                <div>
+                            <?php endif; ?>
                         </form>
 
                     </div>
@@ -2607,26 +2614,109 @@ Class WCMp_Admin_Dashboard {
                     <div class="mt-3 mb-5 text-center">
                         <h1 class="mb-2"><?php echo get_field('s5_header', 'option') ?></h1>
                         <h4><?php echo get_field('s5_sub_header', 'option') ?></h4>
-
+                        <?php if (wc_get_notices()): ?>
+                            <div class="text-left">
+                                <?php wc_print_notices(); ?>
+                            </div>
+                        <?php endif; ?>
                         <form method="post" class="wc-wizard-payment-gateway-form mt-5 text-left">
                             <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
 
                             <?php if (count($available_gateways) == 1 && isset($available_gateways['direct_bank'])): 
                                 // if the only gateay option is direct bank, display that form
                                 $vendor_bank_account_type_select = array(
-                                    'current' => __('Checking', 'dc-woocommerce-multi-vendor'),
-                                    'savings' => __('Savings', 'dc-woocommerce-multi-vendor'),
+                                    'current' => __( 'Checking', 'dc-woocommerce-multi-vendor' ),
+                                    'savings' => __( 'Savings', 'dc-woocommerce-multi-vendor' ),
                                 );
-                                $bank_account_fields = array(
-                                    "vendor_bank_account_type" => array('label' => __('Account type', 'dc-woocommerce-multi-vendor'), 'type' => 'select', 'id' => 'vendor_bank_account_type', 'label_for' => 'vendor_bank_account_type', 'name' => 'vendor_bank_account_type', 'options' => $vendor_bank_account_type_select, 'value' => $vendor_obj->bank_account_type, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_bank_name" => array('label' => __('Bank Name', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_bank_name', 'label_for' => 'vendor_bank_name', 'name' => 'vendor_bank_name', 'value' => $vendor_obj->bank_name, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_aba_routing_number" => array('label' => __('ABA Routing Number', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_aba_routing_number', 'label_for' => 'vendor_aba_routing_number', 'name' => 'vendor_aba_routing_number', 'value' => $vendor_obj->aba_routing_number, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_destination_currency" => array('label' => __('Destination Currency', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_destination_currency', 'label_for' => 'vendor_destination_currency', 'name' => 'vendor_destination_currency', 'value' => $vendor_obj->destination_currency, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_bank_address" => array('label' => __('Bank Address', 'dc-woocommerce-multi-vendor'), 'type' => 'textarea', 'id' => 'vendor_bank_address', 'label_for' => 'vendor_bank_address', 'name' => 'vendor_bank_address', 'rows'=>'6', 'cols'=>'53', 'value' => $vendor_obj->bank_address, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_iban" => array('label' => __('IBAN', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_iban', 'label_for' => 'vendor_iban', 'name' => 'vendor_iban', 'value' => $vendor_obj->iban, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_account_holder_name" => array('label' => __('Account Holder Name', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_account_holder_name', 'label_for' => 'vendor_account_holder_name', 'name' => 'vendor_account_holder_name', 'value' => $vendor_obj->account_holder_name, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                    "vendor_bank_account_number" => array('label' => __('Account Number', 'dc-woocommerce-multi-vendor'), 'type' => 'text', 'id' => 'vendor_bank_account_number', 'label_for' => 'vendor_bank_account_number', 'name' => 'vendor_bank_account_number', 'value' => $vendor_obj->bank_account_number, 'wrapper_class' => 'payment-gateway-direct_bank payment-gateway'),
-                                )
+                                $bank_account_fields             = array(
+                                    'vendor_bank_account_type'    => array(
+                                        'label'         => __( 'Account type', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'select',
+                                        'id'            => 'vendor_bank_account_type',
+                                        'label_for'     => 'vendor_bank_account_type',
+                                        'name'          => 'vendor_bank_account_type',
+                                        'options'       => $vendor_bank_account_type_select,
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_bank_account_type', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_bank_name'            => array(
+                                        'label'         => __( 'Bank Name', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'text',
+                                        'id'            => 'vendor_bank_name',
+                                        'label_for'     => 'vendor_bank_name',
+                                        'name'          => 'vendor_bank_name',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_bank_account_type', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_aba_routing_number'   => array(
+                                        'label'         => __( 'ABA Routing Number', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'password',
+                                        'id'            => 'vendor_aba_routing_number',
+                                        'label_for'     => 'vendor_aba_routing_number',
+                                        'name'          => 'vendor_aba_routing_number',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_aba_routing_number', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_destination_currency' => array(
+                                        'label'         => __( 'Destination Currency', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'text',
+                                        'id'            => 'vendor_destination_currency',
+                                        'label_for'     => 'vendor_destination_currency',
+                                        'name'          => 'vendor_destination_currency',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_destination_currency', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_bank_address'         => array(
+                                        'label'         => __( 'Bank Address', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'textarea',
+                                        'id'            => 'vendor_bank_address',
+                                        'label_for'     => 'vendor_bank_address',
+                                        'name'          => 'vendor_bank_address',
+                                        'rows'          => '6',
+                                        'cols'          => '53',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_bank_address', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_iban'                 => array(
+                                        'label'         => __( 'IBAN', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'text',
+                                        'id'            => 'vendor_iban',
+                                        'label_for'     => 'vendor_iban',
+                                        'name'          => 'vendor_iban',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_iban', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_account_holder_name'  => array(
+                                        'label'         => __( 'Account Holder Name', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'text',
+                                        'id'            => 'vendor_account_holder_name',
+                                        'label_for'     => 'vendor_account_holder_name',
+                                        'name'          => 'vendor_account_holder_name',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_account_holder_name', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                    'vendor_bank_account_number'  => array(
+                                        'label'         => __( 'Account Number', 'dc-woocommerce-multi-vendor' ),
+                                        'type'          => 'password',
+                                        'id'            => 'vendor_bank_account_number',
+                                        'label_for'     => 'vendor_bank_account_number',
+                                        'name'          => 'vendor_bank_account_number',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_bank_account_number', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    ),
+                                );
+
+                                if (get_field('s5_require_vendor_agreement', 'option')) {
+                                    $bank_account_fields['vendor_accept_agreement'] = array(
+                                        'label'         => get_field('s5_vendor_agreement_text', 'option'),
+                                        'type'          => 'checkbox',
+                                        'id'            => 'vendor_accept_agreement',
+                                        'label_for'     => 'vendor_accept_agreement',
+                                        'name'          => 'vendor_accept_agreement',
+                                        'value'         => get_user_meta($this->vendor->id, '_vendor_accept_agreement', true),
+                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
+                                    );
+                                }
                             ?> 
                                 <input type="hidden" name="vendor_payment_mode" value="direct_bank" />
                                 <?php foreach ($bank_account_fields as $field): ?>
@@ -2645,13 +2735,19 @@ Class WCMp_Admin_Dashboard {
                                             case 'textarea':
                                                     ?>
                                                         <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
-                                                        <textarea id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value=""  placeholder=""></textarea>
+                                                        <textarea id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value="<?php echo $field['value']; ?>"  placeholder=""></textarea>
+                                                    <?php 
+                                                break;
+                                            case 'checkbox':
+                                                    ?>
+                                                        <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
+                                                        <input type="checkbox" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" />
                                                     <?php 
                                                 break;
                                             default:
                                                     ?>
                                                         <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
-                                                        <input type="text" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value=""  placeholder="" />
+                                                        <input type="<?php echo $field['type']; ?>" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" value="<?php echo $field['value']; ?>"  placeholder="" />
                                                     <?php 
                                                 break;
                                         }
@@ -2678,10 +2774,11 @@ Class WCMp_Admin_Dashboard {
                             <div class="mt-5 mb-3 text-center">
                                 <input type="submit" class="btn btn-primary" value="<?php esc_attr_e('Continue', 'dc-woocommerce-multi-vendor'); ?>" name="save_step" />
                             </div>
-                            <div class="mb-5 text-center"> 
-                                <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
-                            <div>
-
+                            <?php if (get_field('s5_allow_skip', 'option')): ?>
+                                <div class="mb-5 text-center"> 
+                                    <a href="<?php echo esc_url($this->get_next_step_link()); ?>"><?php esc_html_e('Skip this step', 'dc-woocommerce-multi-vendor'); ?></a>
+                                <div>
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>
@@ -2708,8 +2805,21 @@ Class WCMp_Admin_Dashboard {
             'vendor_bank_account_number'
         );
 
+        if (get_field('s5_require_vendor_agreement', 'option')) {
+            $fields[] = 'vendor_accept_agreement';
+        }
+
         foreach ($fields as $field) {
             $value      = isset( $_POST[$field] ) ? wc_clean( wp_unslash( $_POST[$field] ) ) : '';
+            if ($field === 'vendor_accept_agreement') {
+                if ($value === 'on') {
+                    $value = true;
+                } else {
+                    wc_add_notice(__('You must accept the vendor agreement.', 'dc-woocommerce-multi-vendor'), 'error');
+                    return;
+                }
+            }
+            
             if ( $value ) update_user_meta( $this->vendor->id, '_' . $field, $value );
         }
 
