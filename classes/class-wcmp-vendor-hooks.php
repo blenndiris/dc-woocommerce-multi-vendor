@@ -31,6 +31,7 @@ class WCMp_Vendor_Hooks {
         add_action( 'wcmp_vendor_dashboard_vendor-withdrawal_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_withdrawal_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_transaction-details_endpoint', array( &$this, 'wcmp_vendor_dashboard_transaction_details_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_vendor-knowledgebase_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_knowledgebase_endpoint' ) );
+        add_action( 'wcmp_vendor_dashboard_vendor-inquiry_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_inquiry_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_vendor-tools_endpoint', array( &$this, 'wcmp_vendor_dashboard_vendor_tools_endpoint' ) );
         add_action( 'wcmp_vendor_dashboard_products-qna_endpoint', array( &$this, 'wcmp_vendor_dashboard_products_qna_endpoint' ) );
 
@@ -230,15 +231,33 @@ class WCMp_Vendor_Hooks {
                 , 'link_target' => '_self'
                 , 'nav_icon'    => 'wcmp-font ico-knowledgebase-icon'
             ),
-            'vendor-tools'         => array(
-                'label'       => __( 'Tools', 'dc-woocommerce-multi-vendor' )
-                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_tools_endpoint', 'vendor', 'general', 'vendor-tools' ) )
-                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_tools_capability', true )
+            // 'vendor-tools'         => array(
+            //     'label'       => __( 'Tools', 'dc-woocommerce-multi-vendor' )
+            //     , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_tools_endpoint', 'vendor', 'general', 'vendor-tools' ) )
+            //     , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_tools_capability', true )
+            //     , 'position'    => 80
+            //     , 'submenu'     => array()
+            //     , 'link_target' => '_self'
+            //     , 'nav_icon'    => 'wcmp-font ico-tools-icon'
+            // ),
+            'vendor-qna'         => array(
+                'label'       => __( 'Q&A', 'dc-woocommerce-multi-vendor' )
+                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( get_wcmp_vendor_settings( 'wcmp_vendor_products_qnas_endpoint', 'vendor', 'general', 'products-qna' ) )
+                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_vendor_products_qnas_capability', true )
                 , 'position'    => 80
                 , 'submenu'     => array()
                 , 'link_target' => '_self'
-                , 'nav_icon'    => 'wcmp-font ico-tools-icon'
-            )
+                , 'nav_icon'    => 'wcmp-font ico-questionmark-icon'
+            ),
+            'contact-leafz'            => array(
+                'label'       => __( 'Contact Leafz', 'dc-woocommerce-multi-vendor' )
+                , 'url'         => wcmp_get_vendor_dashboard_endpoint_url( 'vendor-inquiry' )
+                , 'capability'  => apply_filters( 'wcmp_vendor_dashboard_menu_dashboard_capability', true )
+                , 'position'    => 90
+                , 'submenu'     => array()
+                , 'link_target' => '_self'
+                , 'nav_icon'    => 'wcmp-font ico-contact-icon'
+            ),
         );
         return apply_filters( 'wcmp_vendor_dashboard_nav', $vendor_nav );
     }
@@ -484,9 +503,10 @@ class WCMp_Vendor_Hooks {
         wp_register_script( 'wcmp_product_classify', $WCMp->plugin_url . 'assets/frontend/js/product-classify.js', array( 'jquery', 'jquery-blockui' ), $WCMp->version, true );
         $script_param = array(
             'ajax_url' => $WCMp->ajax_url(),
-            'initial_graphic_url' => $WCMp->plugin_url.'assets/images/select-category-graphic.png',
+            'initial_graphic_url' => '',
             'i18n' => array(
-                'select_cat_list' => __( 'Select a category from the list', 'dc-woocommerce-multi-vendor' )
+                'select_cat_list' => __( 'Select a category from the list', 'dc-woocommerce-multi-vendor' ),
+                'select_cat_message' =>  __( '<p>Don\'t see the category you need?</p><p>Email <a href="mailto:admin@leafz.com">admin@leafz.com</a> to request a new product category.</p>', 'dc-woocommerce-multi-vendor' ),
             )
         );
         wp_enqueue_script( 'wcmp_product_classify' );
@@ -751,6 +771,15 @@ class WCMp_Vendor_Hooks {
         wp_enqueue_style( 'jquery-ui-style' );
         wp_enqueue_script( 'jquery-ui-accordion' );
         $WCMp->template->get_template( 'vendor-dashboard/vendor-university.php' );
+    }
+
+    /**
+     * Display Vendor inquiry content
+     * @global object $WCMp
+     */
+    public function wcmp_vendor_dashboard_vendor_inquiry_endpoint() {
+        global $WCMp;
+        $WCMp->template->get_template( 'vendor-dashboard/vendor-inquiry.php' );
     }
 
     /**

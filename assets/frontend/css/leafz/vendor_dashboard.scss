@@ -1,0 +1,402 @@
+$white:    #fff;
+$gray-100: #f7f7f8;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #3f3f3f;
+$gray-800: #2e2e2e;
+$gray-900: #19191a;
+$black:    #000;
+
+$primary:       #87ad4c;
+$secondary:     #0e4f09;
+$tertiary:      #edf3e4;
+$quaternary:    #b3ce25;
+$success:       $secondary;
+$info:          #17a2b8;
+$warning:       #e1ef25;
+$danger:        #c11513;
+$light:         #f7f7f8;
+$dark:          #252f3d;
+
+.wcmp-color-scheme-leafz {
+    .navbar {
+        .topbar-left {
+            background: $white;
+        }
+    }
+
+    .navbar-default {
+        .navbar-toggle {
+            .icon-bar {
+                background: $primary;
+            }
+        }
+    }
+
+    .staticstics-panel-wrap {
+        .panel-body {
+            .compare-stat-info {
+                &:after {
+                    background: $primary;
+                    color: $primary;
+                }
+            }
+
+            .stat-detail-info {
+                i {
+                    color: $primary;
+                }
+            }
+
+            >h2 {
+                background: $dark;
+            }
+        }
+    }
+
+    .progress-bar {
+        background: $primary;
+    }
+
+    table.dataTable.dtr-inline.collapsed {
+        >tbody {
+            >tr[role="row"] {
+                >td {
+                    &:first-child {
+                        &:before {
+                            background: $primary;
+                        }
+                    }
+                }
+
+                >th {
+                    &:first-child {
+                        &:before {
+                            background: $primary;
+                        }
+                    }
+                }
+            }
+
+            >tr.parent {
+                >td {
+                    &:first-child {
+                        &:before {
+                            background: $dark;
+                        }
+                    }
+                }
+
+                >th {
+                    &:first-child {
+                        &:before {
+                            background: $dark;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    input[type=radio] {
+        &:checked {
+            &:before {
+                background: $primary;
+            }
+        }
+    }
+
+    .navbar-default.sidebar {
+        ul {
+            li {
+                a.active {
+                    background-color: $gray-900;
+                    color: #fff;
+                }
+            }
+        }
+
+        a {
+            &:hover {
+                background-color: $dark;
+                color: #fff;
+            }
+
+            &:focus {
+                background-color: $dark;
+                color: #fff;
+            }
+        }
+    }
+
+    .sidebar {
+        background: $dark;
+        color: #bcb7b2;
+
+        a.active {
+            i {
+                color: #e9e4e0;
+            }
+        }
+    }
+
+    .vendor-cover-wrap {
+        .cover-pic-button {
+            button {
+                color: #fff;
+                background-color: $primary;
+                border-color: $primary;
+            }
+        }
+
+        .vendor-profile-pic-wraper {
+            .profile-pic-btn {
+                color: #fff;
+                background-color: $primary;
+                border-color: $primary;
+            }
+        }
+    }
+
+    .woocommerce-exporter-wrapper {
+        .button {
+            color: #fff;
+            background-color: $primary;
+            border-color: $primary;
+        }
+
+        .wc-progress-steps {
+            li.active {
+                border-color: $primary !important;
+                color: $primary !important;
+
+                &::before {
+                    border-color: $primary !important;
+                }
+            }
+        }
+    }
+
+    .woocommerce-importer-wrapper {
+        .button {
+            color: #fff;
+            background-color: $primary;
+            border-color: $primary;
+        }
+
+        .wc-progress-steps {
+            li.active {
+                border-color: $primary !important;
+                color: $primary !important;
+
+                &::before {
+                    border-color: $primary !important;
+                }
+            }
+        }
+    }
+
+    .woocommerce-progress-form-wrapper {
+        .button {
+            color: #fff;
+            background-color: $primary;
+            border-color: $primary;
+        }
+
+        .wc-progress-steps {
+            li.active {
+                border-color: $primary !important;
+                color: $primary !important;
+
+                &::before {
+                    border-color: $primary !important;
+                }
+            }
+        }
+    }
+
+    .btn.btn-default {
+        color: #fff;
+        background-color: $primary;
+        border-color: $primary;
+    }
+
+    .btn.btn-secondary {
+        color: #fff;
+        background-color: $dark;
+        border-color: $dark;
+    }
+
+    .pagination {
+        li.active {
+            a {
+                background: $primary;
+                border-color: $primary;
+            }
+        }
+    }
+
+    a {
+        color: $primary;
+
+        &:hover {
+            color: $dark;
+        }
+    }
+
+    .media-body {
+        a {
+            color: $primary;
+
+            &:hover {
+                color: $dark;
+            }
+        }
+    }
+
+    .sidebar.navbar-default {
+        ul {
+            a {
+                &:hover {
+                    i {
+                        color: $primary;
+                        color: $primary;
+                    }
+                }
+            }
+
+            a.active {
+                i {
+                    color: $primary;
+                    color: $primary;
+                }
+            }
+        }
+    }
+
+    .navbar-top-links {
+        li.notification-link {
+            a {
+                &:hover {
+                    color: $primary;
+
+                    i {
+                        color: $primary;
+                    }
+                }
+            }
+        }
+
+        li {
+            a {
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+    }
+
+    ul.nav {
+        .login-user {
+            a {
+                &:hover {
+                    i {
+                        color: $primary;
+                    }
+                }
+            }
+
+            .dropdown-menu.dropdown-user {
+                a {
+                    &:hover {
+                        color: $primary;
+                    }
+                }
+            }
+        }
+    }
+
+    .transaction-list {
+        color: $primary;
+    }
+
+    .product-import.wcmp_displaybox2m {
+        h3 {
+            color: $primary;
+        }
+    }
+
+    .wcmp_displaybox2 {
+        h3 {
+            color: $primary;
+        }
+    }
+
+    input[type=checkbox] {
+        &:checked {
+            &:before {
+                color: $primary;
+            }
+        }
+    }
+
+    .wcmp_vendor_transaction_details {
+        color: #fff;
+
+        .panel-body {
+            background: $primary !important;
+        }
+
+        .panel-footer {
+            background: $primary !important;
+
+            a {
+                color: #fff;
+            }
+        }
+    }
+
+    .top-user-nav {
+        >li {
+            a.dropdown-toggle {
+                background: $dark;
+            }
+        }
+    }
+
+    .current-stat-report {
+        color: $primary;
+        background: rgba(49, 111, 168, 0.15);
+    }
+
+    .product-tab-nav-holder {
+        ul {
+            li.active {
+                a {
+                    border-top-color: $primary;
+
+                    &:hover {
+                        border-top-color: $primary;
+                    }
+
+                    &:focus {
+                        border-top-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+
+    .primary-color {
+        color: $primary;
+    }
+
+    .wcmp-vendor-ledger-report-row {
+        .bg-ledger {
+            background: $primary;
+        }
+    }
+}

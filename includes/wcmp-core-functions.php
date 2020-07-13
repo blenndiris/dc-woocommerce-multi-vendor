@@ -1,5 +1,66 @@
 <?php
 
+
+if (!function_exists('wcmp_upload_product_coa')) {
+    function wcmp_upload_product_coa($file) {
+        $wordpress_upload_dir = wp_upload_dir();
+        // $wordpress_upload_dir['path'] is the full server path to wp-content/uploads/2017/05, for multisite works good as well
+        // $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
+        $i = 1; // number of tries when the file with the same name is already exists
+        
+        $new_file_path = $wordpress_upload_dir['path'] . '/' . $file['name'];
+
+        // TODO - This fails and it should not... have to hard code application/pdf which
+        // will not scale if we want to allow other types of files.
+        //
+        // $new_file_mime = mime_content_type( $file['tmp_name'] );
+        $new_file_mime = 'application/pdf';
+
+        if ($new_file_mime == FALSE)  {
+            throw new Exception( 'Failed to detect mime type' );
+        }
+        
+        if( empty( $file ) )
+            throw new Exception( 'Certificate of Authenticity is required.' );
+        
+        if( $file['error'] )
+            throw new Exception( $file['error'] );
+        
+        if( $file['size'] > wp_max_upload_size() )
+            throw new Exception( 'The file uploaded is too large. Maximum size: ' .  wp_max_upload_size() );
+        
+        if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
+            throw new Exception( 'Certificate of Authenticity must be in PDF format.' );
+        
+        while( file_exists( $new_file_path ) ) {
+            $i++;
+            $new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $file['name'];
+        }
+        
+        // looks like everything is OK
+        if( move_uploaded_file( $file['tmp_name'], $new_file_path ) ) {
+        
+        
+            $upload_id = wp_insert_attachment( array(
+                'guid'           => $new_file_path, 
+                'post_mime_type' => $new_file_mime,
+                'post_title'     => preg_replace( '/\.[^.]+$/', '', $file['name'] ),
+                'post_content'   => '',
+                'post_status'    => 'inherit'
+            ), $new_file_path );
+        
+            // wp_generate_attachment_metadata() won't work if you do not include this file
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        
+            // Generate and save the attachment metas into the database
+            wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );    
+            
+            // Return the attachment id
+            return $upload_id;
+        }
+    }   
+}
+
 if (!function_exists('get_wcmp_vendor_settings')) {
 
     /**
@@ -3493,6 +3554,13 @@ if (!function_exists('wcmp_list_categories')) {
                 if(!empty($r['selected']) && $cat->term_id == $r['selected'] ) $list_class .= ' active';
                 $list_class = apply_filters('wcmp_list_categories_list_style_classes', $list_class, $cat);
                 $link = apply_filters('wcmp_list_categories_get_term_link', ($r['cat_link']) ? $r['cat_link'] : get_term_link($cat->term_id, $taxonomy), $cat, $r);
+
+                // do not allow vendors to set uncategorized products
+                //
+                if ($cat->name == 'Uncategorized') {
+                    continue;
+                } 
+
                 if ('list' == $r['style']) {
                     //<li><a href="#"><span>Grocery & Gourmet Foods</span></a></li>
                     $output .= "<li class='$list_class' data-term-id='$cat->term_id' data-taxonomy='$taxonomy'><a href='$link'><span>" . apply_filters('wcmp_list_categories_term_name', $cat->name, $cat) . "</span></a>$inner_html</li>";

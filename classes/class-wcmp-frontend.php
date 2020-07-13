@@ -393,6 +393,7 @@ class WCMp_Frontend {
             $this->wcmp_dequeue_global_style();
         }
 
+        
         wp_register_style('frontend_css', $frontend_style_path . 'frontend' . $suffix . '.css', array(), $WCMp->version);
         wp_register_style('product_css', $frontend_style_path . 'product' . $suffix . '.css', array(), $WCMp->version);
         wp_register_style('vandor-dashboard-style', $frontend_style_path . 'vendor_dashboard' . $suffix . '.css', array(), $WCMp->version);
@@ -405,8 +406,11 @@ class WCMp_Frontend {
         wp_style_add_data('frontend_css', 'rtl', 'replace');
         wp_style_add_data('product_css', 'rtl', 'replace');
         wp_style_add_data('advance-product-manager', 'rtl', 'replace');
-
+        
         if (is_vendor_dashboard() && is_user_logged_in() && (is_user_wcmp_vendor(get_current_user_id()) || is_user_wcmp_pending_vendor(get_current_user_id()) || is_user_wcmp_rejected_vendor(get_current_user_id()))) {
+            // Custom Leafz theme styles to get added to the Vendor Dashboard
+            wp_enqueue_style('vendor-dashboard', get_stylesheet_directory_uri().'/dist/css/vendor-dashboard.css' );
+            
             wp_enqueue_style('dashicons');
             wp_enqueue_style('jquery-ui-style');
             $WCMp->library->load_bootstrap_style_lib();
