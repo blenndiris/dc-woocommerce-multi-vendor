@@ -9486,7 +9486,12 @@ ul.nav .login-user {
     margin: 1px 26px 0 0; }
     ul.nav .login-user .dropdown-menu.dropdown-user a {
       padding: 7px 15px;
-      margin: 0; }
+      margin: 0;
+      display: -webkit-box;
+      display: flex;
+      font-size: 14px;
+      -webkit-box-align: center;
+              align-items: center; }
       ul.nav .login-user .dropdown-menu.dropdown-user a:hover {
         background-color: transparent;
         color: #3f85b9; }
@@ -9620,8 +9625,7 @@ ul.nav .login-user {
     background-color: transparent; }
 
 .top-user-nav {
-  height: 100%;
-  width: 100px; }
+  height: 100%; }
   .top-user-nav > li {
     height: 100%; }
     .top-user-nav > li a.dropdown-toggle {
@@ -9643,6 +9647,9 @@ ul.nav .login-user {
 
 .btm-nav-fixed {
   margin-top: 19px; }
+
+.sidebar-nav .nav-item {
+  width: 100%; }
 
 .sidebar {
   color: #9a9a9a;
