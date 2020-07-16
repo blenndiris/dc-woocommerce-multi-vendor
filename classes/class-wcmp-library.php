@@ -41,6 +41,8 @@ class WCMp_Library {
 
         $this->bootstrap_lib_url = $this->lib_url . 'bootstrap/';
 
+        $this->popper_lib_url = $this->lib_url . 'popper/';
+
         $this->jqvmap = $this->lib_url . 'jqvmap/';
 
         $this->dataTable_lib_url = $this->lib_url . 'dataTable/';
@@ -161,15 +163,22 @@ class WCMp_Library {
     }
 
     public function load_bootstrap_style_lib() {
-        wp_register_style('wcmp-bootstrap-style', $this->bootstrap_lib_url . 'css/bootstrap.min.css', array(), '3.3.7');
+        wp_register_style('wcmp-bootstrap-style', $this->bootstrap_lib_url . 'css/bootstrap.min.css', array(), '4.5.0');
         wp_enqueue_style('wcmp-bootstrap-style');
     }
-
+    
     public function load_bootstrap_script_lib() {
-        wp_register_script('wcmp-bootstrap-script', $this->bootstrap_lib_url . 'js/bootstrap.min.js', array('jquery'), '3.3.7');
+        wp_register_script('wcmp-bootstrap-script', $this->bootstrap_lib_url . 'js/bootstrap.min.js', array('jquery', 'wcmp-popper-js'), '4.5.0');
+        wp_register_script('wcmp-popper-js', $this->popper_lib_url . 'popper.min.js', array('jquery'), '1.12.9');
         if (!defined('WCMP_UNLOAD_BOOTSTRAP_LIB')) {
             wp_enqueue_script('wcmp-bootstrap-script');
+            wp_enqueue_script('wcmp-popper-js');
         }
+    }
+
+    public function load_qs_script_lib() {
+        wp_register_script('wcmp-qs', 'https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.js', array(), '6.9.4');
+        wp_enqueue_script('wcmp-qs');
     }
 
     /**

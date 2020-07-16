@@ -359,6 +359,7 @@ class WCMp_Frontend {
 
             $WCMp->library->load_bootstrap_script_lib();
             $WCMp->library->load_qtip_lib();
+            $WCMp->library->load_qs_script_lib();
             wp_enqueue_script('wcmp_frontend_vdashboard_js');
             wp_enqueue_script('wcmp_new_vandor_dashboard_js');
             wp_enqueue_script('vendor_order_by_product_js');
