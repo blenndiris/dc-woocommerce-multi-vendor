@@ -68,6 +68,7 @@
                 success: function (response) {
                     $(appObj.vendor_shipping_methods).html(response.data.html).show();
                     $(appObj.shipping_zone_table).hide();
+                    $('#select_zone_states').select2();
                 },
                 complete: function () {
                     $('#wcmp_settings_form_shipping_by_zone').unblock();
