@@ -2438,27 +2438,23 @@ Class WCMp_Admin_Dashboard {
                     <div class="mt-3 mb-5 text-center">
                         <h1 class="mb-2"><?php echo get_field('s4_header', 'option') ?></h1>
                         <h4><?php echo get_field('s4_sub_header', 'option') ?></h4>
-
+                        <?php if (wc_get_notices()): ?>
+                            <div class="text-left">
+                                <?php wc_print_notices(); ?>
+                            </div>
+                        <?php endif; ?>
                         <form method="post" class="store-address-info text-left mt-5">
                             <?php wp_nonce_field( 'wcmp-vendor-setup' ); ?>
                             
                             <div class="store-address-container">
                                 
-                                <label class="location-prompt" for="store_name"><?php esc_html_e('Store Name', 'dc-woocommerce-multi-vendor'); ?></label>
+                                <label class="location-prompt" for="store_name"><?php esc_html_e('Store Name', 'dc-woocommerce-multi-vendor'); ?> <span class="required">*</span></label>
                                 <input type="text" id="store_name" class="location-input" name="store_name" value="<?php echo esc_attr( $store_name ); ?>"  placeholder="" />
 
                                 <label class="location-prompt" for="vendor_description"><?php esc_html_e('Store Description', 'dc-woocommerce-multi-vendor'); ?></label>
                                 <?php wp_editor( '', 'vendor_description', $_wp_editor_settings); ?>
 
-                                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Where is your store based?', 'woocommerce' ); ?></label>
-                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
-                                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
-                                    <option selected></option>
-                                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-                                <?php endforeach; ?>
-                                </select>
-
-                                <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?></label>
+                                <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?> <span class="required">*</span></label>
                                 <input type="text" id="store_address_1" class="location-input" name="store_address_1" value="<?php echo esc_attr( $address ); ?>" />
 
                                 <label class="location-prompt" for="store_address_2"><?php esc_html_e( 'Address line 2', 'woocommerce' ); ?></label>
@@ -2466,25 +2462,36 @@ Class WCMp_Admin_Dashboard {
 
                                 <div class="city-and-postcode">
                                     <div>
-                                        <label class="location-prompt" for="store_city"><?php esc_html_e( 'City', 'woocommerce' ); ?></label>
+                                        <label class="location-prompt" for="store_city"><?php esc_html_e( 'City', 'woocommerce' ); ?> <span class="required">*</span></label>
                                         <input type="text" id="store_city" class="location-input" name="store_city" value="<?php echo esc_attr( $city ); ?>" />
                                     </div>
                                     <div class="store-state-container hidden">
                                         <label for="store_state" class="location-prompt">
-                                                <?php esc_html_e( 'State', 'woocommerce' ); ?>
+                                                <?php esc_html_e( 'State', 'woocommerce' ); ?> <span class="required">*</span>
                                         </label>
                                         <select id="store_state" name="store_state" data-placeholder="<?php esc_attr_e( 'Choose a state&hellip;', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'State', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown"></select>
                                     </div>
                                     <div>
-                                        <label class="location-prompt" for="store_postcode"><?php esc_html_e( 'Postcode / ZIP', 'woocommerce' ); ?></label>
+                                        <label class="location-prompt" for="store_postcode"><?php esc_html_e( 'Postcode / ZIP', 'woocommerce' ); ?> <span class="required">*</span></label>
                                         <input type="text" id="store_postcode" class="location-input" name="store_postcode" value="<?php echo esc_attr( $postcode ); ?>" />
                                     </div>
                                 </div>
                                 <div class="city-and-postcode">
                                     <div>
-                                        <label class="location-prompt" for="store_phone"><?php esc_html_e( 'Phone', 'dc-woocommerce-multi-vendor' ); ?></label>
+                                        <label class="location-prompt" for="store_phone"><?php esc_html_e( 'Phone', 'dc-woocommerce-multi-vendor' ); ?> <span class="required">*</span></label>
                                         <input type="text" id="store_phone" class="location-input" name="store_phone" value="<?php echo esc_attr( $store_phone ); ?>" />
                                     </div>
+                                </div>
+
+                                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Country', 'woocommerce' ); ?> <span class="required">*</span></label>
+                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
+                                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+                                    <option selected></option>
+                                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+                                <?php endforeach; ?>
+                                </select>
+
+                                <div class="city-and-postcode">
                                     <div>
                                         <label class="location-prompt" for="timezone_string"><?php esc_html_e( 'Timezone', 'dc-woocommerce-multi-vendor' ); ?></label>
                                         <select id="timezone_string" name="timezone_string" class="location-input wc-enhanced-select dropdown" aria-describedby="timezone-description">
@@ -2502,6 +2509,14 @@ Class WCMp_Admin_Dashboard {
                                 <label class="location-prompt" for="_vendor_cancellation_policy"><?php esc_html_e('Cancellation/Return/Exchange Policy', 'dc-woocommerce-multi-vendor'); ?></label>
                                 <?php wp_editor( '', '_vendor_cancellation_policy', $_wp_editor_settings); ?>
                             </div>
+
+                            <?php if (get_field('s5_require_vendor_agreement', 'option')): ?>
+                                <div class="d-flex">
+                                    <input type="checkbox" id="vendor_accept_agreement" class="location-input" name="vendor_accept_agreement" style="margin-top: 5px; margin-right: 10px">
+                                    <label class="location-prompt" for="vendor_accept_agreement"><?php echo get_field('s5_vendor_agreement_text', 'option'); ?></label>
+                                </div>
+                            <?php endif; ?>
+
                             <script type="text/javascript">
                                 var wc_setup_currencies = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $currency_by_country ) ); ?>' ) );
                                 var wc_base_state       = "<?php echo esc_js( $state ); ?>";
@@ -2535,16 +2550,63 @@ Class WCMp_Admin_Dashboard {
         global $WCMp;
         if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wcmp-vendor-setup' ) ) return;
 
-        $storename      = isset( $_POST['store_name'] ) ? wc_clean( wp_unslash( $_POST['store_name'] ) ) : '';
+        $storename  = isset( $_POST['store_name'] ) ? wc_clean( wp_unslash( $_POST['store_name'] ) ) : '';
+        if (!$storename) {
+            wc_add_notice(__('Store name is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $vendor_description      = isset( $_POST['vendor_description'] ) ? wc_clean( wp_unslash( $_POST['vendor_description'] ) ) : '';
         $address_1      = isset( $_POST['store_address_1'] ) ? wc_clean( wp_unslash( $_POST['store_address_1'] ) ) : '';
+        if (!$address_1) {
+            wc_add_notice(__('Address is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $address_2      = isset( $_POST['store_address_2'] ) ? wc_clean( wp_unslash( $_POST['store_address_2'] ) ) : '';
         $city           = isset( $_POST['store_city'] ) ? wc_clean( wp_unslash( $_POST['store_city'] ) ) : '';
+        if (!$city) {
+            wc_add_notice(__('City is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $country        = isset( $_POST['store_country'] ) ? wc_clean( wp_unslash( $_POST['store_country'] ) ) : '';
+        if (!$country) {
+            wc_add_notice(__('Country is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $state          = isset( $_POST['store_state'] ) ? wc_clean( wp_unslash( $_POST['store_state'] ) ) : '';
+        if (!$state) {
+            wc_add_notice(__('State is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $postcode       = isset( $_POST['store_postcode'] ) ? wc_clean( wp_unslash( $_POST['store_postcode'] ) ) : '';
+        if (!$postcode) {
+            wc_add_notice(__('Postcode is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
+        
         $storephone     = isset( $_POST['store_phone'] ) ? wc_clean( wp_unslash( $_POST['store_phone'] ) ) : '';
+        if (!$storephone) {
+            wc_add_notice(__('Phone is required', 'dc-woocommerce-multi-vendor'), 'error');
+            return;
+        }
+
         $tzstring       = isset( $_POST['timezone_string'] ) ? wc_clean( wp_unslash( $_POST['timezone_string'] ) ) : '';
+
+
+        if (get_field('s5_require_vendor_agreement', 'option')) {
+            $require_vendor_agreement     = isset( $_POST['vendor_accept_agreement'] ) && 'on' === $_POST['vendor_accept_agreement'] ? true : false;
+            if (!$require_vendor_agreement) {
+                wc_add_notice(__('You must accept the seller agreement', 'dc-woocommerce-multi-vendor'), 'error');
+                return;
+            } else {
+                update_user_meta( $this->vendor->id, '_vendor_accept_agreement', $require_vendor_agreement );
+            }
+        }
 
         if ( $storename ) {
             wp_update_term( $this->vendor->term_id, $WCMp->taxonomy->taxonomy_name, array('name' => $storename) );
@@ -2604,8 +2666,6 @@ Class WCMp_Admin_Dashboard {
     public function vendor_payment_setup() { 
         $vendor_payment_mode = ( $this->vendor->payment_mode ) ? $this->vendor->payment_mode : '';
         $available_gateways   = apply_filters( 'wcmp_vendor_setup_wizard_available_payment_gateways', get_wcmp_available_payment_gateways(), $this->vendor );
-
-        
 
         ?>
         <div class="container-fluid container-fluid--max mb-5">
@@ -2705,18 +2765,6 @@ Class WCMp_Admin_Dashboard {
                                         'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
                                     ),
                                 );
-
-                                if (get_field('s5_require_vendor_agreement', 'option')) {
-                                    $bank_account_fields['vendor_accept_agreement'] = array(
-                                        'label'         => get_field('s5_vendor_agreement_text', 'option'),
-                                        'type'          => 'checkbox',
-                                        'id'            => 'vendor_accept_agreement',
-                                        'label_for'     => 'vendor_accept_agreement',
-                                        'name'          => 'vendor_accept_agreement',
-                                        'value'         => get_user_meta($this->vendor->id, '_vendor_accept_agreement', true),
-                                        'wrapper_class' => 'payment-gateway-direct_bank payment-gateway',
-                                    );
-                                }
                             ?> 
                                 <input type="hidden" name="vendor_payment_mode" value="direct_bank" />
                                 <?php foreach ($bank_account_fields as $field): ?>
@@ -2740,8 +2788,10 @@ Class WCMp_Admin_Dashboard {
                                                 break;
                                             case 'checkbox':
                                                     ?>
-                                                        <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
-                                                        <input type="checkbox" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" />
+                                                        <div class="d-flex">
+                                                            <input type="checkbox" id="<?php echo $field['id']; ?>" class="location-input" name="<?php echo $field['name']; ?>" style="margin-top: 5px; margin-right: 10px" />
+                                                            <label class="location-prompt" for="<?php echo $field['name']; ?>"><?php echo $field['label'] ?></label>
+                                                        </div>
                                                     <?php 
                                                 break;
                                             default:
@@ -2805,21 +2855,8 @@ Class WCMp_Admin_Dashboard {
             'vendor_bank_account_number'
         );
 
-        if (get_field('s5_require_vendor_agreement', 'option')) {
-            $fields[] = 'vendor_accept_agreement';
-        }
-
         foreach ($fields as $field) {
-            $value      = isset( $_POST[$field] ) ? wc_clean( wp_unslash( $_POST[$field] ) ) : '';
-            if ($field === 'vendor_accept_agreement') {
-                if ($value === 'on') {
-                    $value = true;
-                } else {
-                    wc_add_notice(__('You must accept the vendor agreement.', 'dc-woocommerce-multi-vendor'), 'error');
-                    return;
-                }
-            }
-            
+            $value      = isset( $_POST[$field] ) ? wc_clean( wp_unslash( $_POST[$field] ) ) : '';            
             if ( $value ) update_user_meta( $this->vendor->id, '_' . $field, $value );
         }
 
