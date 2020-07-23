@@ -5532,7 +5532,8 @@ input[type=radio] {
 	border-radius: 3px;
 	border-radius: 50%;
 	line-height: 10px;
-	margin: 3px 4px 4px 0;
+	left: 0;
+	top: -1px;
 	&:focus {
 		border-color: #cecdcd;
 		box-shadow: none;
@@ -5560,10 +5561,6 @@ input[type=radio] {
 		border-color: #66afe9;
 		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgba(102, 175, 233, 0.6);
 	}
-}
-
-.form-check {
-	padding-left: 2em;
 }
 
 input[type=checkbox] {
