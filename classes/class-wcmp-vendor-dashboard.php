@@ -2453,7 +2453,14 @@ Class WCMp_Admin_Dashboard {
 
                                 <label class="location-prompt" for="vendor_description"><?php esc_html_e('Store Description', 'dc-woocommerce-multi-vendor'); ?></label>
                                 <textarea rows="4" cols="40" name="vendor_description" id="vendor_description"></textarea>
-                                <?php //wp_editor( '', 'vendor_description', $_wp_editor_settings); ?>
+
+                                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Country', 'woocommerce' ); ?> <span class="required">*</span></label>
+                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
+                                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
+                                    <option selected></option>
+                                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+                                <?php endforeach; ?>
+                                </select
 
                                 <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?> <span class="required">*</span></label>
                                 <input type="text" id="store_address_1" class="location-input" name="store_address_1" value="<?php echo esc_attr( $address ); ?>" />
@@ -2482,15 +2489,7 @@ Class WCMp_Admin_Dashboard {
                                         <label class="location-prompt" for="store_phone"><?php esc_html_e( 'Phone', 'dc-woocommerce-multi-vendor' ); ?> <span class="required">*</span></label>
                                         <input type="text" id="store_phone" class="location-input" name="store_phone" value="<?php echo esc_attr( $store_phone ); ?>" />
                                     </div>
-                                </div>
-
-                                <label for="store_country" class="location-prompt"><?php esc_html_e( 'Country', 'woocommerce' ); ?> <span class="required">*</span></label>
-                                <select id="store_country" name="store_country" data-placeholder="<?php esc_attr_e( 'Select...', 'woocommerce' ); ?>" aria-label="<?php esc_attr_e( 'Country', 'woocommerce' ); ?>" class="location-input wc-enhanced-select dropdown">
-                                <?php foreach ( WC()->countries->get_countries() as $code => $label ) : ?>
-                                    <option selected></option>
-                                    <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-                                <?php endforeach; ?>
-                                </select>
+                                </div>                            
 
                                 <div class="city-and-postcode">
                                     <div>
@@ -2502,15 +2501,12 @@ Class WCMp_Admin_Dashboard {
                                 </div>
 
                                 <label class="location-prompt" for="_vendor_shipping_policy"><?php esc_html_e('Shipping Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <?php //wp_editor( '', '_vendor_shipping_policy', $_wp_editor_settings); ?>
                                 <textarea rows="4" cols="40" name="_vendor_shipping_policy" id="_vendor_shipping_policy"></textarea>
 
                                 <label class="location-prompt" for="_vendor_refund_policy"><?php esc_html_e('Refund Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <?php //wp_editor( '', '_vendor_refund_policy', $_wp_editor_settings); ?>
                                 <textarea rows="4" cols="40" name="_vendor_refund_policy" id="_vendor_refund_policy"></textarea>
 
                                 <label class="location-prompt" for="_vendor_cancellation_policy"><?php esc_html_e('Cancellation/Return/Exchange Policy', 'dc-woocommerce-multi-vendor'); ?></label>
-                                <?php //wp_editor( '', '_vendor_cancellation_policy', $_wp_editor_settings); ?>
                                 <textarea rows="4" cols="40" name="_vendor_cancellation_policy" id="_vendor_cancellation_policy"></textarea>
                             </div>
 
