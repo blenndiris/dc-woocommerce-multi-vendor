@@ -2460,7 +2460,7 @@ Class WCMp_Admin_Dashboard {
                                     <option selected></option>
                                     <option <?php selected( $code, $country ); ?> value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
                                 <?php endforeach; ?>
-                                </select
+                                </select>
 
                                 <label class="location-prompt" for="store_address_1"><?php esc_html_e( 'Address', 'woocommerce' ); ?> <span class="required">*</span></label>
                                 <input type="text" id="store_address_1" class="location-input" name="store_address_1" value="<?php echo esc_attr( $address ); ?>" />
