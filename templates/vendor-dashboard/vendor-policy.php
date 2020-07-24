@@ -38,21 +38,21 @@ $_wp_editor_settings = apply_filters('wcmp_vendor_policies_wp_editor_settings', 
                         <div class="form-group">
                             <label class="control-label col-sm-3"><?php _e('Shipping Policy', 'dc-woocommerce-multi-vendor'); ?></label>
                             <div class="col-md-6 col-sm-9">
-                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_shipping_policy" => array('name' => 'vendor_shipping_policy', 'type' => 'wpeditor', 'class' => 'regular-textarea', 'value' => $vendor_shipping_policy, 'settings' => $_wp_editor_settings))); ?>
+                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_shipping_policy" => array('name' => 'vendor_shipping_policy', 'type' => 'textarea', 'class' => 'no_input form-control regular-textarea', 'value' => $vendor_shipping_policy, 'settings' => $_wp_editor_settings))); ?>
                                 <!--textarea  class="no_input form-control" name="vendor_shipping_policy" cols="" rows=""><?php echo isset($vendor_shipping_policy['value']) ? $vendor_shipping_policy['value'] : $wcmp_policy_settings['shipping_policy']; ?></textarea-->
                             </div>  
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3"><?php _e('Refund Policy', 'dc-woocommerce-multi-vendor'); ?></label>
                             <div class="col-md-6 col-sm-9">
-                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_refund_policy" => array('name' => 'vendor_refund_policy', 'type' => 'wpeditor', 'class' => 'regular-textarea', 'value' => $vendor_refund_policy, 'settings' => $_wp_editor_settings))); ?>
+                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_refund_policy" => array('name' => 'vendor_refund_policy', 'type' => 'textarea', 'class' => 'no_input form-control regular-textarea', 'value' => $vendor_refund_policy, 'settings' => $_wp_editor_settings))); ?>
                                 <!--textarea  class="no_input form-control" name="vendor_refund_policy" cols="" rows=""><?php echo isset($vendor_refund_policy['value']) ? $vendor_refund_policy['value'] : $wcmp_policy_settings['refund_policy']; ?></textarea-->
                             </div>  
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3"><?php _e('Cancellation/Return/Exchange Policy', 'dc-woocommerce-multi-vendor'); ?></label>
                             <div class="col-md-6 col-sm-9">
-                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_cancellation_policy" => array('name' => 'vendor_cancellation_policy', 'type' => 'wpeditor', 'class' => 'regular-textarea', 'value' => $vendor_cancellation_policy, 'settings' => $_wp_editor_settings))); ?>
+                                <?php $WCMp->wcmp_wp_fields->dc_generate_form_field(array("vendor_cancellation_policy" => array('name' => 'vendor_cancellation_policy', 'type' => 'textarea', 'class' => 'no_input form-control regular-textarea', 'value' => $vendor_cancellation_policy, 'settings' => $_wp_editor_settings))); ?>
                                 <!--textarea class="no_input form-control" type="text" name="vendor_cancellation_policy" cols="" rows=""><?php echo isset($vendor_cancellation_policy['value']) ? $vendor_cancellation_policy['value'] : ''; ?></textarea-->
                             </div>  
                         </div>
