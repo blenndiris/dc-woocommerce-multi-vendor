@@ -8804,8 +8804,7 @@ mark.mark-red {
   opacity: 1; }
 
 .form-group {
-  margin-bottom: 20px;
-  overflow: hidden; }
+  margin-bottom: 20px; }
   .form-group label {
     font-weight: 400;
     color: #565656; }
@@ -8829,11 +8828,6 @@ label.nolabel {
   line-height: 20px; }
 
 button.button {
-  padding: 3px 5px 4px;
-  box-shadow: none;
-  line-height: 20px; }
-
-button.btn {
   padding: 3px 5px 4px;
   box-shadow: none;
   line-height: 20px; }
@@ -10762,7 +10756,8 @@ input[type=radio] {
   border-radius: 3px;
   border-radius: 50%;
   line-height: 10px;
-  margin: 3px 4px 4px 0; }
+  left: 0;
+  top: -1px; }
   input[type=radio]:focus {
     border-color: #cecdcd;
     box-shadow: none;
@@ -10799,7 +10794,8 @@ input[type=checkbox] {
   height: 20px;
   margin: 0;
   outline: 0;
-  padding: 0 !important;
+  left: 0;
+  top: -1px;
   text-align: center;
   vertical-align: middle;
   width: 20px;
@@ -12941,12 +12937,6 @@ select[name="wcmp-vendor-orders_length"] {
     margin: 0 0 10px; }
     .staticstics-panel-wrap .panel-body .wcmp-website-stat-list li:last-of-type {
       margin-bottom: 0; }
-  form[name="wcmp_vendor_dashboard_orders"] button.btn {
-    height: 30px;
-    padding: 3px 8px; }
-  .datatable-date-filder button.btn {
-    height: 30px;
-    padding: 3px 8px; }
   .frontend_product_manager_product_types {
     padding: 10px; }
     .frontend_product_manager_product_types #product_type {

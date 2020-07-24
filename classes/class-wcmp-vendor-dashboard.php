@@ -2473,7 +2473,7 @@ Class WCMp_Admin_Dashboard {
                                         <label class="location-prompt" for="store_city"><?php esc_html_e( 'City', 'woocommerce' ); ?> <span class="required">*</span></label>
                                         <input type="text" id="store_city" class="location-input" name="store_city" value="<?php echo esc_attr( $city ); ?>" />
                                     </div>
-                                    <div class="store-state-container hidden">
+                                    <div class="store-state-container">
                                         <label for="store_state" class="location-prompt">
                                                 <?php esc_html_e( 'State', 'woocommerce' ); ?> <span class="required">*</span>
                                         </label>
