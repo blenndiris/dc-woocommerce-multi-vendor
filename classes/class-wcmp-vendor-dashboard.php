@@ -2283,7 +2283,7 @@ Class WCMp_Admin_Dashboard {
      */
     public function setup_wizard_header() {
         global $WCMp;
-        get_header();
+        get_header('blank');
         ?>
                 <?php wp_print_scripts('wc-setup'); ?>
                 <?php wp_print_scripts('wcmp-setup'); ?>
@@ -2343,7 +2343,7 @@ Class WCMp_Admin_Dashboard {
         </main>
         
         <?php
-        get_footer();
+        get_footer('blank');
     }
 
     /**
