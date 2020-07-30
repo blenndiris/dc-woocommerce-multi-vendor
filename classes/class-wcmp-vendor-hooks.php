@@ -908,9 +908,9 @@ class WCMp_Vendor_Hooks {
                 if ( $vendor_progress['todo'] && is_array( $vendor_progress['todo'] ) ) {
                     $todo_link = isset( $vendor_progress['todo']['link'] ) ? esc_url( $vendor_progress['todo']['link'] ) : '';
                     $todo_label = isset( $vendor_progress['todo']['label'] ) ? $vendor_progress['todo']['label'] : '';
-                    echo '<div style="margin:17px 20px 12px 20px;">' . __( 'To boost up your profile progress add', 'dc-woocommerce-multi-vendor' ) . ' <a href="' . $todo_link . '">' . $todo_label . '</a></div>';
+                    echo '<div style="margin:17px 0 12px 0;">' . __( 'To boost up your profile progress add', 'dc-woocommerce-multi-vendor' ) . ' <a href="' . $todo_link . '">' . $todo_label . '</a></div>';
                 }
-                echo '<div class="progress" style="margin:0 20px 20px;">';
+                echo '<div class="progress" style="margin:0 0 20px;">';
                 echo '<div class="progress-bar" role="progressbar" style="width: ' . $vendor_progress['progress'] . '%;" aria-valuenow="' . $vendor_progress['progress'] . '" aria-valuemin="0" aria-valuemax="100">' . $vendor_progress['progress'] . '%</div>';
                 echo '</div>';
                 echo '</div>';
