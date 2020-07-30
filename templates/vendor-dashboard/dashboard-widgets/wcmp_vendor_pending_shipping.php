@@ -44,7 +44,7 @@ do_action('before_wcmp_vendor_pending_shipping');
 
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="tracking_url"><?php _e('Enter Tracking Url', 'dc-woocommerce-multi-vendor'); ?> *</label>
+                        <label for="tracking_url"><?php _e('Enter Tracking URL', 'dc-woocommerce-multi-vendor'); ?> *</label>
                         <input type="url" class="form-control" id="email" name="tracking_url" required="">
                     </div>
                     <div class="form-group">

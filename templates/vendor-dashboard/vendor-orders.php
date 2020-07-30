@@ -115,7 +115,7 @@ $orders_list_table_headers = apply_filters('wcmp_datatable_order_list_table_head
 
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="tracking_url"><?php _e('Enter Tracking Url', 'dc-woocommerce-multi-vendor'); ?> *</label>
+                            <label for="tracking_url"><?php _e('Enter Tracking URL', 'dc-woocommerce-multi-vendor'); ?> *</label>
                             <input type="url" class="form-control" id="email" name="tracking_url" required="">
                         </div>
                         <div class="form-group">

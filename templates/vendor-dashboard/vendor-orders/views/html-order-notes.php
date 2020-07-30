@@ -77,7 +77,7 @@ global $WCMp;
                 <li id="shipping_tracking_wrap" class="shipping_tracking collapse" style="padding:  10px 15px;;">
                     <form method="post">
                         <div class="form-group">
-                            <label for="tracking_url"><?php _e('Enter Tracking Url', 'dc-woocommerce-multi-vendor'); ?> *</label>
+                            <label for="tracking_url"><?php _e('Enter Tracking URL', 'dc-woocommerce-multi-vendor'); ?> *</label>
                             <input type="url" class="form-control" id="email" name="tracking_url" required="">
                         </div>
                         <div class="form-group">
