@@ -66,7 +66,7 @@ $vendor = get_wcmp_vendor_by_term($vendor_id);
 <?php endif; ?>
         
 <h2><?php _e( 'Shipment Tracking Details',  'dc-woocommerce-multi-vendor' ); ?></h2>
-<p><strong><?php _e( 'Tracking URL:',  'dc-woocommerce-multi-vendor' ); ?></strong> <?php echo $tracking_url; ?></p>
+<p><strong><?php _e( 'Tracking URL:',  'dc-woocommerce-multi-vendor' ); ?></strong> <a href="<?php echo $tracking_url; ?>"><?php echo $tracking_url; ?></a></p>
 <p><strong><?php _e( 'Tracking Number:',  'dc-woocommerce-multi-vendor' ); ?></strong> <?php echo $tracking_id; ?></p>
 
 <?php wc_get_template( 'emails/email-addresses.php', array( 'order' => $order ) ); ?>
