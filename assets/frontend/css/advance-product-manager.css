@@ -712,7 +712,6 @@ body div.dataTables_wrapper div.dataTables_length select {
 
 .product-tab-nav-holder {
   background: transparent;
-  height: 63px;
   overflow: hidden; }
   .product-tab-nav-holder ul {
     display: -webkit-box;
