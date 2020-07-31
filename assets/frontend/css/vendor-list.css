@@ -358,13 +358,10 @@ i.wcmp-font {
     #wcmp-store-conatiner .wcmp-store-map-filter .wcmp-inp-wrap {
       margin: 0 5px 5px; }
   #wcmp-store-conatiner input[type="text"] {
-    padding: 4px 18px;
-    height: 34px; }
+    padding: 4px 18px; }
   #wcmp-store-conatiner select {
-    padding: 4px 18px;
-    height: 34px; }
+    padding: 4px 18px; }
   #wcmp-store-conatiner input[type="submit"] {
-    height: 34px;
     padding: 4px 22px; }
   #wcmp-store-conatiner .wcmp-pagination-count {
     margin-top: 5px;

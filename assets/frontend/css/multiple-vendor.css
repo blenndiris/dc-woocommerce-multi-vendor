@@ -76,7 +76,6 @@ div.rowbody {
   background: -webkit-linear-gradient(top, #f78828 0, #dd771f 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: linear-gradient(to bottom, #f78828 0, #dd771f 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
   border: 1px solid #da7532;
-  border-radius: 4px;
   color: #f9f9f9;
   cursor: pointer;
   outline: 0 none;
@@ -110,7 +109,6 @@ div.rowbody {
   text-transform: uppercase;
   text-align: center;
   padding: 5px;
-  border-radius: 4px;
   margin: 5px;
   cursor: pointer; }
   .wcmp_btn_add_to_cart:hover {

@@ -519,12 +519,11 @@ body {
 		min-height: 34px !important;
 		.select2-selection.select2-selection--multiple {
 			height: auto;
-			min-height: 34px;
 			width: 100%;
 			border: 1px solid #c5c5c5;
 			max-height: 76px;
 			overflow: auto;
-			border-radius: 4px;
+
 			.select2-selection__rendered {
 				padding: 3px 5px 0;
 				.select2-selection__choice {
@@ -545,7 +544,6 @@ body {
 			}
 		}
 		.select2-selection--single {
-			height: 34px;
 			border: 1px solid #c5c5c5;
 			.select2-selection__rendered {
 				line-height: 33px !important;
@@ -947,7 +945,6 @@ button {
 	&:focus {
 		outline: none;
 	}
-	padding: 3px 5px 4px;
 	box-shadow: none;
 	line-height: 20px;
 }
@@ -985,12 +982,10 @@ select {
 		background-repeat: no-repeat;
 		background-position: right 13px top 50%;
 		background-color: #fff;
-		padding: 3px 5px 4px;
+
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #d3dbe2;
-		border-radius: 4px;
-		height: 34px;
 		&::-ms-expand {
 			display: none;
 		}
@@ -1008,12 +1003,10 @@ select.form-control {
 		background-repeat: no-repeat;
 		background-position: right 13px top 50%;
 		background-color: #fff;
-		padding: 3px 5px 4px;
+
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #d3dbe2;
-		border-radius: 4px;
-		height: 34px;
 		&::-ms-expand {
 			display: none;
 		}
@@ -1313,16 +1306,6 @@ span.form-text {
 }
 .overlay {
 	position: relative;
-	&:after {
-		content: '';
-		position: fixed;
-		top: 56px;
-		left: 0;
-		width: 100%;
-		height: calc(100vh - 56px);
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 9;
-	}
 }
 .action-icon {
 	font-size: 19px;
@@ -2423,7 +2406,6 @@ mark.mark-red {
 .woocommerce-message {
 	padding: 15px;
 	border: 1px solid #d6e9c6;
-	border-radius: 4px;
 	color: #3c763d !important;
 	background-color: #dff0d8;
 	margin-bottom: 20px;
@@ -2431,7 +2413,6 @@ mark.mark-red {
 .woocommerce-info {
 	padding: 15px;
 	border: 1px solid #bce8f1;
-	border-radius: 4px;
 	color: #31708f;
 	background-color: #d9edf7;
 	margin-bottom: 20px;
@@ -2439,14 +2420,12 @@ mark.mark-red {
 .message-warning {
 	padding: 15px;
 	border: 1px solid #faebcc;
-	border-radius: 4px;
 	color: #8a6d3b;
 	background-color: #fcf8e3;
 }
 .woocommerce-error {
 	padding: 15px;
 	border: 1px solid #ebccd1;
-	border-radius: 4px;
 	color: #a94442;
 	background-color: #f2dede;
 	margin-bottom: 20px;
@@ -2508,7 +2487,7 @@ mark.mark-red {
 			background-clip: padding-box;
 			border: 1px solid #ccc;
 			border: 1px solid rgba(0, 0, 0, 0.15);
-			border-radius: 4px;
+
 			-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 			a {
@@ -2629,20 +2608,16 @@ label.nolabel {
 .form-control {
 	border-color: #c5c5c5;
 	max-width: 100%;
-	padding: 3px 5px 4px;
 	box-shadow: none;
 	line-height: 20px;
 }
 button.button {
-	padding: 3px 5px 4px;
 	box-shadow: none;
 	line-height: 20px;
 }
 select.input-sm {
-	padding: 3px 5px 4px;
 	box-shadow: none;
 	line-height: 20px;
-	height: 34px;
 }
 .compare-stat-info {
 	select.form-control {
@@ -2826,7 +2801,6 @@ textarea {
 	}
 }
 .woocommerce-exporter-category {
-	border-radius: 4px;
 }
 blockquote {
 	background: #fff;
@@ -2934,7 +2908,7 @@ ul.category-filter-nav {
 				content: '|';
 				top: 0;
 				right: 0;
-				margin: -1px -10px 0 0;
+				margin: 2px -10px 0 0;
 				color: #696969;
 			}
 		}
@@ -5288,7 +5262,6 @@ td {
 	}
 	.select2-container {
 		.select2-selection.select2-selection--multiple {
-			min-height: 34px;
 			.select2-selection__rendered {
 				.select2-selection__choice {
 					margin-top: 5px;
@@ -5879,7 +5852,7 @@ cursor: pointer;
 				background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top, #f74b33 0%, #e1442e 50%, #cf3f2b 100%) repeat scroll 0 0;
 				border-color: #ff8877 -moz-use-text-color #9f291a;
 				border-image: none;
-				border-radius: 4px;
+	
 				border-style: solid none;
 				border-width: 2px 0;
 				color: #fff;
@@ -6328,7 +6301,7 @@ table.shipping_table {
 .product-filter-actions {
 	.alignleft.actions {
 		button {
-			border-radius: 4px;
+
 			&:not(:last-of-type) {
 				margin-right: 10px;
 			}
@@ -6549,12 +6522,8 @@ table.shipping_table {
 						opacity: 0;
 					}
 					&:hover {
-						color: #3f85b9;
 						&:after {
 							opacity: 1;
-						}
-						&:before {
-							color: #3f85b9;
 						}
 					}
 				}
@@ -6635,7 +6604,7 @@ table.shipping_table {
 				border: 1px solid #c5c5c5;
 				padding: 3px 3px 3px 55px;
 				position: relative;
-				border-radius: 4px;
+	
 				&:before {
 					@extend %fa-icon;
 					@extend .fas;
@@ -7216,7 +7185,7 @@ p.description {
 				background-color: #fff;
 				border: 1px solid #aaa;
 				box-shadow: 0 1px 0 #dfdfdf;
-				border-radius: 4px;
+	
 				margin-right: 5px;
 				margin-top: 5px;
 			}
@@ -7565,9 +7534,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 	}
@@ -7576,9 +7543,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 	}
@@ -7587,9 +7552,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 	}
@@ -7598,9 +7561,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 	}
@@ -7609,9 +7570,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 	}
@@ -7620,9 +7579,7 @@ select[name="wcmp-vendor-orders_length"] {
 		box-shadow: none;
 		line-height: 20px;
 		border: 1px solid #c5c5c5;
-		height: 34px;
 		font-size: 14px;
-		border-radius: 4px;
 		float: left;
 		width: 50%;
 		height: 100px;
