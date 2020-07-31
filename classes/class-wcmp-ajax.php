@@ -2279,11 +2279,15 @@ class WCMp_Ajax {
                     $trans_post = get_post($transaction_id);
                     $order_ids = $commssion_ids = '';
                     $commission_details = get_post_meta($transaction_id, 'commission_detail', true);
+                    $order_id = array();
+                    foreach ($commission_details as $commission_detail)
+                        $order_id[] = get_post_meta($commission_detail, '_commission_order_id', true);
                     $transfer_charge = get_post_meta($transaction_id, 'transfer_charge', true);
                     $transaction_amt = get_post_meta($transaction_id, 'amount', true) - get_post_meta($transaction_id, 'transfer_charge', true) - get_post_meta($transaction_id, 'gateway_charge', true);
                     $row = array();
                     $row ['select_transaction'] = '<input name="transaction_ids[]" value="' . $transaction_id . '"  class="select_transaction" type="checkbox" >';
                     $row ['date'] = wcmp_date($trans_post->post_date);
+                    $row ['order_id'] = '#'. implode(', #', $order_id);
                     $row ['transaction_id'] = '<a href="' . esc_url(wcmp_get_vendor_dashboard_endpoint_url(get_wcmp_vendor_settings('wcmp_transaction_details_endpoint', 'vendor', 'general', 'transaction-details'), $transaction_id)) . '">#' . $transaction_id . '</a>';
                     $row ['commission_ids'] = '#' . implode(', #', $commission_details);
                     $row ['fees'] = isset($transfer_charge) ? wc_price($transfer_charge) : wc_price(0);
@@ -3230,10 +3234,9 @@ class WCMp_Ajax {
         }
 
         $want_to_limit_location = !empty($zones['locations']);
-
+        $countries = $states = $cities = $postcodes = array();
+        
         if ($want_to_limit_location) {
-            $countries = $states = $cities = $postcodes = array();
-
             foreach ($zones['locations'] as $each_location) {
                 switch ($each_location['type']) {
                     case 'state':
@@ -3262,6 +3265,7 @@ class WCMp_Ajax {
             'show_post_code_list' => $show_post_code_list,
             'postcodes' => $postcodes,
             'vendor_shipping_methods' => $vendor_shipping_methods,
+            'vendor_id' => $_POST['vendor_id']
         );
         $WCMp->template->get_template('vendor-dashboard/vendor-shipping/vendor-shipping-zone-settings.php', $template_data);
         $zone_html['html'] = ob_get_clean();
@@ -3390,12 +3394,12 @@ class WCMp_Ajax {
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Method Title', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placeholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>'
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Minimum order amount for free shipping', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="minimum_order_amount_fs" class="form-control" type="text" name="min_amount" value="'.$vendor_shipping_method['settings']['min_amount'].'" placholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="minimum_order_amount_fs" class="form-control" type="text" name="min_amount" value="'.$vendor_shipping_method['settings']['min_amount'].'" placeholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>'
                             . '<input type="hidden" id="method_description_fs" name="description" value="'.$vendor_shipping_method['settings']['description'].'" />'
                             . '<input type="hidden" id="method_cost_fs" name="cost" value="0" />'
@@ -3411,12 +3415,12 @@ class WCMp_Ajax {
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Method Title', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placeholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>'
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Cost', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="method_cost_lp" class="form-control" type="text" name="cost" value="'.$vendor_shipping_method['settings']['cost'].'" placholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="method_cost_lp" class="form-control" type="text" name="cost" value="'.$vendor_shipping_method['settings']['cost'].'" placeholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>';
                             if( apply_filters( 'wcmp_show_shipping_zone_tax', true ) ) {
                             $settings_html .= '<div class="form-group">'
@@ -3440,12 +3444,12 @@ class WCMp_Ajax {
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Method Title', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="method_title_fs" class="form-control" type="text" name="title" value="'.$vendor_shipping_method['title'].'" placeholder="'.__( 'Enter method title', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>'
                             . '<div class="form-group">'
                             . '<label for="" class="control-label col-sm-3 col-md-3">' . __('Cost', 'dc-woocommerce-multi-vendor') . '</label>'
                             . '<div class="col-md-9 col-sm-9">'
-                            . '<input id="method_cost_fr" class="form-control" type="text" name="cost" value="'.$vendor_shipping_method['settings']['cost'].'" placholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
+                            . '<input id="method_cost_fr" class="form-control" type="text" name="cost" value="'.$vendor_shipping_method['settings']['cost'].'" placeholder="'.__( '0.00', 'dc-woocommerce-multi-vendor' ).'">'
                             . '</div></div>';
                             if( apply_filters( 'wcmp_show_shipping_zone_tax', true ) ) { 
                             $settings_html .= '<div class="form-group">'
@@ -3478,7 +3482,7 @@ class WCMp_Ajax {
                                             . '<label for="" class="control-label col-sm-3 col-md-3">'.__( 'Cost of Shipping Class:', 'dc-woocommerce-multi-vendor' ) .' '. $shipping_class->name .'</label>'
                                             . '<div class="col-md-9 col-sm-9">'
                                             . '<input type="hidden" name="shipping_class_id" value="'.$shipping_class->term_id.'" />'
-                                            . '<input id="'.$shipping_class->slug.'" class="form-control sc_vals" type="text" name="class_cost_'.$shipping_class->term_id.'" value="'.$vendor_shipping_method['settings']['class_cost_'.$shipping_class->term_id].'" placholder="'.__( 'N/A', 'dc-woocommerce-multi-vendor' ).'" data-shipping_class_id="'. $shipping_class->term_id.'">'
+                                            . '<input id="'.$shipping_class->slug.'" class="form-control sc_vals" type="text" name="class_cost_'.$shipping_class->term_id.'" value="'.$vendor_shipping_method['settings']['class_cost_'.$shipping_class->term_id].'" placeholder="'.__( 'N/A', 'dc-woocommerce-multi-vendor' ).'" data-shipping_class_id="'. $shipping_class->term_id.'">'
                                             . '<div class="description">'.__( 'Enter a cost (excl. tax) or sum, e.g. <code>10.00 * [qty]</code>.', 'dc-woocommerce-multi-vendor' ) . '<br/><br/>' . __( 'Use <code>[qty]</code> for the number of items, <br/><code>[cost]</code> for the total cost of items, and <code>[fee percent="10" min_fee="20" max_fee=""]</code> for percentage based fees.', 'dc-woocommerce-multi-vendor' ).'</div>'
                                             . '</div></div>';
                                 }
