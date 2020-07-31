@@ -65,12 +65,12 @@ $_wp_editor_settings = apply_filters('wcmp_vendor_storefront_wp_editor_settings'
                             <div class="vendor-profile-pic-wraper pull-left">
                                 <img id="vendor-profile-img" src="<?php echo (isset($vendor_image['url']) && (!empty($vendor_image['url']))) ? $vendor_image['url'] : $WCMp->plugin_url . 'assets/images/logo_placeholder.jpg'; ?>" alt="dp">
                                 <div class="wcmp-media profile-pic-btn">
-                                    <button type="button" class="wcmp_upload_btn" data-target="vendor-profile"><i class="wcmp-font ico-edit-pencil-icon"></i> <?php _e('Store Logo', 'dc-woocommerce-multi-vendor'); ?></button>
+                                    <button type="button" class="btn btn-primary wcmp_upload_btn" data-target="vendor-profile"><i class="wcmp-font ico-edit-pencil-icon"></i> <?php _e('Store Logo', 'dc-woocommerce-multi-vendor'); ?></button>
                                 </div>
                                 <input type="hidden" name="vendor_image" id="vendor-profile-img-id" class="user-profile-fields" value="<?php echo (isset($vendor_image['value']) && (!empty($vendor_image['value']))) ? $vendor_image['value'] : $WCMp->plugin_url . 'assets/images/WP-stdavatar.png'; ?>"  />
                             </div>
                             <div class="wcmp-media cover-pic-button pull-right">
-                                <button type="button" class="wcmp_upload_btn" data-target="vendor-cover"><i class="wcmp-font ico-edit-pencil-icon"></i> <?php _e('Upload Cover Picture', 'dc-woocommerce-multi-vendor'); ?></button>
+                                <button type="button" class="btn btn-primary wcmp_upload_btn" data-target="vendor-cover"><i class="wcmp-font ico-edit-pencil-icon"></i> <?php _e('Upload Cover Picture', 'dc-woocommerce-multi-vendor'); ?></button>
                             </div>
                             <input type="hidden" name="vendor_banner" id="vendor-cover-img-id" class="user-profile-fields" value="<?php echo (isset($vendor_banner['value']) && (!empty($vendor_banner['value'])) ) ? $vendor_banner['value'] : $WCMp->plugin_url . 'assets/images/banner_placeholder.jpg'; ?>"  />
                         </div>
@@ -123,17 +123,19 @@ $_wp_editor_settings = apply_filters('wcmp_vendor_storefront_wp_editor_settings'
                         <label class="control-label col-sm-3 col-md-3"><?php _e(' Store Slug *', 'dc-woocommerce-multi-vendor'); ?></label>
                         <div class="col-md-6 col-sm-9">
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon3">
-                                    <?php
-                                    $dc_vendors_permalinks_array = get_option('dc_vendors_permalinks');
-                                    if (isset($dc_vendors_permalinks_array['vendor_shop_base']) && !empty($dc_vendors_permalinks_array['vendor_shop_base'])) {
-                                        $store_slug = trailingslashit($dc_vendors_permalinks_array['vendor_shop_base']);
-                                    } else {
-                                        $store_slug = trailingslashit('vendor');
-                                    } echo $shop_page_url = trailingslashit(get_home_url());
-                                    echo $store_slug;
-                                    ?>
-                                </span>		
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon3">
+                                        <?php
+                                            $dc_vendors_permalinks_array = get_option('dc_vendors_permalinks');
+                                            if (isset($dc_vendors_permalinks_array['vendor_shop_base']) && !empty($dc_vendors_permalinks_array['vendor_shop_base'])) {
+                                                $store_slug = trailingslashit($dc_vendors_permalinks_array['vendor_shop_base']);
+                                            } else {
+                                                $store_slug = trailingslashit('vendor');
+                                            } echo $shop_page_url = trailingslashit(get_home_url());
+                                            echo $store_slug;
+                                        ?>
+                                    </span>
+                                </div>
                                 <input class="small no_input form-control" id="basic-url" aria-describedby="basic-addon3" type="text" name="vendor_page_slug" value="<?php echo isset($vendor_page_slug['value']) ? $vendor_page_slug['value'] : ''; ?>" placeholder="<?php _e('Enter your Store Name here', 'dc-woocommerce-multi-vendor'); ?>">
                             </div>	
                         </div>	
