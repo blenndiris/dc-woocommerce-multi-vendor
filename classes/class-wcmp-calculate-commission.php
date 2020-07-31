@@ -71,7 +71,7 @@ class WCMp_Calculate_Commission {
             'pending',
             'failed',
             'cancelled',
-        ), $order_id, $from_status, $to_status ) ) ) return;
+        ), $order_id, $from_status, $to_status ) ) || $to_status == 'failed') return;
         
         if( !wp_get_post_parent_id( $order_id ) && get_post_meta( $order_id, 'has_wcmp_sub_order', true ) ) {
             $suborders = get_wcmp_suborders( $order_id, false, false);
@@ -497,6 +497,10 @@ class WCMp_Calculate_Commission {
         } else {
             $line_total = $order->get_item_subtotal($item, false, false) * $item['qty'];
         }
+
+        // Filter the item total before calculating item commission.
+        $line_total = apply_filters('wcmp_get_commission_line_total', $line_total, $product_id, $variation_id, $item, $order_id, $item_id);
+
         if ($product_id) {
             $vendor_id = wc_get_order_item_meta($item_id, '_vendor_id', true);
             if ($vendor_id) {
