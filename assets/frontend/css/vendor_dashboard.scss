@@ -1306,16 +1306,6 @@ span.form-text {
 }
 .overlay {
 	position: relative;
-	&:after {
-		content: '';
-		position: fixed;
-		top: 56px;
-		left: 0;
-		width: 100%;
-		height: calc(100vh - 56px);
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 9;
-	}
 }
 .action-icon {
 	font-size: 19px;
