@@ -6532,12 +6532,8 @@ table.shipping_table {
 						opacity: 0;
 					}
 					&:hover {
-						color: #3f85b9;
 						&:after {
 							opacity: 1;
-						}
-						&:before {
-							color: #3f85b9;
 						}
 					}
 				}

@@ -11391,12 +11391,8 @@ table.shipping_table td {
         top: -1px;
         background: #d3dbe2;
         opacity: 0; }
-      .select-product-cat-wrapper .select-cat-step-wrapper .cat-column li a:hover {
-        color: #3f85b9; }
-        .select-product-cat-wrapper .select-cat-step-wrapper .cat-column li a:hover:after {
-          opacity: 1; }
-        .select-product-cat-wrapper .select-cat-step-wrapper .cat-column li a:hover:before {
-          color: #3f85b9; }
+      .select-product-cat-wrapper .select-cat-step-wrapper .cat-column li a:hover:after {
+        opacity: 1; }
   .select-product-cat-wrapper .select-cat-step-wrapper .cat-column li.has-children a:before {
     content: "\e92f";
     font-family: 'wcmp' !important;
