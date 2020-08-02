@@ -607,6 +607,8 @@ class WCMp_Vendor_Hooks {
             $tracking_id = $_POST['tracking_id'];
             $tracking_url = $_POST['tracking_url'];
             $vendor->set_order_shipped( $order_id, $tracking_id, $tracking_url );
+            $order = new WC_Order($order_id);
+            $order->update_status( 'shipped' );
         }
         $vendor_order = $wp->query_vars[get_wcmp_vendor_settings( 'wcmp_vendor_orders_endpoint', 'vendor', 'general', 'vendor-orders' )];
         if ( ! empty( $vendor_order ) ) {

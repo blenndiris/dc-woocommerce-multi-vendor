@@ -1567,6 +1567,8 @@ Class WCMp_Admin_Dashboard {
                 $tracking_id = $_POST['tracking_id'];
                 $tracking_url = $_POST['tracking_url'];
                 $vendor->set_order_shipped($order_id, $tracking_id, $tracking_url);
+                $order = new WC_Order($order_id);
+                $order->update_status( 'shipped' );
             }
 
             $default_headers = apply_filters('wcmp_vendor_pending_shipping_table_header', array(
