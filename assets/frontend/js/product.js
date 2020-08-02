@@ -1915,12 +1915,12 @@ var wcmpAfmProductEditor = ( function ( $ ) {
                     },
                     error_message: 'Product image is required'
                 },
-                'price': {
-                    get: function() {
-                        return $('#_regular_price').val();
-                    },
-                    error_message: 'Price is required'
-                },
+                // 'price': {
+                //     get: function() {
+                //         return $('#_regular_price').val();
+                //     },
+                //     error_message: 'Price is required'
+                // },
                 'weight': {
                     get: function() {
                         return $('#_weight').val();
