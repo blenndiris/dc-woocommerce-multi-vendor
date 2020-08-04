@@ -184,7 +184,12 @@ class WCMP_Vendor_Shipping_Method extends WC_Shipping_Method {
         $rates = array();
         
         $zone = WC_Shipping_Zones::get_zone_matching_package( $package );
-        $vendor_id = $package['vendor_id'];
+        // NOTE - For some reason package `$package['vendor_id']` comes through as 1 on orders
+        // that contain products for multiple vendors.
+        // https://github.com/wcmarketplace/dc-woocommerce-multi-vendor/issues/440
+        // $vendor_id   = $package['vendor_id'];
+        //
+        $vendor_id   = isset( $package['user']['ID'] ) ? $package['user']['ID'] : $package['vendor_id'];
 
         if ( empty( $vendor_id ) ) {
             return;
